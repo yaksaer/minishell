@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 16:14:07 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/09/25 02:42:31 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/09/28 15:54:48 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	base_num(char *string, char *base)
 {
 	int	i;
 	int	j;	
-	int res;
+	int	res;
 
 	i = -1;
 	while (string[++i] != '\0')
@@ -37,11 +37,11 @@ int	base_num(char *string, char *base)
 	return (res);
 }
 
-long long converter(char *string, char *base)
+long long	converter(char *string, char *base)
 {
 	int	number;
 	int	len;
-	int num_base;
+	int	num_base;
 
 	number = 0;
 	len = ft_strlen(base);
@@ -59,8 +59,8 @@ long long converter(char *string, char *base)
 int	check_base(char *base)
 {
 	int	i;
-	int j;
-	int len;
+	int	j;
+	int	len;
 
 	i = -1;
 	j = -1;
@@ -78,7 +78,7 @@ int	check_base(char *base)
 	return (0);
 }
 
-int ft_atoi_base(char *string, char *base)
+int	ft_atoi_base(char *string, char *base)
 {
 	long long	number;
 	int			minus;

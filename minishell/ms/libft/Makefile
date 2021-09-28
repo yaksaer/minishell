@@ -6,7 +6,7 @@
 #    By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/10 21:22:34 by cbilbo            #+#    #+#              #
-#    Updated: 2021/09/27 18:45:22 by cbilbo           ###   ########.fr        #
+#    Updated: 2021/09/28 15:34:32 by cbilbo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,9 @@ SRCS = ft_atoi.c ft_atoi_base.c ft_bzero.c ft_calloc.c ft_isalnum.c \
 		ft_putchar_fd.c ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c ft_strncmp.c \
 		ft_putchar_nbr.c ft_putstr_nbr.c ft_strlen_until.c ft_putstrl.c ft_putcharl.c \
 		ft_nbrlen.c ft_strcmp.c ft_swap.c ft_qsort.c get_next_line.c ft_allocfree.c ft_ters.c \
-		ft_swap_d.c
+		ft_swap_d.c ft_strcpy.c ft_strcat.c ft_putstr.c d_link_list_del_n.c d_link_list_del.c \
+		d_link_list_get_n.c d_link_list_insert.c d_link_list_pop_back.c d_link_list_pop_front.c \
+		d_link_list_push_front.c d_link_list_push_back.c
 
 BONUS = ft_lstadd_back.c ft_lstadd_front.c ft_lstclear.c ft_lstdelone.c ft_lstiter.c \
 			ft_lstlast.c ft_lstmap.c ft_lstnew.c ft_lstsize.c ft_lstcpy.c

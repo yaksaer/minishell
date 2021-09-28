@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/05 19:03:13 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/09/27 18:45:50 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/09/28 15:59:51 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,18 @@ typedef struct s_list
 	void			*content;
 	struct s_list	*next;
 }				t_list;
+
+typedef struct s_node {
+	char			*data;
+	struct s_node	*next;
+	struct s_node	*prev;
+}	t_node;
+
+typedef struct s_dlink_list {
+	size_t	size;
+	t_node	*head;
+	t_node	*tail;
+}	t_dlink_list;
 
 enum	e_prf_type
 {
@@ -147,5 +159,17 @@ int				ft_printf(const char *string, ...);
 int				ft_ter_i(int arg, int first_res, int second_res);
 char			*ft_ter_s(int arg, char *first_res, char *second_res);
 double			ft_ter_d(int arg, double first_res, double second_res);
+char			*ft_strcpy(char *dest, const char *src);
+char			*ft_strcat(char *dest, const char *src);
+void			ft_putstr(char *str);
+
+void			*ft_dlist_del_n(t_dlink_list *list, size_t index);
+void			ft_dlist_del(t_dlink_list **list);
+t_node			*ft_dlist_get_n(t_dlink_list *list, size_t index);
+void			ft_dlist_insert(t_dlink_list *list, size_t index, char *data);
+void			*ft_dlist_pop_back(t_dlink_list *list);
+void			*ft_dlist_pop_front(t_dlink_list *list);
+void			ft_dlist_push_back(t_dlink_list *list, char *data);
+void			ft_dlist_push_front(t_dlink_list *list, char *data);
 
 #endif
