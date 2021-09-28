@@ -1,12 +1,13 @@
 #include "../include/minishell.h"
 
-int main(void)
+int main(int argc, char **argv, char **envp)
 {
 	char *str;
 
 	while (1)
 	{
 		str = readline("minishell:");
+		get_command(str, envp);
 		free(str);
 		if (str[0] == 'q')
 		{

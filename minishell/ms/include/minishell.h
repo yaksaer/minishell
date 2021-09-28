@@ -33,4 +33,6 @@
 # include <readline/history.h>
 # include "../libft/libft.h"
 
+int 	get_command(char *str, char **envp);
+
 #endif
