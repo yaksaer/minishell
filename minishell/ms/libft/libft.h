@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/05 19:03:13 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/09/28 15:59:51 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/09/28 15:04:34 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,5 +171,7 @@ void			*ft_dlist_pop_back(t_dlink_list *list);
 void			*ft_dlist_pop_front(t_dlink_list *list);
 void			ft_dlist_push_back(t_dlink_list *list, char *data);
 void			ft_dlist_push_front(t_dlink_list *list, char *data);
+
+void			*ft_realloc(void *ptr, size_t size);
 
 #endif

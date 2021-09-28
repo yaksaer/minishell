@@ -1,6 +1,6 @@
 NAME = minishell
 
-SRCS = test.c
+SRCS = minishell.c
 
 OBJS = $(addprefix $(OBJS_DIR)/,$(SRCS:.c=.o))
 
