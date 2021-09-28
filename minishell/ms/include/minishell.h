@@ -33,4 +33,11 @@
 # include <readline/history.h>
 # include "../libft/libft.h"
 
+typedef struct	s_ms
+{
+	char	**string;
+	char	**redirect;
+	t_ms	*next;
+}			t_ms;
+
 #endif
