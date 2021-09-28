@@ -48,4 +48,12 @@ typedef struct	s_commands {
 	struct s_commands	*next;
 }				t_commands;
 
+typedef struct	s_main {
+	char			**env;
+	t_dlink_list	*sort_env;
+}				t_main;
+
+t_dlink_list	*copy_env_to_list(char **env);
+char			**copy_env_to_mass(char **env);
+
 #endif
