@@ -14,7 +14,6 @@ int 	get_command(char *str, char **envp)
 
 	ft_bzero(&descrip, sizeof(t_descrip));
 	init_fd(&descrip);
-	tmp =
 }
 
 int tmp_main(int argc, char **argv, char **envp)

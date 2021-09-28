@@ -10,12 +10,26 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inlude/minishell.h"
+#include "../include/minishell.h"
 
-int	main(int ac, char **av, char **env)
+int		init_main(t_main *main, char **envp)
 {
-	t_ms	*ms;
+	main->sort_env = copy_env_to_list(envp); //need to sort this list
+	if (!main->sort_env)
+		return (1);
+	main->env = copy_env_to_mass(envp);
+	if (!main->env)
+		return (1);
+	return (0);
+}
 
-	
+int		main(int ac, char **av, char **envp)
+{
+	//t_ms	*ms;
+	t_main	main;
+
+	ft_bzero(&main, sizeof(t_main));
+	if (init_main(&main, envp))
+		return (1);
 	return (0);
 }
