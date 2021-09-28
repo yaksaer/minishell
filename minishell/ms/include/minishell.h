@@ -33,6 +33,19 @@
 # include <readline/history.h>
 # include "../libft/libft.h"
 
-int 	get_command(char *str, char **envp);
+typedef struct	s_descrip {
+	int			def_int;
+	int			def_out;
+	int 		fd_in;
+	int 		fd_out;
+}				t_descrip;
+
+typedef struct	s_commands {
+	char				**cmd;
+	char				**redir;
+	int 				input;
+	int 				output;
+	struct s_commands	*next;
+}				t_commands;
 
 #endif
