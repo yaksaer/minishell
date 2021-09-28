@@ -33,14 +33,14 @@
 # include <readline/history.h>
 # include "../libft/libft.h"
 
-typedef struct s_descrip {
+typedef struct	s_descrip {
 	int			def_int;
 	int			def_out;
-	int		fd_in;
+	int 		fd_in;
 	int 		fd_out;
 }				t_descrip;
 
-typedef struct s_commands {
+typedef struct	s_commands {
 	char				**cmd;
 	char				**redir;
 	int 				input;
