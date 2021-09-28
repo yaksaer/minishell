@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 15:55:03 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/09/28 18:22:34 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/09/28 18:30:50 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,19 @@
 # include <readline/history.h>
 # include "../libft/libft.h"
 
-typedef struct s_ms
-{
-	char	**string;
-	char	**redirect;
-	t_ms	*next;
-}			t_ms;
+typedef struct s_descrip {
+	int			def_int;
+	int			def_out;
+	int		fd_in;
+	int 		fd_out;
+}				t_descrip;
+
+typedef struct s_commands {
+	char				**cmd;
+	char				**redir;
+	int 				input;
+	int 				output;
+	struct s_commands	*next;
+}				t_commands;
 
 #endif

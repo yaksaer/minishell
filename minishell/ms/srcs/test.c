@@ -7,7 +7,6 @@ int main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		str = readline("minishell:");
-		get_command(str, envp);
 		free(str);
 		if (str[0] == 'q')
 		{
