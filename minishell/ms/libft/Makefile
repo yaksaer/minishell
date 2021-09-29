@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+         #
+#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/10 21:22:34 by cbilbo            #+#    #+#              #
-#    Updated: 2021/09/29 14:34:18 by cbilbo           ###   ########.fr        #
+#    Updated: 2021/09/29 15:16:14 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,16 +27,16 @@ CFLAGS = -Wall -Wextra -Werror
 RM = rm -rf
 MLB = ar -rcs
 
-all:
+all: dir
 	@echo Create libft
-	@$(MAKE) -j4 $(NAME)
+	@$(MAKE) -s -j4 $(NAME)
 
 $(NAME): $(OBJS) $(HEADER)
-	@echo '|'
 	@$(MLB) $(NAME) $(OBJS)
+	@echo '√'
 	@echo Libft created!
 
-$(OBJS): dir $(SRCS) $(HEADER)
+$(OBJS): $(SRCS) $(HEADER)
 	@echo -n '#'
 	@$(CC) $(CFLAGS) -c $(@:objs/%.o=%.c) -o $@
 
@@ -52,6 +52,5 @@ re: fclean all
 
 dir:
 	@mkdir -p objs/ objs/char/ objs/d_link/ objs/ft_printf/ objs/lists/ objs/memory/ objs/numbers/ objs/print/ objs/string/ objs/utils/
-	@echo -n '|'
 
 .PHONY: all clean fclean re dir

@@ -3,64 +3,72 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 19:45:10 by marvin            #+#    #+#             */
-/*   Updated: 2021/09/29 14:15:39 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/09/29 17:07:18 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-char	*handle_quotetion(char *res, char c, int *single, int *doubl)
+void	*ft_realloc(void *ptr, size_t num, size_t size)
 {
-	if (ft_strchr("\'\"", c) && !*single && !*doubl)
+	void	*result;
+
+	if (!ptr)
 	{
-		*single = ft_ter_i(c == '\'', 1, *single);
-		*doubl = ft_ter_i(c == '\"', 1, *doubl);
+		result = ft_calloc(num, size);
+		return (result);
 	}
-	else if (ft_strchr("\'\"", c) && \
-			((*single && !*doubl) || (*doubl && !*single)))
+	result = ft_calloc(num, size);
+	if (!result)
+		return (NULL);
+	result = ft_memcpy(result, ptr, num);
+	free(ptr);
+	return (result);
+}
+
+char	*handle_quotation(char *str, char c)
+{
+	static int	single = 0;
+	static int	doubl = 0;
+	char		*res;
+
+	res = NULL;
+	if (ft_strchr("\'\"", c) && !single && !doubl)
 	{
-		res = (char *)ft_realloc(res, ft_strlen(res) + 1);
+		single = ft_ter_i(c == '\'', 1, single);
+		doubl = ft_ter_i(c == '\"', 1, doubl);
+		return (str);
+	}
+	if ((c == '\'' && doubl) || (c == '\"' && single))
+	{
+		res = (char *)ft_realloc((char *)res, ft_strlen(res) + 2, sizeof(char));
 		res[ft_strlen(res)] = c;
 	}
-	if (c == '\'')
-		*single = 0;
-	else if (c == '\"')
-		*doubl = 0;
-	return (res);
+	return (res);	
 }
 
-char	*preparsing(char *str)
+void	handle_string(t_main *main, char *str)
 {
 	char	*res;
-	int		single;
-	int		doubl;
-
-	single = 0;
-	doubl = 0;
-	res = NULL;
-	while (*str != '\0' || *str != '|')
-	{
-		if (ft_strchr("\'\"", *str))
-		{
-			res = handle_quotetion(res, *str, &single, &doubl);
-		}
-		str++;
-	}
-	return (res);
-}
-
-void	handle_string(t_main *main, char *string)
-{
 	int		i;
-	int		len;
-	char	*str;
 
+	res = NULL;
 	i = -1;
-	str = preparsing(string);
-	printf("%s\n", str);
+	while (str[++i] != '\0')
+	{
+		if (ft_strchr("\'\"", str[i]))
+			res = handle_quotation(res, str[i]);
+		else
+		{
+			res = (char *)ft_realloc(res, ft_strlen(res) + 2, sizeof(char));
+			res[ft_strlen(res)] = str[i];
+		}
+	}
+	printf("%s\n", res);
+	ft_allocfree((void *)&res);
 }
 
 int	parser(t_main *main)
