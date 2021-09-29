@@ -17,16 +17,4 @@ RUN apk update && apk upgrade \
 
 RUN mkdir -p /home/minishell/
 
-ENV PATH=/home/minishell
-ENV USER=minishell
-ENV UID=12345
-ENV GID=23456
-
-RUN adduser "$USER"\
-    --disabled-password \
-    --gecos "" \
-    --home /home/minishell \
-    --uid "$UID" \
-    "$USER"
-
 CMD [ "bash" ]
