@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 14:08:50 by marvin            #+#    #+#             */
-/*   Updated: 2021/09/28 15:03:56 by marvin           ###   ########.fr       */
+/*   Updated: 2021/09/28 19:57:18 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	*ft_realloc(void *ptr, size_t size)
 	size_t	ptr_size;
 
 	if (!ptr)
-		return(malloc(size))
+		return(malloc(size));
 	ptr_size = sizeof(ptr);
 	if (size <= ptr_size)
 		return (ptr);
@@ -26,7 +26,7 @@ void	*ft_realloc(void *ptr, size_t size)
 	if (!result)
 		return (NULL);
 	result = ft_memset(result, 0, size);
-	result = ft_memcpy(result, str, ptr_size);
-	free(str);
+	result = ft_memcpy(result, ptr, ptr_size);
+	free(ptr);
 	return (result);
 }

@@ -1,43 +1,50 @@
 NAME = minishell
 
-SRCS = minishell.c
+SRCS = $(wildcard srcs/*c) $(wildcard srcs/parser/*.c)
 
-OBJS = $(addprefix $(OBJS_DIR)/,$(SRCS:.c=.o))
+OBJS = $(patsubst srcs/%.c,objs/%.o,$(SRCS))
 
 HEADER = include/minishell.h
-LIB = ./libft/libft.a
+LIB = libft/libft.a
 
-SRCS_DIR = ./srcs
-OBJS_DIR = ./objs
-INC_DIR = ./include
-LIB_DIR = ./libft
+INC_DIR = include
+LIB_DIR = libft
+OBJS_DIR = objs
+PARS_DIR = objs/parser
 
 CC = gcc
-#CFLAGS = -g -Wall -Werror -Wextra
+CFLAGS = -g #-Wall -Werror -Wextra
 RM = rm -rf
 
 all: libft $(NAME)
 
-$(NAME): $(OBJS) $(HEADER)
-	$(CC) $(CFLAGS) $(OBJS) $(LIB) -lreadline -o $(NAME)
+$(NAME): message $(OBJS) $(HEADER)
+	@$(CC) $(CFLAGS) $(OBJS) $(LIB) -lreadline -o $(NAME)
+	@echo
+	@echo minishell was created!
 
-$(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c $(HEADER) $(HEADER_B)
-	mkdir -p $(OBJS_DIR)
-	$(CC) $(CFLAGS) -I $(LIB_DIR) -c $< -o $@
-
-.c.o:
-	$(CC) $(CFLAGS) -I $(INC_DIR) -c $< -o $(<:.c=.o)
+$(OBJS): $(SRCS) $(HEADER)
+	@mkdir -p $(OBJS_DIR) $(PARS_DIR)
+	@echo -n '#' 
+	@$(CC) $(CFLAGS) -o $@ -c $(@:objs/%.o=srcs/%.c)
 
 libft:
-	$(MAKE) -C $(LIB_DIR)
+	@echo create library
+	@$(MAKE) -s -C $(LIB_DIR)
 
 clean:
-	$(MAKE) clean -C $(LIB_DIR)
-	$(RM) $(OBJS_DIR)
+	@echo delete library
+	@$(MAKE) clean -s -C $(LIB_DIR)
+	@echo delete objectives
+	@$(RM) $(OBJS_DIR)
 
 fclean: clean
-	$(RM) $(LIB) $(NAME)
+	@$(RM) $(LIB) $(NAME)
+	@echo 'minishell was deleted('
 
 re: fclean all
 
-.PHONY: all clean fclean re libft
+message:
+	@echo -n 'create minishell '
+
+.PHONY: all clean fclean re libft message

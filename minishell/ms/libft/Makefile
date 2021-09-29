@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/10 21:22:34 by cbilbo            #+#    #+#              #
-#    Updated: 2021/09/28 15:04:51 by marvin           ###   ########.fr        #
+#    Updated: 2021/09/28 21:50:14 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,4 +67,5 @@ lists: $(BONUS_OBJS) $(HEADER)
 prf: $(PRF_OBJS) $(HEADER)
 	@$(MLB) $(PRF_NAME) $(PRF_OBJS)
 
+.SILENT:
 .PHONY: all clean fclean re libft lists prf

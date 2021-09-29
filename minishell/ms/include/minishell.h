@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 15:55:03 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/09/28 18:30:50 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/09/28 23:39:03 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,10 @@
 # include <readline/history.h>
 # include "../libft/libft.h"
 
+# define CLOSE "\001\033[0m\002"
+# define BLOD  "\001\033[1m\002"
+# define BEGIN(x,y) "\001\033["#x";"#y"m\002"
+
 typedef struct	s_descrip {
 	int			def_int;
 	int			def_out;
@@ -51,9 +55,13 @@ typedef struct	s_commands {
 typedef struct	s_main {
 	char			**env;
 	t_dlink_list	*sort_env;
+	t_commands		*commands;
 }				t_main;
 
 t_dlink_list	*copy_env_to_list(char **env);
 char			**copy_env_to_mass(char **env);
+
+/* PARSER */
+int			parser(t_main *main);
 
 #endif
