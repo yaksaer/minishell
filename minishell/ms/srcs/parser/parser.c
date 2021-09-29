@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minishell <minishell@student.42.fr>        +#+  +:+       +#+        */
+/*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 19:45:10 by marvin            #+#    #+#             */
-/*   Updated: 2021/09/29 01:44:37 by minishell        ###   ########.fr       */
+/*   Updated: 2021/09/29 14:15:39 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*handle_quotetion(char *res, char c, int *single, int *doubl)
 		*doubl = ft_ter_i(c == '\"', 1, *doubl);
 	}
 	else if (ft_strchr("\'\"", c) && \
-			(*single && !*doubl) || (*doubl && !*single))
+			((*single && !*doubl) || (*doubl && !*single)))
 	{
 		res = (char *)ft_realloc(res, ft_strlen(res) + 1);
 		res[ft_strlen(res)] = c;
@@ -43,14 +43,13 @@ char	*preparsing(char *str)
 	res = NULL;
 	while (*str != '\0' || *str != '|')
 	{
-		
 		if (ft_strchr("\'\"", *str))
 		{
 			res = handle_quotetion(res, *str, &single, &doubl);
 		}
 		str++;
 	}
-
+	return (res);
 }
 
 void	handle_string(t_main *main, char *string)

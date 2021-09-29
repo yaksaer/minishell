@@ -21,30 +21,30 @@ all: libft $(NAME)
 $(NAME): message $(OBJS) $(HEADER)
 	@$(CC) $(CFLAGS) $(OBJS) $(LIB) -lreadline -o $(NAME)
 	@echo
-	@echo minishell was created!
+	@echo Minishell was created!
 
-$(OBJS): $(SRCS) $(HEADER)
-	@mkdir -p $(OBJS_DIR) $(PARS_DIR)
+$(OBJS): dir $(SRCS) $(HEADER)
 	@echo -n '#' 
 	@$(CC) $(CFLAGS) -o $@ -c $(@:objs/%.o=srcs/%.c)
 
 libft:
-	@echo create library
 	@$(MAKE) -s -C $(LIB_DIR)
 
 clean:
-	@echo delete library
 	@$(MAKE) clean -s -C $(LIB_DIR)
-	@echo delete objectives
+	@echo Objectives deleted
 	@$(RM) $(OBJS_DIR)
 
 fclean: clean
 	@$(RM) $(LIB) $(NAME)
-	@echo 'minishell was deleted('
+	@echo 'Minishell deleted('
 
 re: fclean all
 
 message:
-	@echo -n 'create minishell '
+	@echo -n 'Create minishell '
 
-.PHONY: all clean fclean re libft message
+dir:
+	@mkdir -p $(OBJS_DIR) $(PARS_DIR)
+
+.PHONY: all clean fclean re libft message dir
