@@ -19,20 +19,25 @@ void 	init_fd(t_descrip *descrip)
 
 int 	is_my_command(t_main *main, t_commands *command)
 {
-	if (ft_strcmp(command->cmd[0], "echo")
-		|| ft_strcmp(command->cmd[0], "env")
-		|| ft_strcmp(command->cmd[0], "export")
-		|| ft_strcmp(command->cmd[0], "unset")
-		|| ft_strcmp(command->cmd[0], "pwd")
-		|| ft_strcmp(command->cmd[0], "cd")
-		|| ft_strcmp(command->cmd[0], "exit"))
+	if (!ft_strcmp(command->cmd[0], "echo")
+		|| !ft_strcmp(command->cmd[0], "env")
+		|| !ft_strcmp(command->cmd[0], "export")
+		|| !ft_strcmp(command->cmd[0], "unset")
+		|| !ft_strcmp(command->cmd[0], "pwd")
+		|| !ft_strcmp(command->cmd[0], "cd")
+		|| !ft_strcmp(command->cmd[0], "exit"))
 		return (1);
 	return (0);
 }
 
 int		exec_my_command(t_main *main, t_commands *command)
 {
-
+	if (!ft_strcmp(command->cmd[0], "echo"))
+		ft_echo(ft_mass_size(command->cmd), command->cmd);
+	else if (!ft_strcmp(command->cmd[0], "env"))
+		ft_env(main->env);
+	else if (!ft_strcmp(command->cmd[0], "pwd"))
+		ft_pwd();
 }
 
 void 	exec_command(t_main *main, int i)
@@ -49,7 +54,6 @@ void 	exec_command(t_main *main, int i)
 int 	get_command(char *str, t_main *main)
 {
 	t_descrip	descrip;
-	t_commands	*tmp;
 	int 		i;
 
 	ft_bzero(&descrip, sizeof(t_descrip));

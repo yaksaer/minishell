@@ -1,22 +1,23 @@
 #include "../../include/minishell.h"
 
-//static int	tmp_init_main(t_main *main, char **envp)
-//{
-//	t_commands	*commands;
-//
-//	main = (t_main *)ft_calloc(1, sizeof(&main));
-//	if (!main)
-//		return (1);
-//	commands = (t_commands *)ft_calloc(1, sizeof(t_commands));
-//	main->commands = &commands;
-//	 main->sort_env = copy_env_to_list(envp); //need to sort this list
-//	 if (!main->sort_env)
-//	 	return (1);
-//	 main->env = copy_env_to_mass(envp);
-//	 if (!main->env)
-//	 	return (1);
-//	return (0);
-//}
+int	init_main(t_main *main, char **envp)
+{
+	main->sort_env = copy_env_to_list(envp);
+	if (!main->sort_env)
+		return (1);
+	sort_dlist(main->sort_env);
+	main->env = copy_env_to_mass(envp);
+	if (!main->env)
+		return (1);
+	main->commands = (t_commands **)ft_calloc(2, sizeof(t_commands *)); //
+	// можно выделить на стеке 1024, смог выполлнить ~535 команд echo через пайп в баше
+	if (!main->commands)
+		return (1);
+	main->commands[0] = (t_commands *)ft_calloc(1, sizeof(t_commands));
+	if (!main->commands[0])
+		return (1);
+	return (0);
+}
 
 int main(int argc, char **argv, char **envp)
 {
