@@ -1,0 +1,55 @@
+{
+	"name": "42-comment",
+	"displayName": "42-comment",
+	"description": "42-style block comments",
+	"icon": "images/42-comment-logo.png",
+	"version": "0.0.2",
+	"publisher": "nasanov",
+	"repository": {
+		"url": "https://github.com/nasanov/42-comment"
+	},
+	"engines": {
+		"vscode": "^1.38.1"
+	},
+	"categories": [
+		"Formatters"
+	],
+	"activationEvents": [
+		"onCommand:extension.42-comment"
+	],
+	"main": "src/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "extension.42-comment",
+				"title": "42-comment"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "extension.42-comment",
+				"key": "ctrl+alt+*",
+				"mac": "shift+cmd+*",
+				"when": "editorTextFocus"
+			}
+		]
+	},
+	"scripts": {
+		"test": "node ./test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/mocha": "^5.2.6",
+		"@types/node": "^12.0.2",
+		"eslint": "^5.16.0",
+		"mocha": "^6.1.4",
+		"typescript": "^3.4.5",
+		"vscode": "^1.1.33"
+	},
+	"dependencies": {},
+	"__metadata": {
+		"id": "b443569c-37ed-41b3-9b6b-df77bd40ac4d",
+		"publisherId": "edc85540-6451-4dca-9a89-ddaf1e71b73f",
+		"publisherDisplayName": "nasanov",
+		"installedTimestamp": 1633021967193
+	}
+}

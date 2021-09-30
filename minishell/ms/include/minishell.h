@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 15:55:03 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/09/28 23:39:03 by marvin           ###   ########.fr       */
+/*   Updated: 2021/09/30 18:07:42 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,17 +55,25 @@ typedef struct	s_commands {
 typedef struct	s_main {
 	char			**env;
 	t_dlink_list	*sort_env;
-	t_commands		**commands;
+	t_commands		*commands;
 }				t_main;
 
 t_dlink_list	*copy_env_to_list(char **env);
 char			**copy_env_to_mass(char **env);
+int				sort_dlist(t_dlink_list *dlist);
 int 			init_main(t_main *main, char **envp);
 /*EXECUTE*/
 int				get_command(char *str, t_main *main);
 /*COMMANDS*/
 int				ft_echo(int argc, char **argv);
+int				ft_env(char **env);
+int				ft_pwd(void);
 /* PARSER */
-int			parser(t_main *main);
+int				parser(t_main *main);
 
+/* UTILS FOR STRUCT T_COMMAND */
+t_commands		*commands_new(char **cmd, char **redir, int input, int output);
+void			commands_back(t_commands **command, t_commands *new);
+void			commands_delone(t_commands *command);
+void			commands_clear(t_commands **command);
 #endif

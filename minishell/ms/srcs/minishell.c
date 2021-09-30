@@ -6,16 +6,15 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 15:11:35 by marvin            #+#    #+#             */
-/*   Updated: 2021/09/29 16:45:08 by marvin           ###   ########.fr       */
+/*   Updated: 2021/09/30 17:21:23 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	init_main(t_main **main, char **envp)
+int	init_main(t_main *main, char **envp)
 {
-	*main = (t_main *)ft_calloc(1, sizeof(main));
-	if (!*main)
+	if (!main)
 		return (1);
 	// main->sort_env = copy_env_to_list(envp); //need to sort this list
 	// if (!main->sort_env)
@@ -37,7 +36,7 @@ int		main(int ac, char **av, char **envp)
 		return (1);
 	while (!stop)
 	{
-		stop = parser(main);
+		stop = parser(&main);
 	}
 	ft_allocfree((void *)&main); //free & null if exist void ft_allocfree(void **data)
 	return (0);

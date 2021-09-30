@@ -4,7 +4,7 @@
 			"type": "lldb",
 			"request": "launch",
 			"name": "Launch",
-			"program": "${workspaceFolder}/minishell",
+			"program": "${workspaceFolder}/srcs/parser/a.out",
 			"args": [],
 			"cwd": "${workspaceFolder}",
 			"terminal": "console",
