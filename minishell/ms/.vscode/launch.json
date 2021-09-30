@@ -1,12 +1,14 @@
 {
 	"configurations": [
 		{
-			"type": "lldb-mi",
+			"type": "lldb",
 			"request": "launch",
-			"name": "Launch Program",
-			"target": "./minishell",
-			"cwd": "${workspaceRoot}",
-			"valuesFormatting": "parseText"
-		}
+			"name": "Launch",
+			"program": "${workspaceFolder}/minishell",
+			"args": [],
+			"cwd": "${workspaceFolder}",
+			"terminal": "console",
+			"internalConsoleOptions": "openOnSessionStart"
+		},
 	]
 }

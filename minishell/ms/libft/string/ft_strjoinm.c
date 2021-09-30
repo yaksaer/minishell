@@ -1,40 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   ft_strjoinm.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/07 17:46:41 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/04/15 18:07:34 by cbilbo           ###   ########.fr       */
+/*   Created: 2021/09/29 15:48:42 by marvin            #+#    #+#             */
+/*   Updated: 2021/09/29 15:56:59 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
-char	*ft_strjoin(char const *string1, char const *string2)
+char	*ft_strjoinm(char *string1, char *string2, int f)
 {
-	char		*result;
-	size_t		i;
-	size_t		j;
-	size_t		len;
-
+	char	*result;
+	int		i;
+	int		j;
+	int		len;
+	
 	if (!string1 || !string2)
-		return (0);
-	i = 0;
-	j = 0;
-	len = ft_strlen((char *)string1) + ft_strlen((char *)string2);
+	i = -1;
+	j = -1;
+	len = ft_strlen(string1) + ft_strlen(string2);
 	result = ft_calloc(len + 1, sizeof(char));
-	if (result != NULL)
+	if (!result)
 	{
-		while (string1[i] != '\0')
-		{
+		while (string1[++i] != '\0')
 			result[i] = string1[i];
-			i++;
-		}
-		while (string2[j] != '\0')
-			result[i++] = string2[j++];
-		result[i] = '\0';
+		while (string2[++j] != '\0')
+			result[i++] = string2[j];
 	}
+	if (f == 1 || f == 3)
+		ft_allocfree((void *)&string1);
+	if (f == 2 || f == 3)
+		ft_allocfree((void *)&string2);
 	return (result);
 }

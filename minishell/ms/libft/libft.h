@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/05 19:03:13 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/09/28 23:33:59 by marvin           ###   ########.fr       */
+/*   Updated: 2021/09/30 14:41:50 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ typedef struct s_printf
 	char		upper;
 	void		(*output[11])(struct	s_printf *);
 }				t_printf;
-
+/*Change arrow to int*/
 int				ft_atoi(const char *string);
 int				ft_atoi_base(char *string, char *base);
 void			ft_bzero(void *string, size_t size);
@@ -173,5 +173,6 @@ void			ft_dlist_push_back(t_dlink_list *list, char *data);
 void			ft_dlist_push_front(t_dlink_list *list, char *data);
 
 void			*ft_realloc(void *ptr, size_t size);
+char			*ft_strjoinm(char *string1, char *string2, int f);
 
 #endif
