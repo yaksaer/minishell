@@ -60,11 +60,14 @@ typedef struct	s_main {
 
 t_dlink_list	*copy_env_to_list(char **env);
 char			**copy_env_to_mass(char **env);
+int				sort_dlist(t_dlink_list *dlist);
 int 			init_main(t_main *main, char **envp);
 /*EXECUTE*/
 int				get_command(char *str, t_main *main);
 /*COMMANDS*/
 int				ft_echo(int argc, char **argv);
+int				ft_env(char **env);
+int				ft_pwd(void);
 /* PARSER */
 int			parser(t_main *main);
 

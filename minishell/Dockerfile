@@ -13,8 +13,10 @@
 FROM ubuntu:latest as minishell
 
 RUN apt-get -y update && apt-get -y upgrade 
-RUN apt-get install -y bash vim gcc valgrind make libncurses5-dev libreadline-dev 
-USER root
-RUN mkdir -p /home/minishell/
+RUN apt-get install -y bash vim gcc valgrind make libncurses5-dev libreadline-dev
+RUN mkdir -p /home/minishell
+RUN adduser --home /home/minishell/ --disabled-password minishell
+USER minishell
+WORKDIR /home/minishell
 
 CMD [ "bash" ]

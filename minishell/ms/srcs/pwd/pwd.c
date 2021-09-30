@@ -1,6 +1,6 @@
-#include "pwd.h"
+#include "../../include/minishell.h"
 
-int	main(void)
+int		ft_pwd(void)
 {
 	char	path[10240];
 

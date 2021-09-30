@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/05 18:35:30 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/04/15 19:15:38 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/09/30 15:12:40 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,6 @@ void	*ft_calloc(size_t num, size_t size)
 	result = (void *)malloc(num * size);
 	if (!result)
 		return (NULL);
-	result = ft_memset(result, 0, num * size);
+	ft_memset(result, 0, num * size);
 	return (result);
 }
