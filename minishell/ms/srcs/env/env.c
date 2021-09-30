@@ -1,6 +1,6 @@
-#include "../minishell.h"
+#include "../../include/minishell.h"
 
-int		main(int argc, char **argv, char **env)
+int		ft_env(char **env)
 {
 	int 	i;
 

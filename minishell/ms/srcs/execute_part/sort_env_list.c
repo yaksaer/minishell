@@ -85,15 +85,3 @@ int	sort_dlist(t_dlink_list *dlist)
 	}
 	return (0);
 }
-
-int	init_main(t_main *main, char **envp)
-{
-	main->sort_env = copy_env_to_list(envp);
-	if (!main->sort_env)
-		return (1);
-	sort_dlist(main->sort_env);
-	main->env = copy_env_to_mass(envp);
-	if (!main->env)
-		return (1);
-	return (0);
-}
