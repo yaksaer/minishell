@@ -55,12 +55,16 @@ typedef struct	s_commands {
 typedef struct	s_main {
 	char			**env;
 	t_dlink_list	*sort_env;
-	t_commands		*commands;
+	t_commands		**commands;
 }				t_main;
 
 t_dlink_list	*copy_env_to_list(char **env);
 char			**copy_env_to_mass(char **env);
-
+int 			init_main(t_main *main, char **envp);
+/*EXECUTE*/
+int				get_command(char *str, t_main *main);
+/*COMMANDS*/
+int				ft_echo(int argc, char **argv);
 /* PARSER */
 int			parser(t_main *main);
 
