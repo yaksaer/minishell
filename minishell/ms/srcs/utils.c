@@ -24,7 +24,6 @@ char 	**copy_env_to_mass(char **env)
 t_dlink_list	*copy_env_to_list(char **env)
 {
 	t_dlink_list 	*res_list;
-	char 			**ret;
 	int				i;
 
 	res_list = ft_calloc(1, sizeof(t_dlink_list));

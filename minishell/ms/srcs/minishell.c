@@ -28,9 +28,10 @@ int	init_main(t_main **main, char **envp)
 
 int		main(int ac, char **av, char **envp)
 {
-	t_main	*main;
 	int		stop;
+	t_main		main;
 
+	main = *(t_main *)ft_calloc(1, sizeof(main));
 	stop = 0;
 	if (init_main(&main, envp))
 		return (1);
