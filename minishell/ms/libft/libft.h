@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/05 19:03:13 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/09/28 23:33:59 by marvin           ###   ########.fr       */
+/*   Updated: 2021/09/29 17:06:30 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,7 @@ void			*ft_dlist_pop_front(t_dlink_list *list);
 void			ft_dlist_push_back(t_dlink_list *list, char *data);
 void			ft_dlist_push_front(t_dlink_list *list, char *data);
 
-void			*ft_realloc(void *ptr, size_t size);
+void			*ft_realloc(void *ptr, size_t num, size_t size);
+char			*ft_strjoinm(char *string1, char *string2, int f);
 
 #endif

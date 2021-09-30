@@ -20,7 +20,7 @@ all: libft $(NAME)
 
 $(NAME): message $(OBJS) $(HEADER)
 	@$(CC) $(CFLAGS) $(OBJS) $(LIB) -lreadline -o $(NAME)
-	@echo
+	@echo '√'
 	@echo Minishell was created!
 
 $(OBJS): dir $(SRCS) $(HEADER)

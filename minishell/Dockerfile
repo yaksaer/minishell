@@ -10,11 +10,11 @@
 #                                                                              #
 # **************************************************************************** #
 
-FROM alpine:3.12 as minishell
+FROM ubuntu:latest as minishell
 
-RUN apk update && apk upgrade \
-	&& apk add bash vim gcc musl-dev lldb-dev readline-dev valgrind make
-
+RUN apt-get -y update && apt-get -y upgrade 
+RUN apt-get install -y bash vim gcc valgrind make libncurses5-dev libreadline-dev 
+USER root
 RUN mkdir -p /home/minishell/
 
 CMD [ "bash" ]
