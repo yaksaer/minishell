@@ -57,9 +57,15 @@ typedef struct	s_main {
 	t_dlink_list	*sort_env;
 	t_commands		*commands;
 }				t_main;
-
+/*UTILS*/
 t_dlink_list	*copy_env_to_list(char **env);
 char			**copy_env_to_mass(char **env);
+char			*get_env_key(t_node *node);
+char			*str_get_key(char *var);
+int				add_quotes(t_dlink_list *env_list);
+char*			add_quotes_util(char *str);
+int				ft_mass_size(char **str);
+int				check_key(char *val, char *prog);
 int				sort_dlist(t_dlink_list *dlist);
 int 			init_main(t_main *main, char **envp);
 /*EXECUTE*/
@@ -68,6 +74,8 @@ int				get_command(char *str, t_main *main);
 int				ft_echo(int argc, char **argv);
 int				ft_env(char **env);
 int				ft_pwd(void);
+int				ft_export(t_main *main, t_commands *command);
+int				ft_unset(t_main *main, t_commands *command);
 /* PARSER */
 int				parser(t_main *main);
 
