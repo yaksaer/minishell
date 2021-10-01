@@ -38,15 +38,19 @@ int		exec_my_command(t_main *main, t_commands *command)
 		ft_env(main->env);
 	else if (!ft_strcmp(command->cmd[0], "pwd"))
 		ft_pwd();
+	else if (!ft_strcmp(command->cmd[0], "export"))
+		ft_export(main, command);
+	else if (!ft_strcmp(command->cmd[0], "unset"))
+		ft_unset(main, command);
 }
 
 void 	exec_command(t_main *main, int i)
 {
-	if (!main->commands[i]->cmd)
+	if (!main->commands->cmd)
 		return ;
-	else if (is_my_command(main, main->commands[i]))
+	else if (is_my_command(main, main->commands))
 	{
-		exec_my_command(main, main->commands[i]);
+		exec_my_command(main, main->commands);
 	}
 
 }
@@ -54,15 +58,19 @@ void 	exec_command(t_main *main, int i)
 int 	get_command(char *str, t_main *main)
 {
 	t_descrip	descrip;
+	t_commands	*tmp;
 	int 		i;
 
 	ft_bzero(&descrip, sizeof(t_descrip));
 	init_fd(&descrip);
-	main->commands[0]->cmd = ft_split(str, ' ');
+	main->commands->cmd = ft_split(str, ' ');
 	i = 0;
-	while (i < 1)
+	tmp = main->commands;
+	while (tmp)
 	{
+
 		exec_command(main, i);
-		i++;
+		tmp = tmp->next;
 	}
+	return (0);
 }

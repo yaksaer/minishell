@@ -13,8 +13,8 @@ int	init_main(t_main *main, char **envp)
 	// можно выделить на стеке 1024, смог выполлнить ~535 команд echo через пайп в баше
 	if (!main->commands)
 		return (1);
-	main->commands[0] = (t_commands *)ft_calloc(1, sizeof(t_commands));
-	if (!main->commands[0])
+	main->commands = (t_commands *)ft_calloc(1, sizeof(t_commands));
+	if (!main->commands)
 		return (1);
 	return (0);
 }
