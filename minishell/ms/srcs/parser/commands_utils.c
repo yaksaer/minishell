@@ -6,13 +6,13 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 17:44:37 by marvin            #+#    #+#             */
-/*   Updated: 2021/09/30 18:54:11 by marvin           ###   ########.fr       */
+/*   Updated: 2021/10/02 01:31:42 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-char	**add_string_to_massive(char **dest, char *src, int number)
+char	**add_string_to_massive(char **dest, char *src, int number) 
 {
 	dest = (char **)ft_realloc(dest, (number + 1) * sizeof(dest), \
 			(number + 2) * sizeof(dest));

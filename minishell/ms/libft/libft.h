@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/05 19:03:13 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/09/30 18:50:13 by marvin           ###   ########.fr       */
+/*   Updated: 2021/10/02 00:01:05 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ size_t			ft_strlcat(char *destination, const char *source, size_t len);
 size_t			ft_strlcpy(char *destination, const char *source, size_t len);
 size_t			ft_strlen(const char *string);
 size_t			ft_strlen_until(const char *string, const char *smls);
+size_t			ft_strlen_while(const char *string, const char *smls);
 char			*ft_strmapi(char const *string, \
 							char (*function)(unsigned int, char));
 int				ft_strcmp(const char *string1, const char *string2);

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 15:48:42 by marvin            #+#    #+#             */
-/*   Updated: 2021/09/29 15:56:59 by marvin           ###   ########.fr       */
+/*   Updated: 2021/10/02 01:31:29 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,12 @@ char	*ft_strjoinm(char *string1, char *string2, int f)
 	int		len;
 	
 	if (!string1 || !string2)
+		return (NULL);
 	i = -1;
 	j = -1;
 	len = ft_strlen(string1) + ft_strlen(string2);
 	result = ft_calloc(len + 1, sizeof(char));
-	if (!result)
+	if (result != NULL)
 	{
 		while (string1[++i] != '\0')
 			result[i] = string1[i];

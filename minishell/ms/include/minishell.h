@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 15:55:03 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/09/30 18:07:42 by marvin           ###   ########.fr       */
+/*   Updated: 2021/10/02 01:18:17 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,16 @@ int				ft_export(t_main *main, t_commands *command);
 int				ft_unset(t_main *main, t_commands *command);
 /* PARSER */
 int				parser(t_main *main);
+void			start_pars(t_main *main, char *string);
+int				preparsing(t_commands *command, char *str);
+void			parse_redirect(t_commands *command, char **string);
+char 			*parse_quotation(char **string, char quote);
+char 			*ft_add_char(char *string, char c, int len);
 
 /* UTILS FOR STRUCT T_COMMAND */
 t_commands		*commands_new(char **cmd, char **redir, int input, int output);
 void			commands_back(t_commands **command, t_commands *new);
 void			commands_delone(t_commands *command);
 void			commands_clear(t_commands **command);
+char			**add_string_to_massive(char **dest, char *src, int number);
 #endif
