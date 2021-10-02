@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 15:11:35 by marvin            #+#    #+#             */
-/*   Updated: 2021/10/03 11:35:41 by marvin           ###   ########.fr       */
+/*   Updated: 2021/10/04 01:11:05 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,10 @@ int		main(int ac, char **av, char **envp)
 	stop = 0;
 	if (init_main(main, envp))
 		return (1);
-	stop = parser(main);
+	while (!stop)
+	{
+		stop = parser(main);
+	}
 	ft_allocfree((void *)&main); //free & null if exist void ft_allocfree(void **data)
 	return (0);
 }

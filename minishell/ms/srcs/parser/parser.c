@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 19:45:10 by marvin            #+#    #+#             */
-/*   Updated: 2021/10/03 15:39:46 by marvin           ###   ########.fr       */
+/*   Updated: 2021/10/04 01:13:01 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,6 @@ void	start_pars(t_main *main, char *string)
 int	parser(t_main *main) // здесь нужно отработать ошибки
 {
 	char		*str;
-	t_commands *temp;
 
 	str = readline(BEGIN(49, 32)"Minishell: "CLOSE);
 	if (str[0] == 'q')
