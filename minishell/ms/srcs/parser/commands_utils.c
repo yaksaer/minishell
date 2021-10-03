@@ -6,11 +6,26 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 17:44:37 by marvin            #+#    #+#             */
-/*   Updated: 2021/10/04 01:13:26 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/04 01:15:07 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+void	*ft_realloc(void *ptr, size_t oldsize, size_t newsize)
+{
+	void	*result;
+
+	result = (void *)malloc(newsize);
+	if (!result)
+		return (NULL);
+	ft_memset(result, 0, newsize);
+	if (!ptr)
+		return (result);
+	result = ft_memcpy(result, ptr, oldsize);
+	free(ptr);
+	return (result);
+}
 
 char	**add_string_to_massive(char **dest, char *src, int number) 
 {
