@@ -4,7 +4,7 @@
 		"type": "lldb",
 		"request": "launch",
 		"name": "Launch",
-		"program": "${workspaceFolder}/<your program>",
+		"program": "${workspaceFolder}/minishell",
 		"args": [],
 		"cwd": "${workspaceFolder}"
 	}
