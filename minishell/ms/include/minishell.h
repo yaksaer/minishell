@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 15:55:03 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/03 12:37:40 by marvin           ###   ########.fr       */
+/*   Updated: 2021/10/04 01:14:50 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char			*get_env_key(t_node *node);
 char			*str_get_key(char *var);
 int				ft_mass_size(char **str);
 int				add_quotes(t_dlink_list *env_list);
-char*			add_quotes_util(char *str);
+char			*add_quotes_util(char *str);
 int				ft_mass_size(char **str);
 int				check_key(char *val, char *prog);
 int				sort_dlist(t_dlink_list *dlist);

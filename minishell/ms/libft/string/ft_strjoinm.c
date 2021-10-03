@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoinm.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 15:48:42 by marvin            #+#    #+#             */
+<<<<<<< HEAD
+/*   Updated: 2021/10/04 01:13:50 by cbilbo           ###   ########.fr       */
+=======
 /*   Updated: 2021/10/03 12:07:25 by marvin           ###   ########.fr       */
+>>>>>>> working parser without $ and error handler
 /*                                                                            */
 /* ************************************************************************** */
 
