@@ -9,7 +9,7 @@ int	init_main(t_main *main, char **envp)
 	main->env = copy_env_to_mass(envp);
 	if (!main->env)
 		return (1);
-	main->commands = (t_commands **)ft_calloc(2, sizeof(t_commands *)); //
+	main->commands = (t_commands *)ft_calloc(2, sizeof(t_commands *)); //
 	// можно выделить на стеке 1024, смог выполлнить ~535 команд echo через пайп в баше
 	if (!main->commands)
 		return (1);
