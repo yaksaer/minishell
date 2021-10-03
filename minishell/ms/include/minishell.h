@@ -56,12 +56,14 @@ typedef struct	s_main {
 	char			**env;
 	t_dlink_list	*sort_env;
 	t_commands		*commands;
+	int				pid;
 }				t_main;
 /*UTILS*/
 t_dlink_list	*copy_env_to_list(char **env);
 char			**copy_env_to_mass(char **env);
 char			*get_env_key(t_node *node);
 char			*str_get_key(char *var);
+int				ft_mass_size(char **str);
 int				add_quotes(t_dlink_list *env_list);
 char*			add_quotes_util(char *str);
 int				ft_mass_size(char **str);

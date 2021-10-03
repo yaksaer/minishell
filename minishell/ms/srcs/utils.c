@@ -56,6 +56,16 @@ int		add_quotes(t_dlink_list *env_list)
 	return (0);
  }
 
+int		ft_mass_size(char **str)
+{
+	int 	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
+
 t_dlink_list	*copy_env_to_list(char **env)
 {
 	t_dlink_list 	*res_list;
