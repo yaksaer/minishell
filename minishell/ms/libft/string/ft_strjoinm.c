@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 15:48:42 by marvin            #+#    #+#             */
-/*   Updated: 2021/10/02 01:31:29 by marvin           ###   ########.fr       */
+/*   Updated: 2021/10/03 12:07:25 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,19 @@ char	*ft_strjoinm(char *string1, char *string2, int f)
 	int		j;
 	int		len;
 	
-	if (!string1 || !string2)
-		return (NULL);
-	i = -1;
-	j = -1;
+	i = 0;
+	j = 0;
 	len = ft_strlen(string1) + ft_strlen(string2);
 	result = ft_calloc(len + 1, sizeof(char));
 	if (result != NULL)
 	{
-		while (string1[++i] != '\0')
+		while (string1 && string1[i] != '\0')
+		{
 			result[i] = string1[i];
-		while (string2[++j] != '\0')
-			result[i++] = string2[j];
+			i++;
+		}
+		while (string2 && string2[j] != '\0')
+			result[i++] = string2[j++];
 	}
 	if (f == 1 || f == 3)
 		ft_allocfree((void *)&string1);
