@@ -2,13 +2,14 @@
 
 int		ft_pwd(void)
 {
-	char	path[10240];
+	char	*path;
 
 	errno = 0;
-	getcwd(path, 10240);
+	path = getcwd(NULL, 1);
 	if (errno)
 		perror(NULL);
 	else
 		printf("%s\n", path);
+	free(path);
 	return (0);
 }

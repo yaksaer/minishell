@@ -27,19 +27,28 @@ int	init_main(t_main *main, char **envp)
 	return (0);
 }
 
+void	free_commands(t_commands *command)
+{
+	t_commands *tmp;
+
+	tmp = command;
+}
+
 int		main(int ac, char **av, char **envp)
 {
-	int		stop;
+	int			stop;
 	t_main		*main;
 
-	main = (t_main *)ft_calloc(1, sizeof(main));
+	main = (t_main *)ft_calloc(1, sizeof(t_main));
 	stop = 0;
 	if (init_main(main, envp))
 		return (1);
-	while (1)
+	while (!stop)
 	{
 		stop = parser(main);
 		get_command(main);
+		//free(main->commands);
+		main->commands = NULL;
 	}
 	ft_allocfree((void *)&main); //free & null if exist void ft_allocfree(void **data)
 	return (0);
