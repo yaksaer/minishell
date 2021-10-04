@@ -115,27 +115,27 @@ void 	check_command(t_main *main, t_commands *command)
 		exec_my_command(main, main->commands);
 	else
 	{
-		//main->pid = fork();
-//		if (main->pid == 0)
-//		{
+		main->pid = fork();
+		if (main->pid == 0)
+		{
 			check_command_path(main, command);
-			//exit(0);
-//		}
+			exit(0);
+		}
+		waitpid(main->pid, 0, 0);
 	}
 }
 
-int 	get_command(char *str, t_main *main)
+int 	get_command(t_main *main)
 {
 	t_descrip	descrip;
 	t_commands	*tmp;
 
 	ft_bzero(&descrip, sizeof(t_descrip));
 	init_fd(&descrip);
-	main->commands->cmd = ft_split(str, ' ');
+//	main->commands->cmd = ft_split(str, ' ');
 	tmp = main->commands;
 	while (tmp)
 	{
-
 		check_command(main, tmp);
 		tmp = tmp->next;
 	}

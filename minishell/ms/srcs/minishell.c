@@ -16,12 +16,13 @@ int	init_main(t_main *main, char **envp)
 {
 	if (!main)
 		return (1);
-	// main->sort_env = copy_env_to_list(envp); //need to sort this list
-	// if (!main->sort_env)
-	// 	return (NULL);
-	// main->env = copy_env_to_mass(envp);
-	// if (!main->env)
-	// 	return (NULL);
+	main->sort_env = copy_env_to_list(envp);
+	if (!main->sort_env)
+		return (1);
+	sort_dlist(main->sort_env);
+	main->env = copy_env_to_mass(envp);
+	if (!main->env)
+		return (1);
 	return (0);
 }
 
@@ -35,6 +36,7 @@ int		main(int ac, char **av, char **envp)
 	if (init_main(main, envp))
 		return (1);
 	stop = parser(main);
+	get_command(main);
 	ft_allocfree((void *)&main); //free & null if exist void ft_allocfree(void **data)
 	return (0);
 }

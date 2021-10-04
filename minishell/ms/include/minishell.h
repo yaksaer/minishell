@@ -71,7 +71,7 @@ int				check_key(char *val, char *prog);
 int				sort_dlist(t_dlink_list *dlist);
 int 			init_main(t_main *main, char **envp);
 /*EXECUTE*/
-int				get_command(char *str, t_main *main);
+int				get_command(t_main *main);
 /*COMMANDS*/
 int				ft_echo(int argc, char **argv);
 int				ft_env(char **env);
