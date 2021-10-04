@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 15:11:35 by marvin            #+#    #+#             */
-/*   Updated: 2021/10/04 01:15:05 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/04 14:37:34 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,18 @@ int		main(int ac, char **av, char **envp)
 	t_main		*main;
 
 	main = (t_main *)ft_calloc(1, sizeof(t_main));
-	stop = 0;
+	stop = 1;
 	if (init_main(main, envp))
 		return (1);
-	while (!stop)
+	while (stop)
 	{
 		stop = parser(main);
-		get_command(main);
-		//free(main->commands);
-		main->commands = NULL;
+		// get_command(main);
+		commands_clear(&main->commands);
 	}
+	while (main->env[++stop])
+		ft_allocfree((void *)&main->env[stop]);
+	ft_dlist_del(&main->sort_env);
 	ft_allocfree((void *)&main); //free & null if exist void ft_allocfree(void **data)
 	return (0);
 }

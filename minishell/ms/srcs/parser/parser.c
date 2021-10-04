@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 19:45:10 by marvin            #+#    #+#             */
-/*   Updated: 2021/10/04 01:15:02 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/04 17:01:57 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 
 void	print_commands(t_main *main)
 {
-	t_commands *temp;
+	t_commands	*temp;
+	int			i;
 
 	temp = main->commands;
-	int i = 1;
+	i = 0;
 	while (temp != NULL)
 	{
 		printf("%d pipe\n", i);
@@ -37,14 +38,34 @@ void	print_commands(t_main *main)
 	}
 }
 
-char *ft_add_char(char *string, char c, int len)
+char	*ft_add_char(char *string, char c, int len)
 {
 	string = (char *)ft_realloc(string, len + 1, len + 2);
 	string[len] = c;
 	return (string);
 }
 
-char *parse_quotation(char **string, char quote)
+char	*put_env(t_main *main, char **string)
+{
+	char	*res;
+	char	*str;
+	int		len;
+	int		i;
+
+	str = *string;
+	str++;
+	len = ft_strlen_until(str, "\'\"$<> |");
+	i = 0;
+	while (ft_strlen_until(main->env[i], "=") != len \
+		|| ft_strncmp(str, main->env[i], len), len)
+		i++;
+	res = ft_substr(main->env[i], len + 1, ft_strlen(main->env[i]));
+	str += len;
+	*string = str;
+	return (res);
+}
+
+char	*parse_quotation(t_main *main, char **string, char quote)
 {
 	char	*str;
 	char	*res;
@@ -54,43 +75,42 @@ char *parse_quotation(char **string, char quote)
 	res = NULL;
 	while (*str != quote)
 	{
-		/*if (*str == '$') написать функцию для доллара*/
-		res = ft_add_char(res, *str++, ft_strlen(res));
+		if (quote == '\"')
+			res = ft_strjoinm(res, put_env(main, &str), 3);
+		else
+			res = ft_add_char(res, *str++, ft_strlen(res));
 	}
 	str++;
 	*string = str;
 	return (res);
 }
 
-void	parse_redirect(t_commands *command, char **string)
+void	parse_redirect(t_main *main, t_commands *command, char **string)
 {
 	static int	i;
 	char		*str;
 	char		*res;
-	
+
 	if (!command->redir)
 		i = 0;
 	str = *string;
 	res = NULL;
 	while (ft_strchr("<>", *str) && *str != '|' && *str != '\0')
-		res = ft_add_char(res, *str++, ft_strlen(res));	
+		res = ft_add_char(res, *str++, ft_strlen(res));
 	while (ft_strchr(" \t", *str) && *str != '|' && *str != '\0')
 		res = ft_add_char(res, *str++, ft_strlen(res));
 	while (!ft_strchr(" \t<>", *str) && *str != '|' && *str != '\0')
 	{
 		if (ft_strchr("\'\"", *str))
-			res = ft_strjoinm(res, parse_quotation(&str, *str), 3);
-		else	
+			res = ft_strjoinm(res, parse_quotation(main, &str, *str), 3);
+		else
 			res = ft_add_char(res, *str++, ft_strlen(res));
 	}
-	command->redir = add_string_to_massive(command->redir, res, i++);
-	res = NULL;
+	command->redir = add_string_to_massive(&command->redir, &res, i++);
 	*string = str;
 }
 
-
-
-int	parse_command(t_commands *command, char **string)
+int	parse_command(t_main *main, t_commands *command, char **string)
 {
 	char	*str;
 	char	*res;
@@ -102,22 +122,21 @@ int	parse_command(t_commands *command, char **string)
 	while (*str != '\0' && *str != '|')
 	{
 		if (ft_strchr("\'\"", *str))
-			res = ft_strjoinm(res, parse_quotation(&str, *str), 3);
-		/*if (*str == '$') написать функцию для доллара*/
+			res = ft_strjoinm(res, parse_quotation(main, &str, *str), 3);
+		else if (*str == '$')
+			res = ft_strjoinm(res, put_env(main, &str), 3);
 		else if (ft_strchr("<>", *str))
 		{
 			if (res)
-				command->cmd = add_string_to_massive(command->cmd, res, i++);
-			res = NULL;
-			parse_redirect(command, &str);
+				command->cmd = add_string_to_massive(&command->cmd, &res, i++);
+			parse_redirect(main, command, &str);
 		}
 		else
 			res = ft_add_char(res, *str++, ft_strlen(res));
 		if (ft_strchr(" \t", *str))
 		{
 			if (res)
-				command->cmd = add_string_to_massive(command->cmd, res, i++);
-			res = NULL;
+				command->cmd = add_string_to_massive(&command->cmd, &res, i++);
 			str += ft_strlen_while(str, " \t");
 		}
 	}
@@ -129,16 +148,13 @@ void	start_pars(t_main *main, char *string)
 {
 	t_commands	*command;
 	int			i;
-	
-	i = 1;
 
-	//main->commands = ft_calloc(1, sizeof(t_commands));
-	//main->commands = NULL;
+	i = 1;
 	while (i)
 	{
 		command = commands_new(NULL, NULL, -1, -1);
 		string += ft_strlen_while(string, " \t");
-		i = parse_command(command, &string);
+		i = parse_command(main, command, &string);
 		if (i)
 			string++;
 		commands_back(&main->commands, command);
@@ -148,16 +164,16 @@ void	start_pars(t_main *main, char *string)
 int	parser(t_main *main) // здесь нужно отработать ошибки
 {
 	char		*str;
-	t_commands *temp;
+	t_commands	*temp;
 
 	str = readline(BEGIN(49, 32)"Minishell: "CLOSE);
 	if (str[0] == 'q')
 	{
 		free(str);
-		return (1);
+		return (0);
 	}
 	start_pars(main, str);
-	//print_commands(main);
+	// print_commands(main);
 	ft_allocfree((void *)&str);
-	return (0);
+	return (1);
 }

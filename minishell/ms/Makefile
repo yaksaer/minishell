@@ -1,6 +1,6 @@
 NAME = minishell
 
-SRCS = $(wildcard srcs/*c) $(wildcard srcs/parser/*.c)
+SRCS = $(wildcard srcs/*c) $(wildcard srcs/parser/*.c) $(wildcard srcs/execute_part/*.c) $(wildcard srcs/commands/*.c)
 
 OBJS = $(patsubst srcs/%.c,objs/%.o,$(SRCS))
 
@@ -11,6 +11,8 @@ INC_DIR = include
 LIB_DIR = libft
 OBJS_DIR = objs
 PARS_DIR = objs/parser
+EXEX_DIR = objs/execute_part
+COM_DIR = objs/commands
 
 CC = gcc
 CFLAGS = -g #-Wall -Werror -Wextra
@@ -45,6 +47,6 @@ message:
 	@echo -n 'Create minishell '
 
 dir:
-	@mkdir -p $(OBJS_DIR) $(PARS_DIR)
+	@mkdir -p $(OBJS_DIR) $(PARS_DIR) $(EXEX_DIR) $(COM_DIR)
 
 .PHONY: all clean fclean re libft message dir
