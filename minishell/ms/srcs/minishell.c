@@ -23,6 +23,7 @@ int	init_main(t_main *main, char **envp)
 	main->env = copy_env_to_mass(envp);
 	if (!main->env)
 		return (1);
+	main->commands = NULL;
 	return (0);
 }
 
@@ -35,8 +36,11 @@ int		main(int ac, char **av, char **envp)
 	stop = 0;
 	if (init_main(main, envp))
 		return (1);
-	stop = parser(main);
-	get_command(main);
+	while (1)
+	{
+		stop = parser(main);
+		get_command(main);
+	}
 	ft_allocfree((void *)&main); //free & null if exist void ft_allocfree(void **data)
 	return (0);
 }

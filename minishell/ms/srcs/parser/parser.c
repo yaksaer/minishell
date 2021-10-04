@@ -131,7 +131,9 @@ void	start_pars(t_main *main, char *string)
 	int			i;
 	
 	i = 1;
-	
+
+	//main->commands = ft_calloc(1, sizeof(t_commands));
+	//main->commands = NULL;
 	while (i)
 	{
 		command = commands_new(NULL, NULL, -1, -1);
