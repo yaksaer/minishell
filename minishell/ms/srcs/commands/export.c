@@ -48,7 +48,7 @@ int 	add_to_list(t_main *main, char *var, char *key)
 		{
 			ft_dlist_del_n(main->sort_env, i - 1);
 			ft_dlist_insert(main->sort_env, i - 2, var);
-			return (0);
+			return (-1);
 		}
 		tmp = tmp->next;
 	}
@@ -94,6 +94,26 @@ char	**realloc_n_add(char **src, char *var)
 	return (ret);
 }
 
+int		replace_value(char **src, char *var)
+{
+	int		i;
+	char	*ret;
+
+	i = -1;
+	while (src[++i])
+	{
+		if (ft_strcmp(str_get_key(src[i]), str_get_key(var)) == 0)
+		{
+			free(src[i]);
+			ret = ft_calloc(ft_strlen(var) + 1, sizeof(char));
+			if (!ret)
+				;
+			ret = ft_strcpy(ret, var);
+			src[i] = ret;
+		}
+	}
+}
+
 int		start_export(t_main *main, t_commands *command)
 {
 	int 	i;
@@ -105,8 +125,12 @@ int		start_export(t_main *main, t_commands *command)
 		if (check_key(command->cmd[i], "export"))
 			continue;
 		str = str_get_key(command->cmd[i]);
-		add_to_list(main, command->cmd[i], str);
-		main->env = realloc_n_add(main->env, command->cmd[i]);
+		if (!str)
+			;
+		if (add_to_list(main, command->cmd[i], str) < 0)
+			replace_value(main->env, command->cmd[i]);
+		else
+			main->env = realloc_n_add(main->env, command->cmd[i]);
 		if (!main->env)
 			return (1);
 		free(str);

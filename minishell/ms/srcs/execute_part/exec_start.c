@@ -32,6 +32,8 @@ int		exec_my_command(t_main *main, t_commands *command)
 		ft_export(main, command);
 	else if (!ft_strcmp(command->cmd[0], "unset"))
 		ft_unset(main, command);
+	else if (!ft_strcmp(command->cmd[0], "cd"))
+		ft_cd(main, command);
 }
 
 char	*find_path(char **buf, char *cmd)
