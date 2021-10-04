@@ -57,7 +57,7 @@ void	commands_back(t_commands **command, t_commands *new)
 	com = *command;
 	if (!new)
 		return ;
-	if (!com)
+	if (!*command)
 		*command = new;
 	else
 	{
