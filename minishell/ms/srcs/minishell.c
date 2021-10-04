@@ -27,9 +27,16 @@ int	init_main(t_main *main, char **envp)
 	return (0);
 }
 
+void	free_commands(t_commands *command)
+{
+	t_commands *tmp;
+
+	tmp = command;
+}
+
 int		main(int ac, char **av, char **envp)
 {
-	int		stop;
+	int			stop;
 	t_main		*main;
 
 	main = (t_main *)ft_calloc(1, sizeof(t_main));
@@ -42,7 +49,6 @@ int		main(int ac, char **av, char **envp)
 		// get_command(main);
 		commands_clear(&main->commands);
 	}
-	stop = -1;
 	while (main->env[++stop])
 		ft_allocfree((void *)&main->env[stop]);
 	ft_dlist_del(&main->sort_env);
