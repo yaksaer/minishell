@@ -34,6 +34,8 @@ int		exec_my_command(t_main *main, t_commands *command)
 		ft_unset(main, command);
 	else if (!ft_strcmp(command->cmd[0], "cd"))
 		ft_cd(main, command);
+	else if (!ft_strcmp(command->cmd[0], "exit"))
+		ft_exit(main, command);
 }
 
 char	*find_path(char **buf, char *cmd)
@@ -134,7 +136,6 @@ int 	get_command(t_main *main)
 
 	ft_bzero(&descrip, sizeof(t_descrip));
 	init_fd(&descrip);
-//	main->commands->cmd = ft_split(str, ' ');
 	tmp = main->commands;
 	while (tmp)
 	{
