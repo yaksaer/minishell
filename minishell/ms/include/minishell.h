@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 15:55:03 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/04 01:14:50 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/04 15:33:29 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,5 +87,5 @@ t_commands		*commands_new(char **cmd, char **redir, int input, int output);
 void			commands_back(t_commands **command, t_commands *new);
 void			commands_delone(t_commands *command);
 void			commands_clear(t_commands **command);
-char			**add_string_to_massive(char **dest, char *src, int number);
+char			**add_string_to_massive(char ***dest, char **src, int number);
 #endif

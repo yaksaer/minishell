@@ -14,7 +14,6 @@ FROM ubuntu:latest as minishell
 
 RUN apt-get -y update && apt-get -y upgrade 
 RUN apt-get install -y bash vim gcc valgrind make libncurses5-dev libreadline-dev
-RUN mkdir -p /home/minishell
+RUN useradd -ms /bin/bash minishell
+USER minishell
 WORKDIR /home/minishell
-
-CMD [ "bash" ]

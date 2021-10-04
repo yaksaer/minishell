@@ -77,11 +77,11 @@ int	sort_dlist(t_dlink_list *dlist)
 			if (ft_strcmp(tmp, tmp2) > 0)
 				swap_dlist_nodes(tnode, tnode->next, dlist);
 			tnode = tnode->next;
-			ft_allocfree(&tmp);
-			ft_allocfree(&tmp2);
+			ft_allocfree((void *)&tmp);
+			ft_allocfree((void *)&tmp2);
 		}
-		ft_allocfree(&tmp);
-		ft_allocfree(&tmp2);
+		ft_allocfree((void *)&tmp);
+		ft_allocfree((void *)&tmp2);
 	}
 	return (0);
 }

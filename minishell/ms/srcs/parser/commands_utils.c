@@ -3,36 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   commands_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 17:44:37 by marvin            #+#    #+#             */
-/*   Updated: 2021/10/04 01:15:07 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/04 15:44:16 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	*ft_realloc(void *ptr, size_t oldsize, size_t newsize)
+char	**add_string_to_massive(char ***dest, char **src, int number) 
 {
-	void	*result;
+	
+	char 	**result;
+	char **tmp;
+	char *temp;
+	int		i;
 
-	result = (void *)malloc(newsize);
+	i = 0;
+	tmp = *dest;
+	temp = *src;
+	result = (char **)ft_calloc(number + 2, sizeof(char *));
 	if (!result)
 		return (NULL);
-	ft_memset(result, 0, newsize);
-	if (!ptr)
-		return (result);
-	result = ft_memcpy(result, ptr, oldsize);
-	free(ptr);
+	while (tmp && tmp[i])
+	{	
+		result[i] = ft_strdup(tmp[i]);
+		ft_allocfree((void *)&tmp[i++]);
+	}
+	result[i] = ft_strdup(temp);
+	ft_allocfree((void *)&temp);
+	ft_allocfree((void *)&tmp);
+	*dest = tmp;
+	*src = temp;
 	return (result);
-}
-
-char	**add_string_to_massive(char **dest, char *src, int number) 
-{
-	dest = (char **)ft_realloc(dest, (number + 1) * sizeof(dest), \
-			(number + 2) * sizeof(dest));
-	dest[number] = src;
-	return (dest);
 }
 
 t_commands	*commands_new(char **cmd, char **redir, int input, int output)
@@ -67,6 +71,16 @@ void	commands_back(t_commands **command, t_commands *new)
 	}
 }
 
+void	ft_allocfree(void **string)
+{
+	if (*string)
+	{
+		free(*string);
+		*string = NULL;
+	}
+}
+
+
 void	commands_delone(t_commands *command)
 {
 	int	i;
@@ -74,14 +88,22 @@ void	commands_delone(t_commands *command)
 	i = -1;
 	if (!command)
 		return ;
-	while (command->cmd[++i][0] != '\0')
-		ft_allocfree((void *)&command->cmd[i]);
-	ft_allocfree((void *)&command->cmd[i]);
+	if (command->cmd)
+	{
+		while (command->cmd[++i] != NULL)
+			ft_allocfree((void *)&command->cmd[i]);
+		free(command->cmd[i]);
+		free(command->cmd);
+	}
 	i = -1;
-	while (command->redir[++i][0] != '\0')
-		ft_allocfree((void *)&command->redir[i]);
-	ft_allocfree((void *)&command->redir[i]);
-	ft_allocfree((void *)&command);
+	if (command->redir)
+	{
+		while (command->redir[++i] != NULL)
+			ft_allocfree((void *)&command->redir[i]);
+		free(command->redir[i]);
+		free(command->redir);
+	}
+	command->next = NULL;
 }
 
 void	commands_clear(t_commands **command)
@@ -94,6 +116,8 @@ void	commands_clear(t_commands **command)
 	{
 		temp = com->next;
 		commands_delone(com);
+		ft_allocfree((void *)&com);
 		com = temp;
 	}
+	*command = NULL;
 }
