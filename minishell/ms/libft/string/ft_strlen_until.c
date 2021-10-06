@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 21:38:43 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/02/20 00:53:07 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/06 23:00:41 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,7 @@ size_t	ft_strlen_until(const char *string, const char *smls)
 	while (smls[i])
 	{
 		len = 0;
-		while (string[len] != '\0' && string[len] != smls[i])
-			len++;
-		if (string[len] == smls[i])
-			return (len);
-		i++;
+		while ()
 	}
 	return (0);
 }

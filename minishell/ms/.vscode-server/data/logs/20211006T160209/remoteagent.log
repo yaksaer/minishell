@@ -1,0 +1,15 @@
+[2021-10-06 16:02:09.214] [remoteagent] [info] 
+
+*
+* Visual Studio Code Server
+*
+* Reminder: You may only use this software with Visual Studio family products,
+* as described in the license https://aka.ms/vscode-remote/license
+*
+
+
+[2021-10-06 16:02:09.214] [remoteagent] [info] Extension host agent started.
+[2021-10-06 16:02:09.766] [remoteagent] [info] [::ffff:127.0.0.1][a7fbc48c][ManagementConnection] New connection established.
+[2021-10-06 16:02:09.866] [remoteagent] [info] Deleted from disk vadimcn.vscode-lldb /home/minishell/.vscode-server/extensions/vadimcn.vscode-lldb-1.6.7
+[2021-10-06 16:02:10.620] [remoteagent] [info] [::ffff:127.0.0.1][aeb36fcd][ExtensionHostConnection] New connection established.
+[2021-10-06 16:02:10.735] [remoteagent] [info] [::ffff:127.0.0.1][aeb36fcd][ExtensionHostConnection] <247> Launched Extension Host Process.
