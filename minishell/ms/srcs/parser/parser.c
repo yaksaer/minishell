@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 19:45:10 by marvin            #+#    #+#             */
-/*   Updated: 2021/10/07 18:18:58 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/07 18:30:07 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	print_commands(t_main *main)
 		{
 			printf("%s\n", temp->redir[c]);
 		}
-		printf("input = %d, output = %d\n", temp->input, temp->output);
+		printf("\ninput = %d, output = %d\n", temp->input, temp->output);
 		temp = temp->next;
 		i++;
 		write(1, "\n", 1);
@@ -287,7 +287,8 @@ int	parser(t_main *main) // здесь нужно отработать ошиб�
 		return (0);
 	}
 	start_pars(main, str);
-	handle_redir(main);
+	if (main->commands->redir)
+		handle_redir(main);
 	print_commands(main);
 	ft_allocfree((void *)&str);
 	return (1);
