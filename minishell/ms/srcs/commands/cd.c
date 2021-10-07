@@ -38,17 +38,41 @@ int		step_back(t_main *main, t_commands *command)
 			tmp[i] = curr_path[i];
 	if (!chdir(tmp))
 		change_env(main, curr_path);
-	curr_path = getcwd(NULL, 0);
 	free(curr_path);
 	free(tmp);
 	return (0);
+}
+
+int		go_home(t_main *main, t_commands *command)
+{
+	int 	i;
+	char	*str;
+	char	*curr_path;
+
+	i = -1;
+	curr_path = getcwd(NULL, 0);
+	while (main->env[++i])
+		if (ft_strcmp(str_get_key(main->env[i]), "HOME") == 0)
+			break ;
+	if (!main->env[i])
+	{
+		printf("minishell: cd: HOME not set\n");
+		return (1);
+	}
+	str = ft_strdup(main->env[i] + 5);
+	if (!chdir(str))
+		change_env(main, curr_path);
+	free(curr_path);
+	free(str);
 }
 
 int		ft_cd(t_main *main, t_commands *command)
 {
 	char	*old_dir;
 
-	if (command->cmd[1][0] == '.' && command->cmd[1][1] == '.'
+	if (ft_mass_size(command->cmd) == 1)
+		go_home(main, command);
+	else if (command->cmd[1][0] == '.' && command->cmd[1][1] == '.'
 		&& !command->cmd[1][2])
 		step_back(main, command);
 	else if (command->cmd[1][0] == '.' && !command->cmd[1][1])
