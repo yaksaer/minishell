@@ -1,10 +1,14 @@
 #include "../../include/minishell.h"
 
-void 	init_fd(t_descrip *descrip)
+void 	init_fd(t_descrip *descrip, t_commands *command)
 {
-	descrip->def_int = dup(0);
+	ft_bzero(descrip, sizeof(t_descrip));
+	descrip->def_in = dup(0);
 	descrip->def_out = dup(1);
-	descrip->fd_in = dup(descrip->def_int);
+	if (command->input)
+		descrip->fd_in = command->input;
+	else
+		descrip->fd_in = dup(descrip->def_in);
 }
 
 int 	is_my_command(t_main *main, t_commands *command)
@@ -111,11 +115,54 @@ int		check_command_path(t_main *main, t_commands *command)
 	return (0);
 }
 
+void	set_out(t_descrip *desc, t_commands *command)
+{
+	int		fd_pipe[2];
+
+	if (!command->next)
+	{
+		if (command->output)
+			desc->fd_out = command->output;
+		else
+			desc->fd_out = dup(desc->def_out);
+	}
+	else
+	{
+		pipe(fd_pipe);
+		desc->fd_out = fd_pipe[1];
+		desc->fd_in = fd_pipe[0];
+	}
+	if (command->output)
+		dup2(command->output, 1);
+	else
+		dup2(desc->fd_out, 1);
+	close(desc->fd_out);
+}
+
+void	set_in(t_descrip *desc, t_commands *command)
+{
+	if (command->input)
+		dup2(command->input, 0);
+	else
+		dup2(desc->fd_in, 0);
+	close(desc->fd_in);
+}
+
+void	reset_fd(t_descrip *descrip)
+{
+	dup2(descrip->def_in, 0);
+	dup2(descrip->def_out, 1);
+	close(descrip->def_out);
+	close(descrip->def_in);
+}
+
 void 	check_command(t_main *main, t_commands *command)
 {
+	int 	t;
+
 	if (!main->commands->cmd)
 		return ;
-	else if (is_my_command(main, main->commands))
+	if (is_my_command(main, main->commands))
 		exec_my_command(main, main->commands);
 	else
 	{
@@ -125,7 +172,7 @@ void 	check_command(t_main *main, t_commands *command)
 			check_command_path(main, command);
 			exit(0);
 		}
-		waitpid(main->pid, 0, 0);
+		waitpid(main->pid, &t, 0);
 	}
 }
 
@@ -134,13 +181,16 @@ int 	get_command(t_main *main)
 	t_descrip	descrip;
 	t_commands	*tmp;
 
-	ft_bzero(&descrip, sizeof(t_descrip));
-	init_fd(&descrip);
+	main->desc = &descrip;
+	init_fd(main->desc, main->commands);
 	tmp = main->commands;
 	while (tmp)
 	{
+		set_in(&descrip, tmp);
+		set_out(&descrip, tmp);
 		check_command(main, tmp);
 		tmp = tmp->next;
 	}
+	reset_fd(&descrip);
 	return (0);
 }

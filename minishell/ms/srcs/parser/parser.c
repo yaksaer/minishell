@@ -191,7 +191,7 @@ void	start_pars(t_main *main, char *string)
 	i = 1;
 	while (i)
 	{
-		command = commands_new(NULL, NULL, -1, -1);
+		command = commands_new(NULL, NULL, 0, 0);
 		string += ft_strlen_while(string, " \t");
 		i = parse_command(main, command, &string);
 		if (i)
@@ -206,7 +206,7 @@ int	parser(t_main *main) // здесь нужно отработать ошиб�
 	t_commands	*temp;
 
 	str = readline(BEGIN(49, 32)"Minishell: "CLOSE);
-	if (str[0] == 'q')
+ 	if (str[0] == 'q')
 	{
 		free(str);
 		return (0);
