@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 19:45:10 by marvin            #+#    #+#             */
-/*   Updated: 2021/10/07 15:08:40 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/07 18:18:58 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	print_commands(t_main *main)
 		{
 			printf("%s\n", temp->redir[c]);
 		}
+		printf("input = %d, output = %d\n", temp->input, temp->output);
 		temp = temp->next;
 		i++;
 		write(1, "\n", 1);
@@ -103,7 +104,7 @@ char	*parse_quotation(t_main *main, char **string, char quote)
 	res = NULL;
 	while (*str != quote)
 	{
-		if (quote == '\"' && *str == '$' && !ft_strchr(" \t|", str + 1))
+		if (quote == '\"' && *str == '$' && !ft_strchr(" \t|", str + 1)) 
 			res = ft_strjoinm(res, put_env(main, &str), 3);
 		else
 			res = ft_add_char(res, *str++, ft_strlen(res));
@@ -200,6 +201,80 @@ void	start_pars(t_main *main, char *string)
 	}
 }
 
+int	open_redir(char *path, char r, int n)
+{
+	int fd;
+
+	if (r == '>')
+	{
+		if (n == 1)
+			fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0064);
+		else
+			fd = open(path, O_WRONLY | O_CREAT | O_APPEND, 0664);
+	}
+	else
+	{
+		if (n == 1)
+			fd = open(path, O_RDONLY, 0664);
+	}
+	if (fd == -1)
+	{
+		printf("wrong path of redirect\n");
+		exit (1);
+	}
+	return (fd);
+}
+
+void	redir_path(t_commands *com, char *path, char r, int n)
+{
+	int	fd;
+
+	path += n;
+	if (ft_strchr("<>", *path))
+	{
+		printf("error, wrong redirect %c", *path);
+		exit (-1);
+	}
+	path += ft_strlen_while(path, " \t");
+	if (r == '>')
+	{	
+		fd = open_redir(path, r, n);
+		if (com->output != 0)
+			close(com->output);
+		com->output = fd;
+	}
+	else if (r == '<')
+	{
+		fd = open_redir(path, r, n);
+		if (com->input != 0)
+			close(com->input);
+		com->input = fd;
+	}
+}
+
+void handle_redir(t_main *main)
+{
+	t_commands	*com;
+	char		*path;
+	int			i;
+	int			num;
+
+	com = main->commands;
+	while (com)
+	{
+		i = -1;
+		while (com->redir[++i])
+		{
+			num = ft_strlen_while(com->redir[i], "<");
+			if (num == 0)
+				num = ft_strlen_while(com->redir[i], ">");
+			if (num < 3)
+				redir_path(com, com->redir[i], com->redir[i][0], num);
+		}
+		com = com->next;
+	}
+}
+
 int	parser(t_main *main) // здесь нужно отработать ошибки
 {
 	char		*str;
@@ -212,6 +287,7 @@ int	parser(t_main *main) // здесь нужно отработать ошиб�
 		return (0);
 	}
 	start_pars(main, str);
+	handle_redir(main);
 	print_commands(main);
 	ft_allocfree((void *)&str);
 	return (1);

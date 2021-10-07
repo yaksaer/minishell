@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 15:11:35 by marvin            #+#    #+#             */
-/*   Updated: 2021/10/07 13:52:26 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/07 17:30:44 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	init_main(t_main *main, struct sigaction *sigac, char **envp)
 	main->commands = NULL;
 	sigac->sa_flags = SA_SIGINFO;
 	sigac->sa_sigaction = handle_signals;
-	main->desc = ft_calloc(1, sizeof(t_descrip));
+	//main->desc = ft_calloc(1, sizeof(t_descrip));
 	return (0);
 }
 
@@ -65,7 +65,7 @@ int		main(int ac, char **av, char **envp)
 	while (stop)
 	{
 		stop = parser(main);
-		get_command(main);
+		// get_command(main);
 		commands_clear(&main->commands);
 	}
 	while (main->env[++stop])
