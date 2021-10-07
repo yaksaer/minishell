@@ -24,6 +24,7 @@ int	init_main(t_main *main, char **envp)
 	if (!main->env)
 		return (1);
 	main->commands = NULL;
+	main->desc = ft_calloc(1, sizeof(t_descrip));
 	return (0);
 }
 
@@ -46,7 +47,7 @@ int		main(int ac, char **av, char **envp)
 	while (stop)
 	{
 		stop = parser(main);
-		// get_command(main);
+		get_command(main);
 		commands_clear(&main->commands);
 	}
 	while (main->env[++stop])
