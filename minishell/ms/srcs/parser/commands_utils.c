@@ -3,21 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   commands_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 17:44:37 by marvin            #+#    #+#             */
-/*   Updated: 2021/10/04 15:44:16 by marvin           ###   ########.fr       */
+/*   Updated: 2021/10/07 12:31:44 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-char	**add_string_to_massive(char ***dest, char **src, int number) 
+char	**add_string_to_massive(char ***dest, char **src, int number)
 {
-	
-	char 	**result;
-	char **tmp;
-	char *temp;
+	char	**result;
+	char	**tmp;
+	char	*temp;
 	int		i;
 
 	i = 0;
@@ -41,8 +40,8 @@ char	**add_string_to_massive(char ***dest, char **src, int number)
 
 t_commands	*commands_new(char **cmd, char **redir, int input, int output)
 {
-	t_commands *new;
-	
+	t_commands	*new;
+
 	new = (t_commands *)malloc(1 * sizeof(t_commands));
 	if (!new)
 		return (new);
@@ -56,7 +55,7 @@ t_commands	*commands_new(char **cmd, char **redir, int input, int output)
 
 void	commands_back(t_commands **command, t_commands *new)
 {
-	t_commands *com;
+	t_commands	*com;
 
 	com = *command;
 	if (!new)
@@ -70,16 +69,6 @@ void	commands_back(t_commands **command, t_commands *new)
 		com->next = new;
 	}
 }
-
-void	ft_allocfree(void **string)
-{
-	if (*string)
-	{
-		free(*string);
-		*string = NULL;
-	}
-}
-
 
 void	commands_delone(t_commands *command)
 {
@@ -108,8 +97,8 @@ void	commands_delone(t_commands *command)
 
 void	commands_clear(t_commands **command)
 {
-	t_commands *com;
-	t_commands *temp;
+	t_commands	*com;
+	t_commands	*temp;
 
 	com = *command;
 	while (com)
