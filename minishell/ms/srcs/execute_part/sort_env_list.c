@@ -44,16 +44,22 @@ int		is_dlist_sort(t_dlink_list *dlist)
 	{
 		tmp = get_env_key(tmp_node);
 		if (!tmp)
-			return (0);
+			break ;
 		tmp2 = get_env_key(tmp_node->next);
 		if (!tmp2)
-			return (0);
+			break ;
 		if (ft_strcmp(tmp, tmp2) > 0)
+		{
+			ft_allocfree((void *)&tmp);
+			ft_allocfree((void *)&tmp2);
 			return (1);
-		free(tmp);
-		free(tmp2);
+		}
+		ft_allocfree((void *)&tmp);
+		ft_allocfree((void *)&tmp2);
 		tmp_node = tmp_node->next;
 	}
+	ft_allocfree((void *)&tmp);
+	ft_allocfree((void *)&tmp2);
 	return (0);
 }
 

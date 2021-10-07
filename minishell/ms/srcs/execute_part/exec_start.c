@@ -1,16 +1,5 @@
 #include "../../include/minishell.h"
 
-void 	init_fd(t_descrip *descrip, t_commands *command)
-{
-	ft_bzero(descrip, sizeof(t_descrip));
-	descrip->def_in = dup(0);
-	descrip->def_out = dup(1);
-	if (command->input)
-		descrip->fd_in = command->input;
-	else
-		descrip->fd_in = dup(descrip->def_in);
-}
-
 int 	is_my_command(t_main *main, t_commands *command)
 {
 	if (!ft_strcmp(command->cmd[0], "echo")
@@ -38,8 +27,8 @@ int		exec_my_command(t_main *main, t_commands *command)
 		ft_unset(main, command);
 	else if (!ft_strcmp(command->cmd[0], "cd"))
 		ft_cd(main, command);
-	// else if (!ft_strcmp(command->cmd[0], "exit"))
-	// 	ft_exit(main, command);
+	else if (!ft_strcmp(command->cmd[0], "exit"))
+	 	ft_exit(main, command);
 }
 
 char	*find_path(char **buf, char *cmd)
@@ -56,13 +45,9 @@ char	*find_path(char **buf, char *cmd)
 		if (!tmp)
 			return (NULL);
 		if (!access(tmp, 0))
-		{
-			free(cmd);
 			return (tmp);
-		}
 		free(tmp);
 	}
-	free(cmd);
 	return (NULL);
 }
 
@@ -115,6 +100,16 @@ int		check_command_path(t_main *main, t_commands *command)
 	return (0);
 }
 
+void 	init_fd(t_descrip *descrip, t_commands *command)
+{
+	descrip->def_in = dup(0);
+	descrip->def_out = dup(1);
+	if (command->input)
+		descrip->fd_in = command->input;
+	else
+		descrip->fd_in = dup(descrip->def_in);
+}
+
 void	set_out(t_descrip *desc, t_commands *command)
 {
 	int		fd_pipe[2];
@@ -162,7 +157,7 @@ void 	check_command(t_main *main, t_commands *command)
 
 	if (!main->commands->cmd)
 		return ;
-	if (is_my_command(main, main->commands))
+	else if (is_my_command(main, main->commands))
 		exec_my_command(main, main->commands);
 	else
 	{
@@ -170,7 +165,6 @@ void 	check_command(t_main *main, t_commands *command)
 		if (main->pid == 0)
 		{
 			check_command_path(main, command);
-			exit(0);
 		}
 		waitpid(main->pid, &t, 0);
 	}
@@ -181,8 +175,8 @@ int 	get_command(t_main *main)
 	t_descrip	descrip;
 	t_commands	*tmp;
 
-	main->desc = &descrip;
-	init_fd(main->desc, main->commands);
+	init_fd(&descrip, main->commands);
+	main->descrip = &descrip;
 	tmp = main->commands;
 	while (tmp)
 	{

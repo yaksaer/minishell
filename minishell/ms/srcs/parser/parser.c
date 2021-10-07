@@ -212,7 +212,7 @@ int	parser(t_main *main) // здесь нужно отработать ошиб�
 		return (0);
 	}
 	start_pars(main, str);
-	print_commands(main);
+//	print_commands(main);
 	ft_allocfree((void *)&str);
 	return (1);
 }
