@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 19:45:10 by marvin            #+#    #+#             */
-/*   Updated: 2021/10/06 22:56:24 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/07 15:08:40 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,42 +45,29 @@ char	*ft_add_char(char *string, char c, int len)
 	return (string);
 }
 
-int	ft_strncmp(const char *string1, const char *string2, size_t len)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < len && string1[i] != '\0')
-	{
-		if (string1[i] != string2[i])
-			return ((unsigned char)string1[i] - (unsigned char)string2[i]);
-		i++;
-	}
-	if (string2[i] == '\0' || i == len)
-		return (0);
-	else
-		return (-string2[i]);
-}
-
-
 size_t	ft_strlen_until(const char *string, const char *smls)
 {
 	size_t	len;
 	size_t	i;
+	size_t	j;
 
-	i = 0;
-	while (smls[i])
+	len = 0;
+	i = -1;
+	while (smls[++i])
 	{
-		len = 0;
-		while (string[len] != '\0' && string[len] != smls[i])
-			len++;
-		if (string[len] == smls[i])
-			return (len);
-		i++;
+		j = -1;
+		while (string[++j])
+		{
+			if (string[j] == smls[i])
+			{
+				if (j < len || len == 0)
+					len = j;
+				break ;
+			}
+		}
 	}
-	return (0);
+	return (len);
 }
-
 
 char	*put_env(t_main *main, char **string)
 {
@@ -116,7 +103,7 @@ char	*parse_quotation(t_main *main, char **string, char quote)
 	res = NULL;
 	while (*str != quote)
 	{
-		if (quote == '\"' && *str == '$')
+		if (quote == '\"' && *str == '$' && !ft_strchr(" \t|", str + 1))
 			res = ft_strjoinm(res, put_env(main, &str), 3);
 		else
 			res = ft_add_char(res, *str++, ft_strlen(res));
@@ -130,14 +117,14 @@ char	*parse_string(t_main *main, char **string)
 {
 	char	*res;
 	char	*str;
-	
+
 	str = *string;
 	res = NULL;
-	while (!ft_strchr(" \t", *str) && *str != '\0')
+	while (!ft_strchr(" \t<>|", *str) && *str != '\0')
 	{
 		if (ft_strchr("\'\"", *str))
 			res = ft_strjoinm(res, parse_quotation(main, &str, *str), 3);
-		else if (*str == '$')
+		else if (*str == '$' && !ft_strchr(" \t|", str + 1))
 			res = ft_strjoinm(res, put_env(main, &str), 3);
 		else
 			res = ft_add_char(res, *str++, ft_strlen(res));
@@ -161,7 +148,7 @@ void	parse_redirect(t_main *main, t_commands *command, char **string)
 	while (ft_strchr(" \t", *str) && *str != '|' && *str != '\0')
 		res = ft_add_char(res, *str++, ft_strlen(res));
 	while (!ft_strchr(" \t<>", *str) && *str != '|' && *str != '\0')
-		parse_string(main, &str);
+		res = ft_strjoinm(res, parse_string(main, &str), 3);
 	command->redir = add_string_to_massive(&command->redir, &res, i++);
 	*string = str;
 }
