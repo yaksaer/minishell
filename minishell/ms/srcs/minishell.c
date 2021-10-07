@@ -37,7 +37,6 @@ int	init_main(t_main *main, struct sigaction *sigac, char **envp)
 	main->commands = NULL;
 	sigac->sa_flags = SA_SIGINFO;
 	sigac->sa_sigaction = handle_signals;
-	main->desc = ft_calloc(1, sizeof(t_descrip));
 	return (0);
 }
 

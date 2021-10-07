@@ -56,7 +56,7 @@ typedef struct	s_main {
 	char			**env;
 	t_dlink_list	*sort_env;
 	t_commands		*commands;
-	t_descrip		*desc;
+	t_descrip		*descrip;
 	int				pid;
 }				t_main;
 /*UTILS*/
