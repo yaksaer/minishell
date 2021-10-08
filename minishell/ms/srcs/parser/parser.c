@@ -6,11 +6,27 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 19:45:10 by marvin            #+#    #+#             */
-/*   Updated: 2021/10/07 18:30:07 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/09 02:16:03 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+char	*ft_strchr(const char *string, int symbol)
+{
+	size_t		i;
+
+	i = 0;
+	while (string[i])
+	{
+		if (string[i] == (unsigned char)symbol)
+			return ((char *)&string[i]);
+		i++;
+	}
+	if (string[i] == (unsigned char)symbol)
+		return ((char *)&string[i]);
+	return (NULL);
+}
 
 void	print_commands(t_main *main)
 {
@@ -104,7 +120,7 @@ char	*parse_quotation(t_main *main, char **string, char quote)
 	res = NULL;
 	while (*str != quote)
 	{
-		if (quote == '\"' && *str == '$' && !ft_strchr(" \t|", str + 1)) 
+		if (quote == '\"' && *str == '$' && !ft_strchr(" \t|", *str + 1)) 
 			res = ft_strjoinm(res, put_env(main, &str), 3);
 		else
 			res = ft_add_char(res, *str++, ft_strlen(res));
@@ -125,7 +141,7 @@ char	*parse_string(t_main *main, char **string)
 	{
 		if (ft_strchr("\'\"", *str))
 			res = ft_strjoinm(res, parse_quotation(main, &str, *str), 3);
-		else if (*str == '$' && !ft_strchr(" \t|", str + 1))
+		else if (*str == '$' && !ft_strchr(" \t|", *str + 1))
 			res = ft_strjoinm(res, put_env(main, &str), 3);
 		else
 			res = ft_add_char(res, *str++, ft_strlen(res));
@@ -149,7 +165,7 @@ void	parse_redirect(t_main *main, t_commands *command, char **string)
 	while (ft_strchr(" \t", *str) && *str != '|' && *str != '\0')
 		res = ft_add_char(res, *str++, ft_strlen(res));
 	while (!ft_strchr(" \t<>", *str) && *str != '|' && *str != '\0')
-		res = ft_strjoinm(res, parse_string(main, &str), 3);
+		res = ft_add_char(res, *str++, ft_strlen(res));
 	command->redir = add_string_to_massive(&command->redir, &res, i++);
 	*string = str;
 }
@@ -229,12 +245,6 @@ void	redir_path(t_commands *com, char *path, char r, int n)
 {
 	int	fd;
 
-	path += n;
-	if (ft_strchr("<>", *path))
-	{
-		printf("error, wrong redirect %c", *path);
-		exit (-1);
-	}
 	path += ft_strlen_while(path, " \t");
 	if (r == '>')
 	{	
@@ -252,7 +262,28 @@ void	redir_path(t_commands *com, char *path, char r, int n)
 	}
 }
 
-void handle_redir(t_main *main)
+char *parse_heredoc(char *str, int *q)
+{
+	char	*res;
+
+	str += ft_strlen_while(str, " \t");
+	while (*str != '\0')
+	{
+		if (ft_strchr("\'\"", *s))
+	}
+}
+
+void	ft_heredoc(t_commands *com, char *str)
+{
+	char	*key;
+	int		quot_flag;
+	int		tab_flag;
+
+	tab_flag = ft_ter_i(str[0] == '-' && str++, 1, 0);
+	key = parse_heredoc(str, &quot_flag);
+}
+
+void handle_redir(t_main *main) //прикрутить проверку на количество стрелок
 {
 	t_commands	*com;
 	char		*path;
@@ -268,8 +299,10 @@ void handle_redir(t_main *main)
 			num = ft_strlen_while(com->redir[i], "<");
 			if (num == 0)
 				num = ft_strlen_while(com->redir[i], ">");
-			if (num < 3)
-				redir_path(com, com->redir[i], com->redir[i][0], num);
+			if (num == 1 || (num == 2 && com->redir[i] == '>'))
+				redir_path(com, com->redir[i] + num, com->redir[i][0], num);
+			else if (num == 2 && com->redir[i] == '<')
+				ft_heredoc(com, com->redir[i] + num);
 		}
 		com = com->next;
 	}

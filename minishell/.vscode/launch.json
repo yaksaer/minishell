@@ -3,8 +3,8 @@
 	{
 		"type": "lldb",
 		"request": "launch",
-		"name": "Launch",
-		"program": "${workspaceFolder}/ms/minishell",
+		"name": "Minishell",
+		"program": "/home/cbilbo/minishell/minishell/ms/minishell",
 		"args": [],
 		"cwd": "${workspaceFolder}"
 	}
