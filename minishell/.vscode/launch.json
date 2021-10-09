@@ -1,9 +1,17 @@
 {
 	"configurations": [
+		{
+			"type": "lldb",
+			"request": "launch",
+			"name": "Mac Minishell",
+			"program": "/Users/cbilbo/minishell/minishell/ms/minishell",
+			"args": [],
+			"cwd": "${workspaceFolder}"
+		},
 	{
 		"type": "lldb",
 		"request": "launch",
-		"name": "Minishell",
+		"name": " Linux Minishell",
 		"program": "/home/cbilbo/minishell/minishell/ms/minishell",
 		"args": [],
 		"cwd": "${workspaceFolder}"

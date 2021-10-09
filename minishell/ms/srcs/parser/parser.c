@@ -6,27 +6,11 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 19:45:10 by marvin            #+#    #+#             */
-/*   Updated: 2021/10/09 02:16:03 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/09 13:54:50y cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-char	*ft_strchr(const char *string, int symbol)
-{
-	size_t		i;
-
-	i = 0;
-	while (string[i])
-	{
-		if (string[i] == (unsigned char)symbol)
-			return ((char *)&string[i]);
-		i++;
-	}
-	if (string[i] == (unsigned char)symbol)
-		return ((char *)&string[i]);
-	return (NULL);
-}
 
 void	print_commands(t_main *main)
 {
@@ -57,35 +41,12 @@ void	print_commands(t_main *main)
 
 char	*ft_add_char(char *string, char c, int len)
 {
-	string = (char *)ft_realloc(string, len + 1, len + 2);
-	string[len] = c;
-	return (string);
+	char	*res;
+	res = (char *)ft_realloc(string, len + 1, len + 2);
+	res[len] = c;
+	return (res);
 }
-
-size_t	ft_strlen_until(const char *string, const char *smls)
-{
-	size_t	len;
-	size_t	i;
-	size_t	j;
-
-	len = 0;
-	i = -1;
-	while (smls[++i])
-	{
-		j = -1;
-		while (string[++j])
-		{
-			if (string[j] == smls[i])
-			{
-				if (j < len || len == 0)
-					len = j;
-				break ;
-			}
-		}
-	}
-	return (len);
-}
-
+// check $'USER' $"US'ER"
 char	*put_env(t_main *main, char **string)
 {
 	char	*res;
@@ -102,7 +63,10 @@ char	*put_env(t_main *main, char **string)
 	i = 0;
 	while (main->env[i] && (ft_strlen_until(main->env[i], "=") != len \
 		|| ft_strncmp(str, main->env[i], len)))
+	{
+		printf("%s\n", main->env[i]);
 		i++;
+	}
 	str += len;
 	*string = str;
 	if (main->env[i])
@@ -241,54 +205,83 @@ int	open_redir(char *path, char r, int n)
 	return (fd);
 }
 
-void	redir_path(t_commands *com, char *path, char r, int n)
+void	redir_path(t_main *main, t_commands *com, char *path, char r)
 {
-	int	fd;
+	int		fd;
+	char	*res;
+	int		num;
 
+	res = NULL;
+	num = ft_strlen_while(path, ">");
+	if (!num)
+		num = 1;
+	path += num;
 	path += ft_strlen_while(path, " \t");
+	res = parse_string(main, &path);
+	fd = open_redir(res, r, num);
+	if ((r == '>' && com->output != 0) || (r == '<' && com->input != 0))
+		ft_ter_i(r == '>', close(com->output), close(com->input));
 	if (r == '>')
-	{	
-		fd = open_redir(path, r, n);
-		if (com->output != 0)
-			close(com->output);
 		com->output = fd;
-	}
 	else if (r == '<')
-	{
-		fd = open_redir(path, r, n);
-		if (com->input != 0)
-			close(com->input);
 		com->input = fd;
-	}
 }
 
-char *parse_heredoc(char *str, int *q)
+char	*parse_heredoc(char *str, int *q, int *t)
 {
 	char	*res;
 
+	res = NULL;
+	*t = ft_ter_i(str[2] == '-', 1, 0);
+	str += 3;
 	str += ft_strlen_while(str, " \t");
-	while (*str != '\0')
-	{
-		if (ft_strchr("\'\"", *s))
-	}
+
+	return (res);
 }
 
-void	ft_heredoc(t_commands *com, char *str)
+char	*ft_heredoc(t_commands *com, char *string)
 {
+	char	*str;
+	char	*res;
 	char	*key;
 	int		quot_flag;
 	int		tab_flag;
 
-	tab_flag = ft_ter_i(str[0] == '-' && str++, 1, 0);
-	key = parse_heredoc(str, &quot_flag);
+	res = NULL;
+	key = parse_heredoc(string, &quot_flag, &tab_flag);
+	while (1)
+	{
+		str = readline("heredoc: ");
+		if (!ft_strcmp(key, str))
+		{
+			ft_allocfree((void *)&str);
+			break ;
+		}
+		str = ft_add_char(str, '\n', ft_strlen(str));
+		res = ft_strjoinm(res, str, 3);
+	}
+	ft_allocfree((void *)&key);
+	return (res);
+}
+
+size_t	ft_strlen_while(const char *string, const char *smls)
+{
+	size_t	len;
+
+	len = 0;
+	if (string && smls)
+	{
+		while (string[len] != '\0' && ft_strchr(smls, string[len]))
+			len++;
+	}
+	return (len);
 }
 
 void handle_redir(t_main *main) //прикрутить проверку на количество стрелок
 {
 	t_commands	*com;
-	char		*path;
+	char		r;
 	int			i;
-	int			num;
 
 	com = main->commands;
 	while (com)
@@ -296,13 +289,14 @@ void handle_redir(t_main *main) //прикрутить проверку на к�
 		i = -1;
 		while (com->redir[++i])
 		{
-			num = ft_strlen_while(com->redir[i], "<");
-			if (num == 0)
-				num = ft_strlen_while(com->redir[i], ">");
-			if (num == 1 || (num == 2 && com->redir[i] == '>'))
-				redir_path(com, com->redir[i] + num, com->redir[i][0], num);
-			else if (num == 2 && com->redir[i] == '<')
-				ft_heredoc(com, com->redir[i] + num);
+			r = com->redir[i][0];
+			if (ft_strlen_while(com->redir[i], ">") == 1 || \
+				ft_strlen_while(com->redir[i], ">") == 2 || \
+				ft_strlen_while(com->redir[i], "<") == 1)
+				redir_path(main, com, com->redir[i], r);
+			else if (ft_strlen_while(com->redir[i], "<") == 2)
+				com->redir[i] = ft_strrepl(com->redir[i], \
+					ft_heredoc(com, com->redir[i]));
 		}
 		com = com->next;
 	}
