@@ -38,7 +38,7 @@
 # define BEGIN(x,y) "\001\033["#x";"#y"m\002"
 
 typedef struct	s_descrip {
-	int			def_int;
+	int			def_in;
 	int			def_out;
 	int 		fd_in;
 	int 		fd_out;
@@ -54,8 +54,10 @@ typedef struct	s_commands {
 
 typedef struct	s_main {
 	char			**env;
+	int				exit_code;
 	t_dlink_list	*sort_env;
 	t_commands		*commands;
+	t_descrip		*descrip;
 	int				pid;
 }				t_main;
 /*UTILS*/
@@ -81,6 +83,7 @@ int				replace_value(char **src, char *var);
 int				add_to_list(t_main *main, char *var, char *key);
 int				ft_unset(t_main *main, t_commands *command);
 int				ft_cd(t_main *main, t_commands *command);
+int				ft_exit(t_main *main, t_commands *commands);
 /* PARSER */
 int				parser(t_main *main);
 void			start_pars(t_main *main, char *string);

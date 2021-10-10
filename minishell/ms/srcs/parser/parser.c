@@ -308,6 +308,8 @@ int	parser(t_main *main) // здесь нужно отработать ошиб�
 	t_commands	*temp;
 
 	str = readline(BEGIN(49, 32)"Minishell: "CLOSE);
+	if (str)
+		add_history(str);
  	if (str[0] == 'q')
 	{
 		free(str);
