@@ -5,7 +5,10 @@ int		ft_exit(t_main *main, t_commands *commands)
 	int 	i;
 
 	if (ft_mass_size(commands->cmd) > 2)
+	{
 		printf("minishell: exit: too many arguments\n");
+		return (1);
+	}
 	else if (ft_mass_size(commands->cmd) == 1)
 		exit(0);
 	else

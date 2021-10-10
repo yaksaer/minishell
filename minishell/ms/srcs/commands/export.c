@@ -9,7 +9,7 @@ int		check_key(char *val, char *prog)
 	count = 0;
 	while (val[i] && val[i] != '=')
 	{
-		if (!ft_isalnum(val[i]))
+		if (!ft_isalnum(val[i]) && val[i] != '_')
 		{
 			printf("minishell: %s: '%c': not a valid identifier\n",prog,
 				   val[i]);
@@ -117,16 +117,19 @@ int		replace_value(char **src, char *var)
 int		start_export(t_main *main, t_commands *command)
 {
 	int 	i;
+	int 	flag;
 	char	*str;
 
 	i = 0;
+	flag = 0;
 	while (command->cmd[++i])
 	{
-		if (check_key(command->cmd[i], "export"))
+		flag += check_key(command->cmd[i], "export");
+		if (flag)
 			continue;
 		str = str_get_key(command->cmd[i]);
 		if (!str)
-			;
+			return (1);
 		if (add_to_list(main, command->cmd[i], str) < 0)
 			replace_value(main->env, command->cmd[i]);
 		else
@@ -135,16 +138,17 @@ int		start_export(t_main *main, t_commands *command)
 			return (1);
 		free(str);
 	}
-	return (0);
+	return (flag);
 }
 
 int		ft_export(t_main *main, t_commands *command)
 {
-	t_node			*tmp;
+	t_node	*tmp;
+	int		ret;
 
 	tmp = main->sort_env->head;
 	if (ft_mass_size(command->cmd) > 1)
-		start_export(main, command);
+		ret = start_export(main, command);
 	else
 	{
 		while (tmp)
@@ -153,6 +157,8 @@ int		ft_export(t_main *main, t_commands *command)
 			tmp = tmp->next;
 		}
 	}
+	if (ret > 0)
+		return (1);
 	return (0);
 }
 

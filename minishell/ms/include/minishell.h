@@ -54,6 +54,7 @@ typedef struct	s_commands {
 
 typedef struct	s_main {
 	char			**env;
+	int				exit_code;
 	t_dlink_list	*sort_env;
 	t_commands		*commands;
 	t_descrip		*descrip;
