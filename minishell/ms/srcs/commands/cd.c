@@ -73,7 +73,7 @@ int		ft_cd(t_main *main, t_commands *command)
 	if (ft_mass_size(command->cmd) == 1)
 		go_home(main, command);
 	else if (command->cmd[1][0] == '.' && command->cmd[1][1] == '.'
-		&& !command->cmd[1][2])
+		&& (!command->cmd[1][2] || ft_isspace(command->cmd[1][2])))
 		step_back(main, command);
 	else if (command->cmd[1][0] == '.' && !command->cmd[1][1])
 		return (0);
@@ -81,12 +81,16 @@ int		ft_cd(t_main *main, t_commands *command)
 	{
 		old_dir = getcwd(NULL, 0);
 		if (chdir(command->cmd[1]) < 0)
+		{
 			printf("Minishell: cd: %s: No such file or directory\n",
 				   command->cmd[1]);
+			return (1);
+		}
 		else
 		{
 			change_env(main, old_dir);
 			free(old_dir);
 		}
 	}
+	return (0);
 }

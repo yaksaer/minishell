@@ -16,19 +16,19 @@ int 	is_my_command(t_main *main, t_commands *command)
 int		exec_my_command(t_main *main, t_commands *command)
 {
 	if (!ft_strcmp(command->cmd[0], "echo"))
-		ft_echo(ft_mass_size(command->cmd), command->cmd);
+		main->exit_code = ft_echo(ft_mass_size(command->cmd), command->cmd);
 	else if (!ft_strcmp(command->cmd[0], "env"))
-		ft_env(main->env);
+		main->exit_code = ft_env(main->env);
 	else if (!ft_strcmp(command->cmd[0], "pwd"))
-		ft_pwd();
+		main->exit_code = ft_pwd();
 	else if (!ft_strcmp(command->cmd[0], "export"))
-		ft_export(main, command);
+		main->exit_code = ft_export(main, command);
 	else if (!ft_strcmp(command->cmd[0], "unset"))
-		ft_unset(main, command);
+		main->exit_code = ft_unset(main, command);
 	else if (!ft_strcmp(command->cmd[0], "cd"))
-		ft_cd(main, command);
+		main->exit_code = ft_cd(main, command);
 	else if (!ft_strcmp(command->cmd[0], "exit"))
-	 	ft_exit(main, command);
+		main->exit_code = ft_exit(main, command);
 }
 
 char	*find_path(char **buf, char *cmd)
@@ -82,6 +82,8 @@ int		check_command_path(t_main *main, t_commands *command)
 	{
 		if (execve(command->cmd[0], command->cmd, main->env) < 0)
 		{
+			printf("minishell: %s: No such file or directory\n",
+				   command->cmd[0]);
 			exit(1);
 		}
 	}
@@ -89,11 +91,14 @@ int		check_command_path(t_main *main, t_commands *command)
 	{
 		path = split_path(command, main->env);
 		if (!path)
-			return (1);
+		{
+			printf("minishell: %s: command not found\n", command->cmd[0]);
+			exit(127);
+		}
 		if (execve(path, command->cmd, main->env) < 0)
 		{
 			free(path);
-			exit(1);
+			exit(127);
 		}
 		free(path);
 	}
@@ -102,6 +107,7 @@ int		check_command_path(t_main *main, t_commands *command)
 
 void 	init_fd(t_descrip *descrip, t_commands *command)
 {
+	ft_bzero((void *) descrip, sizeof(t_descrip));
 	descrip->def_in = dup(0);
 	descrip->def_out = dup(1);
 	if (command->input)
@@ -153,20 +159,16 @@ void	reset_fd(t_descrip *descrip)
 
 void 	check_command(t_main *main, t_commands *command)
 {
-	int 	t;
-
 	if (!main->commands->cmd)
 		return ;
-	else if (is_my_command(main, main->commands))
-		exec_my_command(main, main->commands);
+	else if (is_my_command(main, command))
+		exec_my_command(main, command);
 	else
 	{
 		main->pid = fork();
 		if (main->pid == 0)
-		{
 			check_command_path(main, command);
-		}
-		waitpid(main->pid, &t, 0);
+		waitpid(main->pid, NULL, 0);
 	}
 }
 
@@ -176,7 +178,7 @@ int 	get_command(t_main *main)
 	t_commands	*tmp;
 
 	init_fd(&descrip, main->commands);
-	main->descrip = &descrip;
+	main->pid = 0;
 	tmp = main->commands;
 	while (tmp)
 	{
