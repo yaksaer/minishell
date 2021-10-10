@@ -1,29 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   ft_strrepl.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/28 20:11:24 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/09 14:03:21 by cbilbo           ###   ########.fr       */
+/*   Created: 2021/10/09 10:55:27 by cbilbo            #+#    #+#             */
+/*   Updated: 2021/10/09 11:37:37 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
-char	*ft_strchr(const char *string, int symbol)
+char	*ft_strrepl(char *dest, char *src)
 {
-	size_t		i;
-
-	i = 0;
-	while (string[i])
-	{
-		if (string[i] == (unsigned char)symbol)
-			return ((char *)&string[i]);
-		i++;
-	}
-	if (string[i] == (unsigned char)symbol)
-		return ((char *)&string[i]);
-	return (NULL);
+	ft_allocfree((void *)&dest);
+	dest = src;
+	return (dest);
 }
