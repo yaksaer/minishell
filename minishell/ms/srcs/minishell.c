@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 15:11:35 by marvin            #+#    #+#             */
-/*   Updated: 2021/10/07 17:30:44 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/12 02:15:36 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,14 @@ static void	handle_signals(int sig, siginfo_t *info, void *ucontext)
 	usl = info;
 	usls = ucontext;
 	if (sig == SIGINT)
-		printf("hello Ctrl+C\n");
+	{
+		write(1, "\b\b  \b\b\n", 7);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
+	else if (sig == SIGQUIT)
+		write(1, "\b\b  \b\b", 6);
 }
 
 int	init_main(t_main *main, struct sigaction *sigac, char **envp)
@@ -57,7 +64,7 @@ int		main(int ac, char **av, char **envp)
 	stop = 1;
 	if (init_main(main, &sigac, envp))
 		return (1);
-	if (sigaction(SIGTSTP, &sigac, 0) == -1 || sigaction(SIGINT, &sigac, 0) == -1)
+	if (sigaction(SIGQUIT, &sigac, 0) == -1 || sigaction(SIGINT, &sigac, 0) == -1)
 	{
 		exit (EXIT_FAILURE);
 	}

@@ -46,6 +46,30 @@ char	*ft_add_char(char *string, char c, int len)
 	res[len] = c;
 	return (res);
 }
+
+size_t	ft_strlen_until(const char *string, const char *smls)
+{
+	size_t	len;
+	size_t	i;
+	size_t	j;
+
+	i = -1;
+	len = -1;
+	while (smls[++i])
+	{
+		j = -1;
+		while (string[++j])
+		{
+			if (string[j] == smls[i] && (j < len || len == -1))
+			{
+				len = j;
+				break ;
+			}
+		}
+	}
+	return (ft_ter_i(len == -1, 0, len));
+}
+
 // check $'USER' $"US'ER"
 char	*put_env(t_main *main, char **string)
 {
@@ -58,19 +82,18 @@ char	*put_env(t_main *main, char **string)
 	str = *string;
 	str++;
 	len = ft_strlen_until(str, "\"\'$<> |");
-	if (!len)
+	if (!len && !ft_strchr("\'\"$<> |", *str))
 		len = ft_strlen(str);
 	i = 0;
 	while (main->env[i] && (ft_strlen_until(main->env[i], "=") != len \
 		|| ft_strncmp(str, main->env[i], len)))
-	{
-		printf("%s\n", main->env[i]);
 		i++;
-	}
 	str += len;
 	*string = str;
 	if (main->env[i])
 		res = ft_substr(main->env[i], len + 1, ft_strlen(main->env[i]));
+	if (*str == '$' && ++*string)
+		res = ft_strdup("80085");
 	return (res);
 }
 
@@ -84,7 +107,8 @@ char	*parse_quotation(t_main *main, char **string, char quote)
 	res = NULL;
 	while (*str != quote)
 	{
-		if (quote == '\"' && *str == '$' && !ft_strchr(" \t|", *str + 1)) 
+		if (quote == '\"' && *str == '$' && str[1] \
+			&& !ft_strchr(" \t|", str[1])) 
 			res = ft_strjoinm(res, put_env(main, &str), 3);
 		else
 			res = ft_add_char(res, *str++, ft_strlen(res));
@@ -93,6 +117,23 @@ char	*parse_quotation(t_main *main, char **string, char quote)
 	*string = str;
 	return (res);
 }
+
+char	*ft_strchr(const char *string, int symbol)
+{
+	size_t		i;
+
+	i = 0;
+	while (string[i])
+	{
+		if (string[i] == (unsigned char)symbol)
+			return ((char *)&string[i]);
+		i++;
+	}
+	if (string[i] == (unsigned char)symbol)
+		return ((char *)&string[i]);
+	return (NULL);
+}
+
 
 char	*parse_string(t_main *main, char **string)
 {
@@ -105,7 +146,7 @@ char	*parse_string(t_main *main, char **string)
 	{
 		if (ft_strchr("\'\"", *str))
 			res = ft_strjoinm(res, parse_quotation(main, &str, *str), 3);
-		else if (*str == '$' && !ft_strchr(" \t|", *str + 1))
+		else if (*str == '$' && str[1] && !ft_strchr("\" \t|", str[1]))
 			res = ft_strjoinm(res, put_env(main, &str), 3);
 		else
 			res = ft_add_char(res, *str++, ft_strlen(res));
@@ -114,23 +155,31 @@ char	*parse_string(t_main *main, char **string)
 	return (res);
 }
 
-void	parse_redirect(t_main *main, t_commands *command, char **string)
+void	parse_redirect(t_main *main, t_commands *cmd, char **string, int *c)
 {
 	static int	i;
 	char		*str;
 	char		*res;
+	char		*her;
 
-	if (!command->redir)
+	if (!cmd->redir)
 		i = 0;
 	str = *string;
 	res = NULL;
+	if (!ft_strncmp(str, "<<", 2))
+	{
+		her = ft_strdup(".heredoc");
+		cmd->cmd = add_string_to_massive(&cmd->cmd, &her, *c++);
+	}
 	while (ft_strchr("<>", *str) && *str != '|' && *str != '\0')
+		res = ft_add_char(res, *str++, ft_strlen(res));
+	if (!ft_strcmp(res, "<<") && *str == '-')
 		res = ft_add_char(res, *str++, ft_strlen(res));
 	while (ft_strchr(" \t", *str) && *str != '|' && *str != '\0')
 		res = ft_add_char(res, *str++, ft_strlen(res));
 	while (!ft_strchr(" \t<>", *str) && *str != '|' && *str != '\0')
 		res = ft_add_char(res, *str++, ft_strlen(res));
-	command->redir = add_string_to_massive(&command->redir, &res, i++);
+	cmd->redir = add_string_to_massive(&cmd->redir, &res, i++);
 	*string = str;
 }
 
@@ -149,7 +198,7 @@ int	parse_command(t_main *main, t_commands *command, char **string)
 		{
 			if (res)
 				command->cmd = add_string_to_massive(&command->cmd, &res, i++);
-			parse_redirect(main, command, &str);
+			parse_redirect(main, command, &str, &i);
 		}
 		else
 			res = parse_string(main, &str);
@@ -188,9 +237,9 @@ int	open_redir(char *path, char r, int n)
 	if (r == '>')
 	{
 		if (n == 1)
-			fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0064);
+			fd = open(path, O_RDWR | O_CREAT | O_TRUNC, 0664);
 		else
-			fd = open(path, O_WRONLY | O_CREAT | O_APPEND, 0664);
+			fd = open(path, O_RDWR | O_CREAT | O_APPEND, 0664);
 	}
 	else
 	{
@@ -227,28 +276,53 @@ void	redir_path(t_main *main, t_commands *com, char *path, char r)
 		com->input = fd;
 }
 
-char	*parse_heredoc(char *str, int *q, int *t)
+char	*parse_heredoc(char *str, int *qt)
 {
 	char	*res;
 
 	res = NULL;
-	*t = ft_ter_i(str[2] == '-', 1, 0);
-	str += 3;
+	*qt = ft_ter_i(str[2] == '-', 2, *qt);
+	str = ft_ter_s(*qt & 2, str + 3, str + 2);
 	str += ft_strlen_while(str, " \t");
-
+	while (*str != '\0')
+	{
+		if (ft_strchr("\'\"", *str) && *str++ && ++*qt)
+			continue ;
+		res = ft_add_char(res, *str++, ft_strlen(res));
+	}
 	return (res);
 }
 
-char	*ft_heredoc(t_commands *com, char *string)
+char	*put_heredoc(t_main *main, char *dest, char *src, int qt)
+{
+	char	*res;
+
+	res = NULL;
+	if (dest)
+		dest = ft_add_char(dest, '\n', ft_strlen(dest));
+	if (qt & 2)
+		src += ft_strlen_while(src, "\t");
+	while (*src != '\0')
+	{
+		if (*src == '$' && !(qt & 1))
+			res = ft_strjoinm(res, put_env(main, &src), 3);
+		else
+			res = ft_add_char(res, *src++, ft_strlen(res));
+	}
+	res = ft_strjoinm(dest, res, 3);
+	return (res);
+}
+
+void	ft_heredoc(t_main *main, t_commands *com, char *string)
 {
 	char	*str;
 	char	*res;
 	char	*key;
-	int		quot_flag;
-	int		tab_flag;
+	int		quo_tab_flags;
 
 	res = NULL;
-	key = parse_heredoc(string, &quot_flag, &tab_flag);
+	quo_tab_flags = 0;
+	key = parse_heredoc(string, &quo_tab_flags);
 	while (1)
 	{
 		str = readline("heredoc: ");
@@ -257,24 +331,13 @@ char	*ft_heredoc(t_commands *com, char *string)
 			ft_allocfree((void *)&str);
 			break ;
 		}
-		str = ft_add_char(str, '\n', ft_strlen(str));
-		res = ft_strjoinm(res, str, 3);
+		res = put_heredoc(main, res, str, quo_tab_flags);
 	}
 	ft_allocfree((void *)&key);
-	return (res);
-}
-
-size_t	ft_strlen_while(const char *string, const char *smls)
-{
-	size_t	len;
-
-	len = 0;
-	if (string && smls)
-	{
-		while (string[len] != '\0' && ft_strchr(smls, string[len]))
-			len++;
-	}
-	return (len);
+	quo_tab_flags = open_redir(".heredoc", '>', 1);
+	write(quo_tab_flags, res, ft_strlen(res));
+	ft_allocfree((void *)&res);
+	return ;
 }
 
 void handle_redir(t_main *main) //прикрутить проверку на количество стрелок
@@ -295,8 +358,7 @@ void handle_redir(t_main *main) //прикрутить проверку на к�
 				ft_strlen_while(com->redir[i], "<") == 1)
 				redir_path(main, com, com->redir[i], r);
 			else if (ft_strlen_while(com->redir[i], "<") == 2)
-				com->redir[i] = ft_strrepl(com->redir[i], \
-					ft_heredoc(com, com->redir[i]));
+					ft_heredoc(main, com, com->redir[i]);
 		}
 		com = com->next;
 	}
@@ -308,6 +370,11 @@ int	parser(t_main *main) // здесь нужно отработать ошиб�
 	t_commands	*temp;
 
 	str = readline(BEGIN(49, 32)"Minishell: "CLOSE);
+	if (!str)
+	{
+		write(1, "\n", 1);
+		exit(0);
+	}
 	if (str)
 		add_history(str);
  	if (str[0] == 'q')
