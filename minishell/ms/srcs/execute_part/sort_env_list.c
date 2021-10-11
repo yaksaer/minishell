@@ -1,8 +1,21 @@
 #include "../../include/minishell.h"
 
+int	is_my_command(t_commands *command)
+{
+	if (!ft_strcmp(command->cmd[0], "echo")
+		|| !ft_strcmp(command->cmd[0], "env")
+		|| !ft_strcmp(command->cmd[0], "export")
+		|| !ft_strcmp(command->cmd[0], "unset")
+		|| !ft_strcmp(command->cmd[0], "pwd")
+		|| !ft_strcmp(command->cmd[0], "cd")
+		|| !ft_strcmp(command->cmd[0], "exit"))
+		return (1);
+	return (0);
+}
+
 char	*get_env_key(t_node *node)
 {
-	int 	i;
+	int		i;
 	char	*ret;
 
 	i = 0;
@@ -33,11 +46,11 @@ void	swap_dlist_nodes(t_node *curr, t_node *second, t_dlink_list *dlist)
 	curr->prev = second;
 }
 
-int		is_dlist_sort(t_dlink_list *dlist)
+int	is_dlist_sort(t_dlink_list *dlist)
 {
 	t_node	*tmp_node;
-	char 	*tmp;
-	char 	*tmp2;
+	char	*tmp;
+	char	*tmp2;
 
 	tmp_node = dlist->head;
 	while (tmp_node)

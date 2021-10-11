@@ -1,12 +1,12 @@
 #include "../../include/minishell.h"
 
-char 	**mass_unset(char **env, char *val)
+char	**mass_unset(char **env, char *val)
 {
 	int		i;
-	int 	j;
+	int		j;
 	char	**ret;
 
-	ret = ft_calloc(ft_mass_size(env) - 1, sizeof(char*));
+	ret = ft_calloc(ft_mass_size(env) - 1, sizeof(char *));
 	if (!ret)
 		return (NULL);
 	i = 0;
@@ -18,15 +18,15 @@ char 	**mass_unset(char **env, char *val)
 		if (env[j])
 			ret[i++] = env[j++];
 	}
-	ret[i] = '\0';
+	ret[i] = "\0";
 	free(env);
 	return (ret);
 }
 
-void 	list_unset(t_main *main, char *val)
+void	list_unset(t_main *main, char *val)
 {
 	t_node	*tmp;
-	int 	i;
+	int		i;
 
 	tmp = main->sort_env->head;
 	i = 0;
@@ -39,7 +39,7 @@ void 	list_unset(t_main *main, char *val)
 	}
 }
 
-int 	find_key(t_main *main, char *val)
+int	find_key(t_main *main, char *val)
 {
 	t_node	*tmp;
 
@@ -53,9 +53,9 @@ int 	find_key(t_main *main, char *val)
 	return (1);
 }
 
-int		ft_unset(t_main *main, t_commands *command)
+int	ft_unset(t_main *main, t_commands *command)
 {
-	int 	i;
+	int	i;
 
 	if (ft_mass_size(command->cmd) > 1)
 	{
@@ -64,7 +64,7 @@ int		ft_unset(t_main *main, t_commands *command)
 		{
 			if (check_key(command->cmd[i], "unset")
 				|| find_key(main, command->cmd[i]))
-				continue;
+				continue ;
 			list_unset(main, command->cmd[i]);
 			main->env = mass_unset(main->env, command->cmd[i]);
 			if (!main->env)

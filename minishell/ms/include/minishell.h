@@ -74,6 +74,8 @@ int				sort_dlist(t_dlink_list *dlist);
 int 			init_main(t_main *main, struct sigaction *sigac, char **envp);
 /*EXECUTE*/
 int				get_command(t_main *main);
+void			check_command(t_main *main, t_commands *command);
+int				is_my_command(t_commands *command);
 /*COMMANDS*/
 int				ft_echo(int argc, char **argv);
 int				ft_env(char **env);
@@ -83,7 +85,7 @@ int				replace_value(char **src, char *var);
 int				add_to_list(t_main *main, char *var, char *key);
 int				ft_unset(t_main *main, t_commands *command);
 int				ft_cd(t_main *main, t_commands *command);
-int				ft_exit(t_main *main, t_commands *commands);
+int				ft_exit(t_commands *commands);
 /* PARSER */
 int				parser(t_main *main);
 void			start_pars(t_main *main, char *string);

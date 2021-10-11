@@ -1,9 +1,9 @@
 #include "../../include/minishell.h"
 
-int		check_key(char *val, char *prog)
+int	check_key(char *val, char *prog)
 {
-	int 	i;
-	int 	count;
+	int		i;
+	int		count;
 
 	i = 0;
 	count = 0;
@@ -11,7 +11,7 @@ int		check_key(char *val, char *prog)
 	{
 		if (!ft_isalnum(val[i]) && val[i] != '_')
 		{
-			printf("minishell: %s: '%c': not a valid identifier\n",prog,
+			printf("minishell: %s: '%c': not a valid identifier\n", prog,
 				   val[i]);
 			return (1);
 		}
@@ -27,29 +27,61 @@ int		check_key(char *val, char *prog)
 	return (0);
 }
 
-int 	add_to_list(t_main *main, char *var, char *key)
+void	ft_dlist_insert_head(t_dlink_list *list, size_t index, char *data)
 {
-	t_node		*tmp;
-	int 		i;
+	t_node	*elm;
+	t_node	*ins;
+
+	elm = NULL;
+	ins = NULL;
+	elm = ft_dlist_get_n(list, index);
+	if (elm == NULL)
+		return ;
+	ins = (t_node *)malloc(sizeof(t_node));
+	if (ins == NULL)
+		return ;
+	ins->data = data;
+	ins->prev = NULL;
+	ins->next = elm;
+	list->head = ins;
+	elm->prev = ins;
+	if (!elm->next)
+		list->tail = elm;
+	list->size++;
+}
+
+int	add_to_list(t_main *main, char *cmd, char *key)
+{
+	t_node	*tmp;
+	char	*var;
+	char	*str;
+	int		i;
 
 	tmp = main->sort_env->head;
-	var = add_quotes_util(var);
+	var = add_quotes_util(cmd);
 	if (!var)
 		return (1);
 	i = 0;
 	while (++i && tmp)
 	{
-		if (ft_strcmp(get_env_key(tmp), key) > 0)
+		str = get_env_key(tmp);
+		if (ft_strcmp(str, key) > 0)
 		{
-			ft_dlist_insert(main->sort_env, i - 2, var);
+			if (tmp == main->sort_env->head)
+				ft_dlist_insert_head(main->sort_env, 0, var);
+			else
+				ft_dlist_insert(main->sort_env, i - 2, var);
+			free(str);
 			return (0);
 		}
-		else if (ft_strcmp(get_env_key(tmp), key) == 0)
+		else if (ft_strcmp(str, key) == 0)
 		{
-			ft_dlist_del_n(main->sort_env, i - 1);
+			free(ft_dlist_del_n(main->sort_env, i - 1));
 			ft_dlist_insert(main->sort_env, i - 2, var);
+			free(str);
 			return (-1);
 		}
+		free(str);
 		tmp = tmp->next;
 	}
 	ft_dlist_push_back(main->sort_env, var);
@@ -58,7 +90,7 @@ int 	add_to_list(t_main *main, char *var, char *key)
 
 char	*str_get_key(char *var)
 {
-	int 	i;
+	int		i;
 	char	*ret;
 
 	i = 0;
@@ -77,47 +109,58 @@ char	*str_get_key(char *var)
 char	**realloc_n_add(char **src, char *var)
 {
 	int		i;
-	char 	**ret;
+	char	**ret;
 
 	i = 0;
 	while (src[i])
 		i++;
-	ret = ft_calloc(i + 2, sizeof(char*));
+	ret = ft_calloc(i + 2, sizeof(char *));
 	if (!ret)
 		return (NULL);
 	i = -1;
 	while (src[++i])
 		ret[i] = src[i];
 	ret[i++] = ft_strdup(var);
-	ret[i] = '\0';
+	if (!ret[i - 1])
+		return (NULL);
+//	ret[i] = "\0";
 	free(src);
 	return (ret);
 }
 
-int		replace_value(char **src, char *var)
+int	replace_value(char **src, char *var)
 {
 	int		i;
 	char	*ret;
+	char	*tmp1;
+	char	*tmp2;
 
 	i = -1;
+	tmp1 = str_get_key(var);
 	while (src[++i])
 	{
-		if (ft_strcmp(str_get_key(src[i]), str_get_key(var)) == 0)
+		tmp2 = str_get_key(src[i]);
+		if (ft_strcmp(tmp2, tmp1) == 0)
 		{
 			free(src[i]);
 			ret = ft_calloc(ft_strlen(var) + 1, sizeof(char));
 			if (!ret)
-				;
+				return (1);
 			ret = ft_strcpy(ret, var);
 			src[i] = ret;
+			free(tmp2);
+			break ;
 		}
+		free(tmp2);
 	}
+	free(tmp1);
+	return (0);
 }
 
-int		start_export(t_main *main, t_commands *command)
+int	start_export(t_main *main, t_commands *command)
 {
-	int 	i;
-	int 	flag;
+	int		i;
+	int		flag;
 	char	*str;
 
 	i = 0;
@@ -126,27 +169,34 @@ int		start_export(t_main *main, t_commands *command)
 	{
 		flag += check_key(command->cmd[i], "export");
 		if (flag)
-			continue;
+			continue ;
 		str = str_get_key(command->cmd[i]);
 		if (!str)
 			return (1);
 		if (add_to_list(main, command->cmd[i], str) < 0)
-			replace_value(main->env, command->cmd[i]);
+		{
+			if (replace_value(main->env, command->cmd[i]))
+			{
+				free(str);
+				return (1);
+			}
+		}
 		else
 			main->env = realloc_n_add(main->env, command->cmd[i]);
+		free(str);
 		if (!main->env)
 			return (1);
-		free(str);
 	}
 	return (flag);
 }
 
-int		ft_export(t_main *main, t_commands *command)
+int	ft_export(t_main *main, t_commands *command)
 {
 	t_node	*tmp;
 	int		ret;
 
 	tmp = main->sort_env->head;
+	ret = 0;
 	if (ft_mass_size(command->cmd) > 1)
 		ret = start_export(main, command);
 	else
@@ -161,4 +211,3 @@ int		ft_export(t_main *main, t_commands *command)
 		return (1);
 	return (0);
 }
-
