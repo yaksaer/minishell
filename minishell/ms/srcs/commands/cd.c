@@ -1,6 +1,6 @@
 #include "../../include/minishell.h"
 
-void		change_env(t_main *main, char *old_dir)
+void	change_env(t_main *main, char *old_dir)
 {
 	char	*tmp;
 
@@ -18,7 +18,7 @@ void		change_env(t_main *main, char *old_dir)
 	replace_value(main->env, tmp);
 }
 
-int		step_back(t_main *main, t_commands *command)
+int	step_back(t_main *main)
 {
 	char	*curr_path;
 	int		i;
@@ -26,7 +26,7 @@ int		step_back(t_main *main, t_commands *command)
 	char	*tmp;
 
 	curr_path = getcwd(NULL, 0);
-	len = ft_strlen(curr_path) - ft_strlen( ft_strrchr(curr_path, '/'));
+	len = ft_strlen(curr_path) - ft_strlen(ft_strrchr(curr_path, '/'));
 	tmp = ft_calloc(len + 2, sizeof(char));
 	if (!tmp)
 		return (1);
@@ -43,14 +43,15 @@ int		step_back(t_main *main, t_commands *command)
 	return (0);
 }
 
-int		go_home(t_main *main, t_commands *command)
+int	go_home(t_main *main)
 {
-	int 	i;
+	int		i;
 	char	*str;
-	char	*curr_path;
+	char	curr_path[1024];
 
 	i = -1;
-	curr_path = getcwd(NULL, 0);
+	ft_bzero(curr_path, 1024);
+	getcwd(curr_path, 1024);
 	while (main->env[++i])
 		if (ft_strcmp(str_get_key(main->env[i]), "HOME") == 0)
 			break ;
@@ -62,19 +63,19 @@ int		go_home(t_main *main, t_commands *command)
 	str = ft_strdup(main->env[i] + 5);
 	if (!chdir(str))
 		change_env(main, curr_path);
-	free(curr_path);
 	free(str);
+	return (0);
 }
 
-int		ft_cd(t_main *main, t_commands *command)
+int	ft_cd(t_main *main, t_commands *command)
 {
 	char	*old_dir;
 
 	if (ft_mass_size(command->cmd) == 1)
-		go_home(main, command);
+		return (go_home(main));
 	else if (command->cmd[1][0] == '.' && command->cmd[1][1] == '.'
 		&& (!command->cmd[1][2] || ft_isspace(command->cmd[1][2])))
-		step_back(main, command);
+		step_back(main);
 	else if (command->cmd[1][0] == '.' && !command->cmd[1][1])
 		return (0);
 	else

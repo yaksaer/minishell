@@ -1,28 +1,42 @@
 #include "../../include/minishell.h"
 
-int		ft_exit(t_main *main, t_commands *commands)
+void	numeric_exit(t_commands *command)
 {
-	int 	i;
+	int	i;
 
-	if (ft_mass_size(commands->cmd) > 2)
+	if (!ft_isdigit(command->cmd[1][0]) && command->cmd[1][0] != '-'
+		&& command->cmd[1][0] != '+')
+	{
+		printf("minishell: exit: %s: numeric argument required\n",
+			   command->cmd[1]);
+		exit(255);
+	}
+	i = 0;
+	while (command->cmd[1][++i])
+	{
+		if (!ft_isdigit(command->cmd[1][i]))
+		{
+			printf("minishell: exit: %s: numeric argument required\n",
+				   command->cmd[1]);
+			exit(255);
+		}
+	}
+	exit(ft_atoi(command->cmd[1]));
+}
+
+int	ft_exit(t_commands *command)
+{
+	if (ft_mass_size(command->cmd) == 1)
+	{
+		printf("exit\n");
+		exit(0);
+	}
+	else if (ft_mass_size(command->cmd) > 2)
 	{
 		printf("minishell: exit: too many arguments\n");
 		return (1);
 	}
-	else if (ft_mass_size(commands->cmd) == 1)
-		exit(0);
 	else
-	{
-		i = -1;
-		while (commands->cmd[1][++i])
-		{
-			if (!ft_isdigit(commands->cmd[1][i]))
-			{
-				printf("bash: exit: %s: numeric argument required\n",
-					   commands->cmd[1]);
-				exit (255);
-			}
-		}
-		exit (ft_atoi(commands->cmd[1]));
-	}
+		numeric_exit(command);
+	return (0);
 }
