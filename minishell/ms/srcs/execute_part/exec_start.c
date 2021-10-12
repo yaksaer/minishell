@@ -57,7 +57,7 @@ void	wait_child(t_main *main)
 	int		stat;
 	int		ret;
 
-	ret = -123;
+	ret = 0;
 	if (main->pid != 0)
 	{
 		waitpid(main->pid, &stat, 0);
@@ -65,6 +65,7 @@ void	wait_child(t_main *main)
 		{
 			ret = WEXITSTATUS(stat);
 		}
+		main->exit_code = ret;
 	}
 }
 
