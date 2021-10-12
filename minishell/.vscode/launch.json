@@ -1,6 +1,25 @@
 {
 	"configurations": [
 		{
+			"name": "DBG Minishell Linux",
+			"type": "cppdbg",
+			"request": "launch",
+			"program": "/home/cbilbo/minishell/minishell/ms/minishell",
+			"args": [],
+			"stopAtEntry": false,
+			"cwd": "${fileDirname}",
+			"environment": [],
+			"externalConsole": false,
+			"MIMode": "gdb",
+			"setupCommands": [
+				{
+					"description": "Включить автоматическое форматирование для gdb",
+					"text": "-enable-pretty-printing",
+					"ignoreFailures": true
+				}
+			]
+		},
+		{
 			"type": "lldb",
 			"request": "launch",
 			"name": "Mac Minishell",
