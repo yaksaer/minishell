@@ -42,6 +42,7 @@ void	print_commands(t_main *main)
 char	*ft_add_char(char *string, char c, int len)
 {
 	char	*res;
+
 	res = (char *)ft_realloc(string, len + 1, len + 2);
 	res[len] = c;
 	return (res);
@@ -276,70 +277,6 @@ void	redir_path(t_main *main, t_commands *com, char *path, char r)
 		com->input = fd;
 }
 
-char	*parse_heredoc(char *str, int *qt)
-{
-	char	*res;
-
-	res = NULL;
-	*qt = ft_ter_i(str[2] == '-', 2, *qt);
-	str = ft_ter_s(*qt & 2, str + 3, str + 2);
-	str += ft_strlen_while(str, " \t");
-	while (*str != '\0')
-	{
-		if (ft_strchr("\'\"", *str) && *str++ && ++*qt)
-			continue ;
-		res = ft_add_char(res, *str++, ft_strlen(res));
-	}
-	return (res);
-}
-
-char	*put_heredoc(t_main *main, char *dest, char *src, int qt)
-{
-	char	*res;
-
-	res = NULL;
-	if (dest)
-		dest = ft_add_char(dest, '\n', ft_strlen(dest));
-	if (qt & 2)
-		src += ft_strlen_while(src, "\t");
-	while (*src != '\0')
-	{
-		if (*src == '$' && !(qt & 1))
-			res = ft_strjoinm(res, put_env(main, &src), 3);
-		else
-			res = ft_add_char(res, *src++, ft_strlen(res));
-	}
-	res = ft_strjoinm(dest, res, 3);
-	return (res);
-}
-
-void	ft_heredoc(t_main *main, t_commands *com, char *string)
-{
-	char	*str;
-	char	*res;
-	char	*key;
-	int		quo_tab_flags;
-
-	res = NULL;
-	quo_tab_flags = 0;
-	key = parse_heredoc(string, &quo_tab_flags);
-	while (1)
-	{
-		str = readline("heredoc: ");
-		if (!ft_strcmp(key, str))
-		{
-			ft_allocfree((void *)&str);
-			break ;
-		}
-		res = put_heredoc(main, res, str, quo_tab_flags);
-	}
-	ft_allocfree((void *)&key);
-	quo_tab_flags = open_redir(".heredoc", '>', 1);
-	write(quo_tab_flags, res, ft_strlen(res));
-	ft_allocfree((void *)&res);
-	return ;
-}
-
 void handle_redir(t_main *main) //прикрутить проверку на количество стрелок
 {
 	t_commands	*com;
@@ -358,7 +295,7 @@ void handle_redir(t_main *main) //прикрутить проверку на к�
 				ft_strlen_while(com->redir[i], "<") == 1)
 				redir_path(main, com, com->redir[i], r);
 			else if (ft_strlen_while(com->redir[i], "<") == 2)
-					ft_heredoc(main, com, com->redir[i]);
+				ft_heredoc(main, com, com->redir[i]);
 		}
 		com = com->next;
 	}
@@ -385,7 +322,7 @@ int	parser(t_main *main) // здесь нужно отработать ошиб�
 	start_pars(main, str);
 	if (main->commands->redir)
 		handle_redir(main);
-	print_commands(main);
+	//print_commands(main);
 	ft_allocfree((void *)&str);
 	return (1);
 }
