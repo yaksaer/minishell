@@ -94,6 +94,8 @@ char	*str_get_key(char *var)
 	char	*ret;
 
 	i = 0;
+	if (!var)
+		return (NULL);
 	while (var[i] != '=')
 		i++;
 	ret = ft_calloc(i + 1, sizeof(char));
