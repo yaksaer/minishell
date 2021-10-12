@@ -5,6 +5,7 @@ char	**mass_unset(char **env, char *val)
 	int		i;
 	int		j;
 	char	**ret;
+	char	*tmp;
 
 	ret = ft_calloc(ft_mass_size(env) - 1, sizeof(char *));
 	if (!ret)
@@ -13,12 +14,16 @@ char	**mass_unset(char **env, char *val)
 	j = 0;
 	while (env[j])
 	{
-		if (ft_strcmp(str_get_key(env[i]), val) == 0)
-			j++;
+		tmp = str_get_key(env[j]);
+		if (!tmp)
+			break ;
+		if (ft_strcmp(tmp, val) == 0)
+			free(env[j++]);
 		if (env[j])
 			ret[i++] = env[j++];
+		free(tmp);
 	}
-	ret[i] = "\0";
+	//ret[i] = "\0";
 	free(env);
 	return (ret);
 }
@@ -26,14 +31,23 @@ char	**mass_unset(char **env, char *val)
 void	list_unset(t_main *main, char *val)
 {
 	t_node	*tmp;
+	char	*str;
 	int		i;
 
 	tmp = main->sort_env->head;
 	i = 0;
 	while (tmp)
 	{
-		if (ft_strcmp(get_env_key(tmp), val) == 0)
-			ft_dlist_del_n(main->sort_env, i);
+		str = get_env_key(tmp);
+		if (ft_strcmp(str, val) == 0)
+		{
+			tmp = tmp->next;
+			free(ft_dlist_del_n(main->sort_env, i));
+			free(str);
+			i++;
+			continue ;
+		}
+		free(str);
 		tmp = tmp->next;
 		i++;
 	}
@@ -42,12 +56,18 @@ void	list_unset(t_main *main, char *val)
 int	find_key(t_main *main, char *val)
 {
 	t_node	*tmp;
+	char	*str;
 
 	tmp = main->sort_env->head;
 	while (tmp)
 	{
-		if (ft_strcmp(get_env_key(tmp), val) == 0)
+		str = get_env_key(tmp);
+		if (ft_strcmp(str, val) == 0)
+		{
+			free(str);
 			return (0);
+		}
+		free(str);
 		tmp = tmp->next;
 	}
 	return (1);
