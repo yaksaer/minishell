@@ -167,6 +167,11 @@ void	parse_redirect(t_main *main, t_commands *cmd, char **string, int *c)
 		i = 0;
 	str = *string;
 	res = NULL;
+	if (!ft_strncmp(str, "<<", 2))
+	{
+		her = ft_strdup(".heredoc");
+		cmd->cmd = add_string_to_massive(&cmd->cmd, &her, *c++);
+	}
 	while (ft_strchr("<>", *str) && *str != '|' && *str != '\0')
 		res = ft_add_char(res, *str++, ft_strlen(res));
 	if (!ft_strcmp(res, "<<") && *str == '-')
@@ -271,7 +276,6 @@ void	redir_path(t_main *main, t_commands *com, char *path, char r)
 	else if (r == '<')
 		com->input = fd;
 }
-
 
 void handle_redir(t_main *main) //прикрутить проверку на количество стрелок
 {
