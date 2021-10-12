@@ -6,11 +6,12 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 15:11:35 by marvin            #+#    #+#             */
-/*   Updated: 2021/10/12 02:15:36 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/12 19:47:44 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+#include <readline/readline.h>
 
 static void	handle_signals(int sig, siginfo_t *info, void *ucontext)
 {
@@ -21,13 +22,13 @@ static void	handle_signals(int sig, siginfo_t *info, void *ucontext)
 	usls = ucontext;
 	if (sig == SIGINT)
 	{
-		write(1, "\b\b  \b\b\n", 7);
-		rl_on_new_line();
 		rl_replace_line("", 0);
+		write(1, "\b\b\n", 3);
+		rl_on_new_line();
 		rl_redisplay();
 	}
 	else if (sig == SIGQUIT)
-		write(1, "\b\b  \b\b", 6);
+		write(1, "\b\b", 2);
 }
 
 int	init_main(t_main *main, struct sigaction *sigac, char **envp)
@@ -71,7 +72,7 @@ int		main(int ac, char **av, char **envp)
 	while (stop)
 	{
 		stop = parser(main);
-		// get_command(main);
+		get_command(main);
 		commands_clear(&main->commands);
 	}
 	while (main->env[++stop])

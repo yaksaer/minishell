@@ -20,8 +20,9 @@ RM = rm -rf
 
 all: libft $(NAME)
 
+#Здесь надо указать вместо cbilbo свой ник
 $(NAME): message $(OBJS) $(HEADER)
-	@$(CC) $(CFLAGS) $(OBJS) $(LIB) -lreadline -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS) $(LIB) -lreadline -L /Users/cbilbo/.brew/opt/readline/lib -I /Users/cbilbo/.brew/opt/readline/include -o $(NAME)
 	@echo '√'
 	@echo Minishell was created!
 
