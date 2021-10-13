@@ -119,21 +119,21 @@ char	*parse_quotation(t_main *main, char **string, char quote)
 	return (res);
 }
 
-char	*ft_strchr(const char *string, int symbol)
-{
-	size_t		i;
-
-	i = 0;
-	while (string[i])
-	{
-		if (string[i] == (unsigned char)symbol)
-			return ((char *)&string[i]);
-		i++;
-	}
-	if (string[i] == (unsigned char)symbol)
-		return ((char *)&string[i]);
-	return (NULL);
-}
+//char	*ft_strchr(const char *string, int symbol)
+//{
+//	size_t		i;
+//
+//	i = 0;
+//	while (string[i])
+//	{
+//		if (string[i] == (unsigned char)symbol)
+//			return ((char *)&string[i]);
+//		i++;
+//	}
+//	if (string[i] == (unsigned char)symbol)
+//		return ((char *)&string[i]);
+//	return (NULL);
+//}
 
 
 char	*parse_string(t_main *main, char **string)

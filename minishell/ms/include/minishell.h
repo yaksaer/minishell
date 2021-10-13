@@ -60,9 +60,12 @@ typedef struct	s_main {
 	t_descrip		*descrip;
 	int				pid;
 }				t_main;
+
+//int				rl_replace_line(char *line, int undo);
 /*UTILS*/
+void			ft_dlist_insert_head(t_dlink_list *list, size_t index, char *data);
 t_dlink_list	*copy_env_to_list(char **env);
-char			**copy_env_to_mass(char **env);
+char			**copy_env_to_mass(t_dlink_list *env);
 char			*get_env_key(t_node *node);
 char			*str_get_key(char *var);
 int				ft_mass_size(char **str);
@@ -78,9 +81,10 @@ void			check_command(t_main *main, t_commands *command);
 int				is_my_command(t_commands *command);
 /*COMMANDS*/
 int				ft_echo(int argc, char **argv);
-int				ft_env(char **env);
+int				ft_env(t_main *main);
 int				ft_pwd(void);
 int				ft_export(t_main *main, t_commands *command);
+void			print_export(t_dlink_list *env);
 int				replace_value(char **src, char *var);
 int				add_to_list(t_main *main, char *var, char *key);
 int				ft_unset(t_main *main, t_commands *command);

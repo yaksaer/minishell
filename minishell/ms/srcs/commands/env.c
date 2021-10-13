@@ -1,11 +1,22 @@
 #include "../../include/minishell.h"
 
-int	ft_env(char **env)
+int	ft_env(t_main *main)
 {
-	int	i;
+	int		i;
+	t_node	*tmp;
 
-	i = -1;
-	while (env[++i])
-		printf("%s\n", env[i]);
+	i = 0;
+	tmp = main->sort_env->head;
+	while (i < main->sort_env->size)
+	{
+		if (!tmp)
+			tmp = main->sort_env->head;
+		if (tmp->position == i)
+		{
+			printf("%s\n", tmp->data);
+			i++;
+		}
+		tmp = tmp->next;
+	}
 	return (0);
 }

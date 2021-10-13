@@ -39,9 +39,10 @@ int	init_main(t_main *main, struct sigaction *sigac, char **envp)
 	if (!main->sort_env)
 		return (1);
 	sort_dlist(main->sort_env);
-	main->env = copy_env_to_mass(envp);
-	if (!main->env)
-		return (1);
+	main->env = NULL;
+//	main->env = copy_env_to_mass(envp);
+//	if (!main->env)
+//		return (1);
 	main->commands = NULL;
 	sigac->sa_flags = SA_SIGINFO;
 	sigac->sa_sigaction = handle_signals;
