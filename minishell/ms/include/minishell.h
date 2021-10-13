@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 15:55:03 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/07 17:29:32 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/12 19:33:02 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,4 +100,13 @@ void			commands_back(t_commands **command, t_commands *new);
 void			commands_delone(t_commands *command);
 void			commands_clear(t_commands **command);
 char			**add_string_to_massive(char ***dest, char **src, int number);
+
+int				rl_replace_line(char *line, int undo);
+void	ft_heredoc(t_main *main, t_commands *com, char *string);
+char	*put_heredoc(t_main *main, char *dest, char *src, int qt);
+char	*parse_heredoc(char *str, int *qt);
+char	*ft_add_char(char *string, char c, int len);
+int	open_redir(char *path, char r, int n);
+char	*put_env(t_main *main, char **string);
+
 #endif
