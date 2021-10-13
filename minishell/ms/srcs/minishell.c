@@ -23,7 +23,7 @@ static void	handle_signals(int sig, siginfo_t *info, void *ucontext)
 	{
 		write(1, "\b\b  \b\b\n", 7);
 		rl_on_new_line();
-		rl_replace_line("", 0);
+//		rl_replace_line("", 0);
 		rl_redisplay();
 	}
 	else if (sig == SIGQUIT)
@@ -38,9 +38,10 @@ int	init_main(t_main *main, struct sigaction *sigac, char **envp)
 	if (!main->sort_env)
 		return (1);
 	sort_dlist(main->sort_env);
-	main->env = copy_env_to_mass(envp);
-	if (!main->env)
-		return (1);
+	main->env = NULL;
+//	main->env = copy_env_to_mass(envp);
+//	if (!main->env)
+//		return (1);
 	main->commands = NULL;
 	sigac->sa_flags = SA_SIGINFO;
 	sigac->sa_sigaction = handle_signals;
@@ -71,7 +72,7 @@ int		main(int ac, char **av, char **envp)
 	while (stop)
 	{
 		stop = parser(main);
-		// get_command(main);
+		get_command(main);
 		commands_clear(&main->commands);
 	}
 	while (main->env[++stop])

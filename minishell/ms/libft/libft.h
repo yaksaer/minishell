@@ -31,6 +31,7 @@ typedef struct s_list
 
 typedef struct s_node {
 	char			*data;
+	int				position;
 	struct s_node	*next;
 	struct s_node	*prev;
 }	t_node;
