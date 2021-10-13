@@ -61,7 +61,7 @@ typedef struct	s_main {
 	int				pid;
 }				t_main;
 
-//int				rl_replace_line(char *line, int undo);
+int				rl_replace_line(char *line, int undo);
 /*UTILS*/
 void			ft_dlist_insert_head(t_dlink_list *list, size_t index, char *data);
 t_dlink_list	*copy_env_to_list(char **env);

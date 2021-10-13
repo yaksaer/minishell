@@ -100,9 +100,30 @@ int		ft_mass_size(char **str)
 	return (i);
 }
 
+//char 	**copy_env_to_mass(char **env)
+//{
+//	char 	**ret;
+//	int		i;
+//
+//	ret = (char **) ft_calloc(ft_mass_size(env) + 1, sizeof(char *));
+//	if (!ret)
+//		return (NULL);
+//	i = 0;
+//	while (env[i])
+//	{
+//		ret[i] = ft_strdup(tmp->data);
+//		if (!ret[i])
+//			return (NULL);
+//		i++;
+//		tmp = tmp->next;
+//	}
+//	return (ret);
+//}
+
 t_dlink_list	*copy_env_to_list(char **env)
 {
 	t_dlink_list 	*res_list;
+	char			*buf;
 	int				i;
 
 	res_list = ft_calloc(1, sizeof(t_dlink_list));
@@ -111,7 +132,10 @@ t_dlink_list	*copy_env_to_list(char **env)
 	i = -1;
 	while (env[++i])
 	{
-		ft_dlist_push_back(res_list, env[i]);
+		buf = ft_strdup(env[i]);
+		if (!buf)
+			return (NULL);
+		ft_dlist_push_back(res_list, buf);
 		res_list->tail->position = i;
 		if (ft_strcmp(env[i], res_list->tail->data))
 			return (NULL);

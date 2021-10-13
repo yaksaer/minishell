@@ -1,9 +1,27 @@
 #include "../../include/minishell.h"
 
-static int	replace_in_list(t_dlink_list *env, int n, char *cmd, char **str)
+static int	replace_in_list(t_dlink_list *env, int n, char *cmd, char **str,
+							  t_node *tmp)
 {
-	ft_dlist_del_n(env, n - 1);
-	ft_dlist_insert(env, n - 2, cmd);
+	int 	num;
+	char	*buf;
+	t_node *new;
+
+	num = tmp->position;
+	free(ft_dlist_del_n(env, n - 1));
+	buf = str_get_key(env->head->data);
+	if (ft_strcmp(*str, buf) < 0)
+		ft_dlist_insert_head(env, 0, cmd);
+	else
+		ft_dlist_insert(env, n - 2, cmd);
+	free(buf);
+	buf = str_get_key(env->tail->data);
+	new = ft_dlist_get_n(env, n - 1);
+	if (ft_strcmp(*str, buf) == 0)
+		env->tail->position = num;
+	else
+		new->position = num;
+	free(buf);
 	free(*str);
 	return (0);
 }
@@ -36,7 +54,7 @@ int	add_to_list(t_main *main, char *cmd, char *key)
 			return (1);
 		}
 		else if (ft_strcmp(str, key) == 0)
-			return (replace_in_list(main->sort_env, i, cmd, &str));
+			return (replace_in_list(main->sort_env, i, cmd, &str, tmp));
 		free(str);
 		tmp = tmp->next;
 	}
