@@ -33,7 +33,7 @@ void	ft_dlist_insert(t_dlink_list *list, size_t index, char *data)
 	elm->next = ins;
 	if (!elm->prev)
 		list->head = elm;
-	if (!elm->next)
-		list->tail = elm;
+	if (!ins->next)
+		list->tail = ins;
 	list->size++;
 }

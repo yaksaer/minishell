@@ -62,9 +62,7 @@ void	wait_child(t_main *main)
 	{
 		waitpid(main->pid, &stat, 0);
 		if (WIFEXITED(stat))
-		{
 			ret = WEXITSTATUS(stat);
-		}
 		main->exit_code = ret;
 	}
 }

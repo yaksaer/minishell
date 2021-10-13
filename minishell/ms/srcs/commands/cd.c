@@ -9,14 +9,14 @@ void	change_env(t_main *main, char *old_dir)
 		;
 	add_to_list(main, tmp, "OLDPWD");
 	replace_value(main->env, tmp);
-	free(tmp);
+//	free(tmp);
 	tmp = getcwd(NULL, 0);
 	tmp = ft_strjoinm("PWD=", tmp, 2);
 	if (!tmp)
 		;
 	add_to_list(main, tmp, "PWD");
 	replace_value(main->env, tmp);
-	free(tmp);
+//	free(tmp);
 }
 
 int	step_back(t_main *main)

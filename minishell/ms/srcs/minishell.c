@@ -20,15 +20,15 @@ static void	handle_signals(int sig, siginfo_t *info, void *ucontext)
 
 	usl = info;
 	usls = ucontext;
-	if (sig == SIGINT)
-	{
-		rl_replace_line("", 0);
-		write(1, "\b\b\n", 3);
-		rl_on_new_line();
-		rl_redisplay();
-	}
-	else if (sig == SIGQUIT)
-		write(1, "\b\b", 2);
+//	if (sig == SIGINT)
+//	{
+//		rl_replace_line("", 0);
+//		write(1, "\b\b\n", 3);
+//		rl_on_new_line();
+//		rl_redisplay();
+//	}
+//	else if (sig == SIGQUIT)
+//		write(1, "\b\b", 2);
 }
 
 int	init_main(t_main *main, struct sigaction *sigac, char **envp)
@@ -40,12 +40,10 @@ int	init_main(t_main *main, struct sigaction *sigac, char **envp)
 		return (1);
 	sort_dlist(main->sort_env);
 	main->env = NULL;
-//	main->env = copy_env_to_mass(envp);
-//	if (!main->env)
-//		return (1);
 	main->commands = NULL;
 	sigac->sa_flags = SA_SIGINFO;
 	sigac->sa_sigaction = handle_signals;
+	add_to_list(main, "SHLVL=2", "SHLVL");
 	return (0);
 }
 
