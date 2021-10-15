@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 15:55:03 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/12 19:33:02 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/14 21:16:28 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,13 @@ typedef struct	s_commands {
 }				t_commands;
 
 typedef struct	s_main {
-	char			**env;
-	int				exit_code;
-	t_dlink_list	*sort_env;
-	t_commands		*commands;
-	t_descrip		*descrip;
-	int				pid;
+	char				**env;
+	int					exit_code;
+	t_dlink_list		*sort_env;
+	t_commands			*commands;
+	struct sigaction	sigac;
+	t_descrip			*descrip;
+	int					pid;
 }				t_main;
 /*UTILS*/
 t_dlink_list	*copy_env_to_list(char **env);
@@ -71,7 +72,7 @@ char			*add_quotes_util(char *str);
 int				ft_mass_size(char **str);
 int				check_key(char *val, char *prog);
 int				sort_dlist(t_dlink_list *dlist);
-int 			init_main(t_main *main, struct sigaction *sigac, char **envp);
+int 			init_main(t_main *main, char **envp);
 /*EXECUTE*/
 int				get_command(t_main *main);
 void			check_command(t_main *main, t_commands *command);
@@ -89,20 +90,86 @@ int				ft_exit(t_commands *commands);
 /* PARSER */
 int				parser(t_main *main);
 void			start_pars(t_main *main, char *string);
+/* Parse words from readline string
+Return 0 if no pipe or 1 if string has continue */
+int				parse_command(t_main *main, t_commands *command, char **string);
+/* Parse one command word */
+char			*parse_word(t_main *main, char **string);
+/* Checker of parser's results */
+void			print_commands(t_main *main);
+
+/*REDIRECT*/
+
+/*Parse word with redirect*/
+void			parse_redirect(t_main *main, t_commands *cmd, char **string);
+/* open path with needed parameters
+r is type of angle brackers
+n is number of angle brackers
+Return value is file descriptor*/
+int				open_redir(char *path, char r, int n);
+/* Parse path and change input/output
+r = type of angle brackers*/
+void			redir_path(t_main *main, t_commands *com, char *path, char r);
+/*Choose type of redirection*/
+void			handle_redir(t_main *main);
+
+/*HEREDOC*/
+
+/*Parse specification of heredoc
+'t' is tabs
+'q' is quotations
+Return keyword*/
+char			*parse_heredoc(char *str, int *qt);
+/*Parse heredoc string 
+Return clearly output*/
+char			*put_heredoc(t_main *main, char *dest, char *src, int qt);
+/*Heredoc childproc
+key = keyword
+qt = parameters of tabs and quotes
+Return file descriptor of heredoc*/
+int				heredoc_process(t_main *main, char *key, char *string, int qt);
+/*Main heredoc function*/
+void	ft_heredoc(t_main *main, t_commands *com, char *string);
+
+/*SPECIAL CHARACTERS*/
+
+/*Replace environment variable*/
+char	*put_env(t_main *main, char **string);
+/*Modificate words with quotes*/
+char	*parse_quotation(t_main *main, char **string, char quote);
+
 
 /* UTILS FOR STRUCT T_COMMAND */
+
+/*Create new command struct*/
 t_commands		*commands_new(char **cmd, char **redir, int input, int output);
+/*Put command struct at the end of list*/
 void			commands_back(t_commands **command, t_commands *new);
+/*Delete one command struct from lists*/
 void			commands_delone(t_commands *command);
+/*Clear command lists*/
 void			commands_clear(t_commands **command);
+/*Increase cmd or redirect from command struct
+number = position of string
+Return actual massive string*/
 char			**add_string_to_massive(char ***dest, char **src, int number);
 
-int				rl_replace_line(char *line, int undo);
-void	ft_heredoc(t_main *main, t_commands *com, char *string);
-char	*put_heredoc(t_main *main, char *dest, char *src, int qt);
-char	*parse_heredoc(char *str, int *qt);
-char	*ft_add_char(char *string, char c, int len);
-int	open_redir(char *path, char r, int n);
-char	*put_env(t_main *main, char **string);
+/* SIGNAL_HANDLERS*/
+/* Signals from Minishell*/
+void			handle_signals(int sig, siginfo_t *info, void *ucontext);
+/* Signals from heredoc*/
+void			her_signals(int sig, siginfo_t *info, void *ucontext);
+/* Create and switch signals
+*s = string of parameters:
+'c' = create sigac;
+'m' = main sigac;
+'h' = heredoc sigac;
+'0' = turn off sigac;
+'1' = turn on sigac;*/
+int 			redirect_signals(struct sigaction *sigac, char *s);
 
+/* UTILS */
+/* add char to string with realloc*/
+char		*ft_add_char(char *string, char c);
+/*int				rl_replace_line(char *line, int undo);*/
 #endif

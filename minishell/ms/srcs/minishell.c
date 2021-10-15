@@ -6,33 +6,18 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 15:11:35 by marvin            #+#    #+#             */
-/*   Updated: 2021/10/12 19:47:44 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/14 21:27:57 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 #include <readline/readline.h>
 
-static void	handle_signals(int sig, siginfo_t *info, void *ucontext)
+//обработать незакрытые скобки и спецсимволы
+int	init_main(t_main *main, char **envp)
 {
-	siginfo_t	*usl;
-	void		*usls;
-
-	usl = info;
-	usls = ucontext;
-	if (sig == SIGINT)
-	{
-		rl_replace_line("", 0);
-		write(1, "\b\b\n", 3);
-		rl_on_new_line();
-		rl_redisplay();
-	}
-	else if (sig == SIGQUIT)
-		write(1, "\b\b", 2);
-}
-
-int	init_main(t_main *main, struct sigaction *sigac, char **envp)
-{
+	struct sigaction	sigac;
+	
 	if (!main)
 		return (1);
 	main->sort_env = copy_env_to_list(envp);
@@ -43,8 +28,7 @@ int	init_main(t_main *main, struct sigaction *sigac, char **envp)
 	if (!main->env)
 		return (1);
 	main->commands = NULL;
-	sigac->sa_flags = SA_SIGINFO;
-	sigac->sa_sigaction = handle_signals;
+	main->sigac = sigac;
 	return (0);
 }
 
@@ -59,25 +43,24 @@ int		main(int ac, char **av, char **envp)
 {
 	int					stop;
 	t_main				*main;
-	struct sigaction	sigac;
 
 	main = (t_main *)ft_calloc(1, sizeof(t_main));
 	stop = 1;
-	if (init_main(main, &sigac, envp))
+	if (init_main(main, envp))
 		return (1);
-	if (sigaction(SIGQUIT, &sigac, 0) == -1 || sigaction(SIGINT, &sigac, 0) == -1)
-	{
-		exit (EXIT_FAILURE);
-	}
 	while (stop)
 	{
+		if (redirect_signals(&main->sigac, "mc"))
+			exit (1);
 		stop = parser(main);
+		if (redirect_signals(&main->sigac, "m0"))
+			exit (1);
 		get_command(main);
 		commands_clear(&main->commands);
 	}
 	while (main->env[++stop])
 		ft_allocfree((void *)&main->env[stop]);
 	ft_dlist_del(&main->sort_env);
-	ft_allocfree((void *)&main); //free & null if exist void ft_allocfree(void **data)
+	ft_allocfree((void *)&main);
 	return (0);
 }

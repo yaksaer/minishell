@@ -18,15 +18,15 @@ CC = gcc
 CFLAGS = -g #-Wall -Werror -Wextra
 RM = rm -rf
 
-all: libft $(NAME)
+all: libft dir $(NAME)
 
 #Здесь надо указать вместо cbilbo свой ник
 $(NAME): message $(OBJS) $(HEADER)
-	@$(CC) $(CFLAGS) $(OBJS) $(LIB) -lreadline -L /Users/cbilbo/.brew/opt/readline/lib -I /Users/cbilbo/.brew/opt/readline/include -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS) $(LIB) -lreadline -o $(NAME)
 	@echo '√'
 	@echo Minishell was created!
 
-$(OBJS): dir $(SRCS) $(HEADER)
+$(OBJS): $(SRCS) $(HEADER)
 	@echo -n '#' 
 	@$(CC) $(CFLAGS) -o $@ -c $(@:objs/%.o=srcs/%.c)
 

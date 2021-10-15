@@ -6,21 +6,11 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/12 17:14:49 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/12 19:56:21 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/14 20:23:22 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-void	her_signals(int sig, siginfo_t *info, void *ucontext)
-{
-	(void)ucontext;
-	if (sig == SIGINT)
-	{
-		write(1, "\n", 1);
-		kill(info->si_pid, SIGKILL);
-	}
-}
 
 char	*parse_heredoc(char *str, int *qt)
 {
@@ -34,7 +24,7 @@ char	*parse_heredoc(char *str, int *qt)
 	{
 		if (ft_strchr("\'\"", *str) && *str++ && ++*qt)
 			continue ;
-		res = ft_add_char(res, *str++, ft_strlen(res));
+		res = ft_add_char(res, *str++);
 	}
 	return (res);
 }
@@ -51,9 +41,9 @@ char	*put_heredoc(t_main *main, char *dest, char *src, int qt)
 		if (*src == '$' && !(qt & 1))
 			res = ft_strjoinm(res, put_env(main, &src), 3);
 		else
-			res = ft_add_char(res, *src++, ft_strlen(res));
+			res = ft_add_char(res, *src++);
 	}
-	res = ft_add_char(res, '\n', ft_strlen(res));
+	res = ft_add_char(res, '\n');
 	res = ft_strjoinm(dest, res, 3);
 	return (res);
 }
@@ -64,16 +54,15 @@ int	heredoc_process(t_main *main, char *key, char *string, int qt)
 	char				*res;
 	struct sigaction	her;
 
-	her.sa_flags = SA_SIGINFO;
-	her.sa_sigaction = her_signals;
-	if (sigaction(SIGQUIT, &her, 0) == -1 || sigaction(SIGINT, &her, 0) == -1)
-		exit (EXIT_FAILURE);
+	str = NULL;
+	if (redirect_signals(&her, "hc"))
+		exit (1);
 	res = NULL;
 	while (1)
 	{
 		str = readline("heredoc: ");
-		if (!str)
-			exit (EXIT_SUCCESS);
+		while (!str)
+			str = readline("");
 		if (!ft_strcmp(key, str))
 		{
 			ft_allocfree((void *)&str);
@@ -93,13 +82,18 @@ void	ft_heredoc(t_main *main, t_commands *com, char *string)
 	int		quo_tab_flags;
 	int		pid;
 	int		input;
+	int		status;
 
 	quo_tab_flags = 0;
 	key = parse_heredoc(string, &quo_tab_flags);
+	if (redirect_signals(&main->sigac, "m0"))
+		exit (1);
 	pid = fork();
 	if (pid == 0)
 		input = heredoc_process(main, key, string, quo_tab_flags);
-	wait(NULL);
+	waitpid(pid, &status, 0);
+	if (redirect_signals(&main->sigac, "mc"))
+		exit (1);
 	ft_allocfree((void *)&key);
 	if (com->input != 0)
 		close(com->input);
