@@ -19,12 +19,13 @@ void	handle_signals(int sig, siginfo_t *info, void *ucontext)
 	void		*usls;
 
 	usl = info;
-	
 	usls = ucontext;
 	if (sig == SIGINT)
 	{
+		rl_on_new_line();
 		rl_replace_line("", 0);
-		write(1, "\b\b  \b\b\n", 7);
+		rl_redisplay();
+		write(1, "  \b\b \b\n", 7);
 		rl_on_new_line();
 		rl_redisplay();
 	}
@@ -42,7 +43,6 @@ void	her_signals(int sig, siginfo_t *info, void *ucontext)
 	}
 	if (sig == SIGQUIT)
 		write(1, "\b\b  \b\b", 6);
-	
 }
 
 int redirect_signals(struct sigaction *sigac, char *s)
