@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 15:11:35 by marvin            #+#    #+#             */
-/*   Updated: 2021/10/14 21:27:57 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/15 19:41:51 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 int	init_main(t_main *main, char **envp)
 {
 	struct sigaction	sigac;
-	
+
 	if (!main)
 		return (1);
 	main->sort_env = copy_env_to_list(envp);
@@ -29,6 +29,7 @@ int	init_main(t_main *main, char **envp)
 		return (1);
 	main->commands = NULL;
 	main->sigac = sigac;
+	main->exit_code = 0;
 	return (0);
 }
 
@@ -39,15 +40,11 @@ void	free_commands(t_commands *command)
 	tmp = command;
 }
 
-int		main(int ac, char **av, char **envp)
+void	minishell(t_main *main)
 {
-	int					stop;
-	t_main				*main;
+	int	stop;
 
-	main = (t_main *)ft_calloc(1, sizeof(t_main));
 	stop = 1;
-	if (init_main(main, envp))
-		return (1);
 	while (stop)
 	{
 		if (redirect_signals(&main->sigac, "mc"))
@@ -62,5 +59,16 @@ int		main(int ac, char **av, char **envp)
 		ft_allocfree((void *)&main->env[stop]);
 	ft_dlist_del(&main->sort_env);
 	ft_allocfree((void *)&main);
+	exit (0);
+}
+
+int	main(int ac, char **av, char **envp)
+{
+	t_main	*main;
+
+	main = (t_main *)ft_calloc(1, sizeof(t_main));
+	if (init_main(main, envp))
+		return (1);
+	minishell(main);
 	return (0);
 }

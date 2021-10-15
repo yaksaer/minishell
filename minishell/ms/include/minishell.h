@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 15:55:03 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/14 21:16:28 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/15 19:42:25 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ int				ft_mass_size(char **str);
 int				check_key(char *val, char *prog);
 int				sort_dlist(t_dlink_list *dlist);
 int 			init_main(t_main *main, char **envp);
+void			minishell(t_main *main);
+
 /*EXECUTE*/
 int				get_command(t_main *main);
 void			check_command(t_main *main, t_commands *command);
@@ -92,7 +94,8 @@ int				parser(t_main *main);
 void			start_pars(t_main *main, char *string);
 /* Parse words from readline string
 Return 0 if no pipe or 1 if string has continue */
-int				parse_command(t_main *main, t_commands *command, char **string);
+int				parse_command(t_main *main, t_commands *command, char **string, \
+																	char *res);
 /* Parse one command word */
 char			*parse_word(t_main *main, char **string);
 /* Checker of parser's results */
@@ -171,5 +174,6 @@ int 			redirect_signals(struct sigaction *sigac, char *s);
 /* UTILS */
 /* add char to string with realloc*/
 char		*ft_add_char(char *string, char c);
-/*int				rl_replace_line(char *line, int undo);*/
+int				rl_replace_line(char *line, int undo);
+void	re_parser(t_main *main, char c);
 #endif

@@ -6,35 +6,11 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 19:45:10 by marvin            #+#    #+#             */
-/*   Updated: 2021/10/14 21:26:40 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/15 19:45:47 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-void	print_commands(t_main *main)
-{
-	t_commands	*temp;
-	int			i;
-	int			c;
-
-	temp = main->commands;
-	i = 0;
-	while (temp != NULL)
-	{
-		c = -1;
-		printf("\n%d pipe\n\ncmds:\n", i);
-		while (temp->cmd && temp->cmd[++c] != NULL)
-			printf("%s\n", temp->cmd[c]);
-		printf("\nredirects:\n");
-		c = -1;
-		while (temp->redir && temp->redir[++c] != NULL)
-			printf("%s\n", temp->redir[c]);
-		printf("\ninput = %d, output = %d\n", temp->input, temp->output);
-		temp = temp->next;
-		i++;
-	}
-}
 
 char	*parse_word(t_main *main, char **string)
 {
@@ -56,15 +32,13 @@ char	*parse_word(t_main *main, char **string)
 	return (res);
 }
 
-int	parse_command(t_main *main, t_commands *command, char **string)
+int	parse_command(t_main *main, t_commands *command, char **string, char *res)
 {
 	char	*str;
-	char	*res;
 	int		i;
 
 	i = 0;
 	str = *string;
-	res = NULL;
 	while (*str != '\0' && *str != '|')
 	{
 		if (ft_strchr("<>", *str))
@@ -92,17 +66,21 @@ void	start_pars(t_main *main, char *string)
 	int			i;
 
 	i = 1;
+	if (ft_strchr(string, ';'))
+		re_parser(main, ';');
+	else if (ft_strchr(string, '\\'))
+		re_parser(main, '\\');
 	while (i)
 	{
 		command = commands_new(NULL, NULL, 0, 0);
 		string += ft_strlen_while(string, " \t");
-		i = parse_command(main, command, &string);
+		i = parse_command(main, command, &string, NULL);
 		if (i)
 			string++;
 		commands_back(&main->commands, command);
 	}
 }
-int	parser(t_main *main) // здесь нужно отработать ошибки
+int	parser(t_main *main)
 {
 	char		*str;
 	t_commands	*temp;
@@ -110,16 +88,11 @@ int	parser(t_main *main) // здесь нужно отработать ошиб�
 	str = readline(BEGIN(49, 32)"Minishell: "CLOSE);
 	if (!str)
 	{
-		write(1, "\n", 1);
+		write(1, "\rexit\n", 6);
 		exit(0);
 	}
 	if (str)
 		add_history(str);
- 	if (str[0] == 'q')
-	{
-		free(str);
-		return (0);
-	}
 	start_pars(main, str);
 	if (main->commands->redir)
 		handle_redir(main);

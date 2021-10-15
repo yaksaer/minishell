@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/12 17:14:49 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/14 20:23:22 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/15 18:57:35 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ void	ft_heredoc(t_main *main, t_commands *com, char *string)
 	if (pid == 0)
 		input = heredoc_process(main, key, string, quo_tab_flags);
 	waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
+		main->exit_code = 1;
 	if (redirect_signals(&main->sigac, "mc"))
 		exit (1);
 	ft_allocfree((void *)&key);

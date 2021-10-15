@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/14 19:51:49 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/15 14:39:51 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/15 19:46:58 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,15 @@ void	print_commands(t_main *main)
 		temp = temp->next;
 		i++;
 	}
+}
+
+void	re_parser(t_main *main, char c)
+{
+	main->exit_code = 1;
+	if (ft_strchr("\'\"", c))
+		printf("minishell: %c : Unclosed quotes\n", c);
+	else if (ft_strchr("\\;", c))
+		printf("minishell: '%c' : Unknown character\n", c);
+	commands_clear(&main->commands);
+	minishell(main);
 }

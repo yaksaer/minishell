@@ -20,17 +20,21 @@ void	handle_signals(int sig, siginfo_t *info, void *ucontext)
 
 	usl = info;
 	usls = ucontext;
-	if (sig == SIGINT)
+	if (sig == SIGINT) // Нужна глобалка для ошибок
 	{
 		rl_on_new_line();
-		rl_replace_line("", 0);
 		rl_redisplay();
-		write(1, "  \b\b \b\n", 7);
+		write(1, "  \b\b\n", 5);
+		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
 	}
-	else if (sig == SIGQUIT)
-		write(1, "\b\b  \b\b", 6);
+	else if (sig == SIGQUIT) //нужно в cat прочитать ^\'
+	{
+		rl_on_new_line();
+		rl_redisplay();
+		write(1, "  \b\b", 4);
+	}
 }
 
 void	her_signals(int sig, siginfo_t *info, void *ucontext)
@@ -38,8 +42,10 @@ void	her_signals(int sig, siginfo_t *info, void *ucontext)
 	(void)ucontext;
 	if (sig == SIGINT)
 	{
-		write(1, "\b\b  \b\b\n", 7);
-		exit (0);
+		rl_on_new_line();
+		rl_redisplay();
+		write(1, "  \b\b\n", 5);
+		exit (1);
 	}
 	if (sig == SIGQUIT)
 		write(1, "\b\b  \b\b", 6);
