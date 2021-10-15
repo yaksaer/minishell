@@ -24,12 +24,11 @@ int	init_main(t_main *main, char **envp)
 	if (!main->sort_env)
 		return (1);
 	sort_dlist(main->sort_env);
-	main->env = copy_env_to_mass(envp);
-	if (!main->env)
-		return (1);
+	main->env = NULL;
 	main->commands = NULL;
 	main->sigac = sigac;
 	main->exit_code = 0;
+	add_to_list(main, "SHLVL=2", "SHLVL");
 	return (0);
 }
 

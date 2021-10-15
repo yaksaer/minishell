@@ -5,7 +5,7 @@ static void	exec_my_command(t_main *main, t_commands *command)
 	if (!ft_strcmp(command->cmd[0], "echo"))
 		main->exit_code = ft_echo(ft_mass_size(command->cmd), command->cmd);
 	else if (!ft_strcmp(command->cmd[0], "env"))
-		main->exit_code = ft_env(main->env);
+		main->exit_code = ft_env(main);
 	else if (!ft_strcmp(command->cmd[0], "pwd"))
 		main->exit_code = ft_pwd();
 	else if (!ft_strcmp(command->cmd[0], "export"))
@@ -93,17 +93,31 @@ static int	check_command_path(t_main *main, t_commands *command)
 	return (0);
 }
 
+void	free_dmass(char **str)
+{
+	int		i;
+
+	i = -1;
+	if (!str)
+		return ;
+	while (str[++i])
+		free(str[i]);
+	free(str);
+	str = NULL;
+}
+
 void	check_command(t_main *main, t_commands *command)
 {
 	if (!main->commands->cmd)
 		return ;
-	else if (is_my_command(command))
+	free_dmass(main->env);
+	main->env = copy_env_to_mass(main->sort_env);
+	if (is_my_command(command))
 		exec_my_command(main, command);
 	else
 	{
 		main->pid = fork();
 		if (main->pid == 0)
 			check_command_path(main, command);
-		waitpid(main->pid, NULL, 0);
 	}
 }

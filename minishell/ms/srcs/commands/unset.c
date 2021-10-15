@@ -16,14 +16,14 @@ char	**mass_unset(char **env, char *val)
 	{
 		tmp = str_get_key(env[j]);
 		if (!tmp)
-			break ;
+			return (NULL);
 		if (ft_strcmp(tmp, val) == 0)
 			free(env[j++]);
 		if (env[j])
 			ret[i++] = env[j++];
 		free(tmp);
 	}
-	//ret[i] = "\0";
+	ret[i] = NULL;
 	free(env);
 	return (ret);
 }
