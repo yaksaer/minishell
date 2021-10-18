@@ -26,6 +26,9 @@ t_main	*init_main(char **envp)
 	g_main->sort_env = copy_env_to_list(envp);
 	if (!g_main->sort_env)
 		return (NULL);
+	g_main->env = copy_env_to_mass(g_main->sort_env);
+	if (!g_main->env)
+		return (NULL);
 	sort_dlist(g_main->sort_env);
 	g_main->commands = NULL;
 	g_main->sigac = sigac;
@@ -44,9 +47,9 @@ void	minishell(t_main *main)
 		if (redirect_signals(&main->sigac, "mc"))
 			exit (1);
 		stop = parser(main);
-		if (redirect_signals(&main->sigac, "m0"))
-			exit (1);
-		//get_command(main);
+//		if (redirect_signals(&main->sigac, "m0"))
+//			exit (1);
+		get_command(main);
 		commands_clear(&main->commands);
 	}
 	ft_dlist_del(&main->sort_env);

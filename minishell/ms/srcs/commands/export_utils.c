@@ -4,18 +4,28 @@ void	print_export(t_dlink_list *env)
 {
 	t_node	*tmp;
 	int		i;
+	int		flag;
 
 	tmp = env->head;
 	while (tmp)
 	{
 		i = 0;
+		flag = 0;
 		ft_putstr_fd("declare -x ", 1);
-		while (tmp->data[i - 1] != '=')
-			ft_putchar_fd(tmp->data[i++], 1);
-		ft_putchar_fd('"', 1);
 		while (tmp->data[i])
-			ft_putchar_fd(tmp->data[i++], 1);
-		ft_putstr_fd("\"\n", 1);
+		{
+			if (tmp->data[i] == '=')
+			{
+				ft_putchar_fd(tmp->data[i++], 1);
+				ft_putchar_fd('"', 1);
+				flag = 1;
+			}
+			if (tmp->data[i])
+				ft_putchar_fd(tmp->data[i++], 1);
+		}
+		if (flag == 1)
+			ft_putchar_fd('"', 1);
+		ft_putchar_fd('\n', 1);
 		tmp = tmp->next;
 	}
 }

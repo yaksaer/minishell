@@ -25,7 +25,7 @@ void	handle_signals(int sig, siginfo_t *info, void *ucontext)
 		rl_on_new_line();
 		rl_redisplay();
 		write(1, "  \b\b\n", 5);
-		rl_replace_line("", 0);
+		//rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
 		g_main->exit_code = 130;

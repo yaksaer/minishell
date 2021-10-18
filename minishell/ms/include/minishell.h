@@ -55,6 +55,7 @@ typedef struct	s_commands {
 
 typedef struct	s_main {
 	int					exit_code;
+	char				**env;
 	t_dlink_list		*sort_env;
 	t_commands			*commands;
 	struct sigaction	sigac;
