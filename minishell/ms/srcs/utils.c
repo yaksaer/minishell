@@ -56,13 +56,13 @@ char	*str_get_key(char *var)
 	char	*ret;
 
 	i = 0;
-	while (var[i] != '=')
+	while (var[i] && var[i] != '=')
 		i++;
 	ret = ft_calloc(i + 1, sizeof(char));
 	if (!ret)
 		return (NULL);
 	i = -1;
-	while (var[++i] != '=')
+	while (var[++i] != '=' &&  var[i])
 		ret[i] = var[i];
 	ret[i] = '\0';
 	return (ret);

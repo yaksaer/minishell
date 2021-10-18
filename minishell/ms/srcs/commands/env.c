@@ -13,10 +13,13 @@ int	ft_env(t_main *main)
 			tmp = main->sort_env->head;
 		if (tmp->position == i)
 		{
-			printf("%s\n", tmp->data);
+			if (ft_strchr(tmp->data, '=') != NULL)
+				printf("%s\n", tmp->data);
 			i++;
 		}
 		tmp = tmp->next;
 	}
 	return (0);
 }
+//TODO: Если убрать переменную то не печатает до конца; Если убрать и
+// добавить такую же как и была - ??
