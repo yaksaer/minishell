@@ -28,6 +28,7 @@ void	handle_signals(int sig, siginfo_t *info, void *ucontext)
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
+		g_main->exit_code = 130;
 	}
 	else if (sig == SIGQUIT) //нужно в cat прочитать ^\'
 	{
