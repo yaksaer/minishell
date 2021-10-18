@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 19:45:10 by marvin            #+#    #+#             */
-/*   Updated: 2021/10/15 19:45:47 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/18 13:00:35 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ char	*parse_word(t_main *main, char **string)
 	res = NULL;
 	while (!ft_strchr(" \t<>|", *str) && *str != '\0')
 	{
-		if (ft_strchr("\'\"", *str))
+		if (ft_strchr(";\\", *str))
+			re_parser(main, *str);
+		else if (ft_strchr("\'\"", *str))
 			res = ft_strjoinm(res, parse_quotation(main, &str, *str), 3);
 		else if (*str == '$' && str[1] && !ft_strchr(" \t|", str[1]))
 			res = ft_strjoinm(res, put_env(main, &str), 3);
@@ -66,10 +68,6 @@ void	start_pars(t_main *main, char *string)
 	int			i;
 
 	i = 1;
-	if (ft_strchr(string, ';'))
-		re_parser(main, ';');
-	else if (ft_strchr(string, '\\'))
-		re_parser(main, '\\');
 	while (i)
 	{
 		command = commands_new(NULL, NULL, 0, 0);
@@ -96,7 +94,7 @@ int	parser(t_main *main)
 	start_pars(main, str);
 	if (main->commands->redir)
 		handle_redir(main);
-	//print_commands(main);
+	print_commands(main);
 	ft_allocfree((void *)&str);
 	return (1);
 }

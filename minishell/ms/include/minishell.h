@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 15:55:03 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/15 19:42:25 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/18 14:24:17 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 # define BLOD  "\001\033[1m\002"
 # define BEGIN(x,y) "\001\033["#x";"#y"m\002"
 
+
 typedef struct	s_descrip {
 	int			def_in;
 	int			def_out;
@@ -53,7 +54,6 @@ typedef struct	s_commands {
 }				t_commands;
 
 typedef struct	s_main {
-	char				**env;
 	int					exit_code;
 	t_dlink_list		*sort_env;
 	t_commands			*commands;
@@ -61,6 +61,8 @@ typedef struct	s_main {
 	t_descrip			*descrip;
 	int					pid;
 }				t_main;
+
+extern t_main	*g_main;
 
 int				rl_replace_line(char *line, int undo);
 /*UTILS*/
@@ -75,7 +77,7 @@ char			*add_quotes_util(char *str);
 int				ft_mass_size(char **str);
 int				check_key(char *val, char *prog);
 int				sort_dlist(t_dlink_list *dlist);
-int 			init_main(t_main *main, char **envp);
+t_main			*init_main(char **envp);
 void			minishell(t_main *main);
 
 /*EXECUTE*/
