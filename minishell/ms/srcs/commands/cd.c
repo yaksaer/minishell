@@ -48,14 +48,22 @@ int	go_home(t_main *main)
 {
 	int		i;
 	char	*str;
+	char	*tmp;
 	char	curr_path[1024];
 
 	i = -1;
 	ft_bzero(curr_path, 1024);
 	getcwd(curr_path, 1024);
 	while (main->env[++i])
-		if (ft_strcmp(str_get_key(main->env[i]), "HOME") == 0)
+	{
+		tmp = str_get_key(main->env[i]);
+		if (ft_strcmp(tmp, "HOME") == 0)
+		{
+			free(tmp);
 			break ;
+		}
+		free(tmp);
+	}
 	if (!main->env[i])
 	{
 		printf("minishell: cd: HOME not set\n");
