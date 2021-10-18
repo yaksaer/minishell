@@ -20,7 +20,7 @@ CC = gcc
 CFLAGS = -g #-Wall -Werror -Wextra
 RM = rm -rf
 
-all: libft $(NAME)
+all: libft dir $(NAME)
 
 #Здесь надо указать вместо cbilbo свой ник
 $(NAME): message $(OBJS) $(HEADER)
@@ -28,7 +28,7 @@ $(NAME): message $(OBJS) $(HEADER)
 	@echo '√'
 	@echo Minishell was created!
 
-$(OBJS): dir $(SRCS) $(HEADER)
+$(OBJS): $(SRCS) $(HEADER)
 	@echo -n '#' 
 	@$(CC) $(CFLAGS) -o $@ -c $(@:objs/%.o=srcs/%.c)
 

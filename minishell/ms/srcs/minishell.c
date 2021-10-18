@@ -6,79 +6,61 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 15:11:35 by marvin            #+#    #+#             */
-/*   Updated: 2021/10/12 19:47:44 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/18 13:26:23 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 #include <readline/readline.h>
 
-static void	handle_signals(int sig, siginfo_t *info, void *ucontext)
+t_main	*g_main = NULL;
+
+//обработать незакрытые скобки и спецсимволы
+t_main	*init_main(char **envp)
 {
-	siginfo_t	*usl;
-	void		*usls;
-
-	usl = info;
-	usls = ucontext;
-	if (sig == SIGINT)
-	{
-		rl_replace_line("", 0);
-		write(1, "\b\b\n", 3);
-		rl_on_new_line();
-		rl_redisplay();
-	}
-	else if (sig == SIGQUIT)
-		write(1, "\b\b", 2);
-}
-
-int	init_main(t_main *main, struct sigaction *sigac, char **envp)
-{
-	if (!main)
-		return (1);
-	main->sort_env = copy_env_to_list(envp);
-	if (!main->sort_env)
-		return (1);
-	sort_dlist(main->sort_env);
-	main->env = NULL;
-//	main->env = copy_env_to_mass(envp);
-//	if (!main->env)
-//		return (1);
-	main->commands = NULL;
-	sigac->sa_flags = SA_SIGINFO;
-	sigac->sa_sigaction = handle_signals;
-	return (0);
-}
-
-void	free_commands(t_commands *command)
-{
-	t_commands *tmp;
-
-	tmp = command;
-}
-
-int		main(int ac, char **av, char **envp)
-{
-	int					stop;
-	t_main				*main;
 	struct sigaction	sigac;
 
-	main = (t_main *)ft_calloc(1, sizeof(t_main));
+	g_main = (t_main *)malloc(sizeof(t_main));
+	if (!g_main)
+		return (NULL);
+	g_main->sort_env = copy_env_to_list(envp);
+	if (!g_main->sort_env)
+		return (NULL);
+	sort_dlist(g_main->sort_env);
+	g_main->commands = NULL;
+	g_main->sigac = sigac;
+	g_main->exit_code = 0;
+	add_to_list(g_main, "SHLVL=2", "SHLVL");
+	return (g_main);
+}
+
+void	minishell(t_main *main)
+{
+	int	stop;
+
 	stop = 1;
-	if (init_main(main, &sigac, envp))
-		return (1);
-	if (sigaction(SIGQUIT, &sigac, 0) == -1 || sigaction(SIGINT, &sigac, 0) == -1)
-	{
-		exit (EXIT_FAILURE);
-	}
 	while (stop)
 	{
+		if (redirect_signals(&main->sigac, "mc"))
+			exit (1);
 		stop = parser(main);
-		get_command(main);
+		if (redirect_signals(&main->sigac, "m0"))
+			exit (1);
+		//get_command(main);
 		commands_clear(&main->commands);
 	}
-	while (main->env[++stop])
-		ft_allocfree((void *)&main->env[stop]);
 	ft_dlist_del(&main->sort_env);
-	ft_allocfree((void *)&main); //free & null if exist void ft_allocfree(void **data)
+	ft_allocfree((void *)&main);
+	exit (0);
+}
+
+int	main(int ac, char **av, char **envp)
+{
+	t_main	*main;
+
+	main = init_main(envp);
+	if (!main)
+		return (1);
+	minishell(main);
 	return (0);
 }
