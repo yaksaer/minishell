@@ -25,6 +25,7 @@ void	error_n_exit(void *buf, void**buf2, int flag)
 	ft_dlist_del(&g_main->unsort_env);
 	ft_allocfree((void **)g_main->env);
 	commands_clear(&g_main->commands);
+	ft_allocfree(((void *)&g_main));
 	exit(1);
 }
 
