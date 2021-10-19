@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/19 16:56:18 by cbilbo            #+#    #+#             */
+/*   Updated: 2021/10/19 16:56:58 by cbilbo           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
 int	check_key(char *val, char *prog)
 {
-	int i;
-	int count;
+	int	i;
+	int	count;
 
 	i = 0;
 	count = 0;
@@ -13,14 +25,14 @@ int	check_key(char *val, char *prog)
 			return (-1);
 		if (!ft_isalnum(val[i]) && val[i] != '_')
 			return (printf("minishell: %s: '%c': not a valid identifier\n",
-						   prog, val[i]));
+					prog, val[i]));
 		if (ft_isalpha(val[i]))
 			count++;
 		i++;
 	}
 	if (count == 0)
 		return (printf("minishell: %s: '%s': not a valid identifier\n", prog,
-					   val));
+				val));
 	return (0);
 }
 

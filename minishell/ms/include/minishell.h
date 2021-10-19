@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 15:55:03 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/19 14:57:19 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/19 17:03:04 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,28 +35,31 @@
 
 # define CLOSE "\001\033[0m\002"
 # define BLOD  "\001\033[1m\002"
-# define BEGIN(x,y) "\001\033["#x";"#y"m\002"
+# define BEGIN "\001\033[49;32m\002"
 
-
-typedef struct	s_descrip {
-	int			def_in;
-	int			def_out;
-	int 		fd_in;
-	int 		fd_out;
+typedef struct s_descrip
+{
+	int					def_in;
+	int					def_out;
+	int					fd_in;
+	int					fd_out;
 }				t_descrip;
 
-typedef struct	s_commands {
+typedef struct s_commands
+{
 	char				**cmd;
 	char				**redir;
-	int 				input;
-	int 				output;
+	int					input;
+	int					output;
 	struct s_commands	*next;
 }				t_commands;
 
-typedef struct	s_main {
+typedef struct s_main
+{
 	int					exit_code;
 	char				**env;
 	t_dlink_list		*sort_env;
+	t_dlink_list		*unsort_env;
 	t_commands			*commands;
 	struct sigaction	sigac;
 	t_descrip			*descrip;
@@ -67,7 +70,8 @@ extern t_main	*g_main;
 
 int				rl_replace_line(char *line, int undo);
 /*UTILS*/
-void			ft_dlist_insert_head(t_dlink_list *list, size_t index, char *data);
+void			ft_dlist_insert_head(t_dlink_list *list, size_t index, \
+									char *data);
 t_dlink_list	*copy_env_to_list(char **env);
 char			**copy_env_to_mass(t_dlink_list *env);
 char			*get_env_key(t_node *node);
@@ -111,7 +115,7 @@ void			print_commands(t_main *main);
 /*REDIRECT*/
 
 /*Parse word with redirect*/
-void			parse_redirect(t_main *main, t_commands *cmd, char **string);
+void			parse_redirect(t_commands *cmd, char **string);
 /* open path with needed parameters
 r is type of angle brackers
 n is number of angle brackers
@@ -137,17 +141,16 @@ char			*put_heredoc(t_main *main, char *dest, char *src, int qt);
 key = keyword
 qt = parameters of tabs and quotes
 Return file descriptor of heredoc*/
-void			heredoc_process(t_main *main, char *key, char *string, int qt);
+void			heredoc_process(t_main *main, char *key, int qt);
 /*Main heredoc function*/
-void	ft_heredoc(t_main *main, t_commands *com, char *string);
+void			ft_heredoc(t_main *main, t_commands *com, char *string);
 
 /*SPECIAL CHARACTERS*/
 
 /*Replace environment variable*/
-char	*put_env(t_main *main, char **string);
+char			*put_env(t_main *main, char **string);
 /*Modificate words with quotes*/
-char	*parse_quotation(t_main *main, char **string, char quote);
-
+char			*parse_quotation(t_main *main, char **string, char quote);
 
 /* UTILS FOR STRUCT T_COMMAND */
 
@@ -178,10 +181,11 @@ void			cmd_signals(int sig);
 'h' = heredoc sigac;
 '0' = turn off sigac;
 '1' = turn on sigac;*/
-void 			redirect_signals(struct sigaction *sigac, char *s);
+void			redirect_signals(struct sigaction *sigac, char *s);
+void			switsch_signals(t_main *main, t_commands *cmd);
 
 /* UTILS */
 /* add char to string with realloc*/
-char		*ft_add_char(char *string, char c);
-void	re_parser(t_main *main, char c);
+char			*ft_add_char(char *string, char c);
+void			re_parser(t_main *main, char c);
 #endif

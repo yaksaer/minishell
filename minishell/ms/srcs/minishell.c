@@ -6,19 +6,16 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 15:11:35 by marvin            #+#    #+#             */
-/*   Updated: 2021/10/19 14:58:53 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/19 16:55:51 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-#include <readline/readline.h>
 
 t_main	*g_main = NULL;
 
 t_main	*init_main(char **envp)
 {
-	struct sigaction	sigac;
-
 	g_main = (t_main *)malloc(sizeof(t_main));
 	if (!g_main)
 		return (NULL);
@@ -33,7 +30,6 @@ t_main	*init_main(char **envp)
 		return (NULL);
 	sort_dlist(g_main->sort_env);
 	g_main->commands = NULL;
-	g_main->sigac = sigac;
 	g_main->exit_code = 0;
 	add_to_list(g_main, "SHLVL=2", "SHLVL");
 	return (g_main);
@@ -61,6 +57,8 @@ int	main(int ac, char **av, char **envp)
 {
 	t_main	*main;
 
+	(void)ac;
+	(void)av;
 	main = init_main(envp);
 	if (!main)
 		return (1);

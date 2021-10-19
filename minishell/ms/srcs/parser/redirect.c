@@ -6,13 +6,13 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/14 19:54:58 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/19 15:49:25 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/19 16:45:02 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	parse_redirect(t_main *main, t_commands *cmd, char **string)
+void	parse_redirect(t_commands *cmd, char **string)
 {
 	static int	i;
 	char		*str;
@@ -38,6 +38,7 @@ int	open_redir(char *path, char r, int n)
 {
 	int	fd;
 
+	fd = 0;
 	if (r == '>')
 	{
 		if (n == 1)

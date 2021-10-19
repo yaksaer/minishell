@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/14 19:58:22 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/19 10:53:51 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/19 16:46:58 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*find_env(t_main *main, char *str, int len)
 	char	*res;
 
 	env = main->sort_env->head;
-	while (env != NULL && (ft_strlen_until(env->data, "=") != len \
+	while (env != NULL && ((int)ft_strlen_until(env->data, "=") != len \
 		|| ft_strncmp(str, env->data, len)))
 		env = env->next;
 	if (!env)
