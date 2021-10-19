@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 19:45:10 by marvin            #+#    #+#             */
-/*   Updated: 2021/10/19 17:01:03 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/19 17:46:07 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,9 @@ int	parser(t_main *main)
 	str = readline(BEGIN"Minishell: "CLOSE);
 	if (!str)
 	{
-		write(1, "\rexit\n", 6);
+		write(1, BEGIN"\033[AMinishell: "CLOSE, 31);
+		write(1, "exit\n", 6);
+		rl_redisplay();
 		exit(0);
 	}
 	if (str)
