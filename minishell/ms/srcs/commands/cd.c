@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 16:48:19 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/19 16:48:20 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/19 17:21:49 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	change_env(t_main *main, char *old_dir)
 	tmp = ft_strjoinm("PWD=", tmp, 2);
 	if (!tmp)
 		;
-	add_to_list(main, tmp, "PWD");
+	add_to_list(main->sort_env, tmp, "PWD");
 	replace_value(main->env, tmp);
 }
 
