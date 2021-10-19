@@ -26,6 +26,9 @@ t_main	*init_main(char **envp)
 	g_main->sort_env = copy_env_to_list(envp);
 	if (!g_main->sort_env)
 		return (NULL);
+	g_main->unsort_env = copy_env_to_list(envp);
+	if (!g_main->unsort_env)
+		return (NULL);
 	g_main->env = copy_env_to_mass(g_main->sort_env);
 	if (!g_main->env)
 		return (NULL);
