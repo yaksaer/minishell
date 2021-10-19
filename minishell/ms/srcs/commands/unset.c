@@ -12,34 +12,6 @@
 
 #include "../../include/minishell.h"
 
-char	**mass_unset(char **env, char *val)
-{
-	int		i;
-	int		j;
-	char	**ret;
-	char	*tmp;
-
-	ret = ft_calloc(ft_mass_size(env) - 1, sizeof(char *));
-	if (!ret)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (env[j])
-	{
-		tmp = str_get_key(env[j]);
-		if (!tmp)
-			return (NULL);
-		if (ft_strcmp(tmp, val) == 0)
-			free(env[j++]);
-		if (env[j])
-			ret[i++] = env[j++];
-		free(tmp);
-	}
-	ret[i] = NULL;
-	free(env);
-	return (ret);
-}
-
 void	list_unset(t_dlink_list *env, char *val)
 {
 	t_node	*tmp;

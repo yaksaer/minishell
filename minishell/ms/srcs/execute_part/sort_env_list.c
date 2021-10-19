@@ -63,8 +63,10 @@ int	is_dlist_sort(t_dlink_list *dlist)
 	t_node	*tmp_node;
 	char	*tmp;
 	char	*tmp2;
+	int		flag;
 
 	tmp_node = dlist->head;
+	flag = 0;
 	while (tmp_node)
 	{
 		tmp = get_env_key(tmp_node);
@@ -74,18 +76,14 @@ int	is_dlist_sort(t_dlink_list *dlist)
 		if (!tmp2)
 			break ;
 		if (ft_strcmp(tmp, tmp2) > 0)
-		{
-			ft_allocfree((void *)&tmp);
-			ft_allocfree((void *)&tmp2);
-			return (1);
-		}
+			flag += 1;
 		ft_allocfree((void *)&tmp);
 		ft_allocfree((void *)&tmp2);
 		tmp_node = tmp_node->next;
 	}
 	ft_allocfree((void *)&tmp);
 	ft_allocfree((void *)&tmp2);
-	return (0);
+	return (flag);
 }
 
 int	sort_dlist(t_dlink_list *dlist)

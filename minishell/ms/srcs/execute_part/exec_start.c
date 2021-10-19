@@ -64,18 +64,6 @@ static void	reset_fd(t_descrip *descrip)
 	close(descrip->def_in);
 }
 
-void	wait_child(t_main *main)
-{
-	int		stat;
-
-	if (main->pid != 0)
-	{
-		waitpid(main->pid, &stat, 0);
-		if (WIFEXITED(stat) && WEXITSTATUS(stat))
-			main->exit_code = WEXITSTATUS(stat);
-	}
-}
-
 int	get_command(t_main *main)
 {
 	t_descrip			descrip;

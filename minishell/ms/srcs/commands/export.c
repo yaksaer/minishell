@@ -79,14 +79,13 @@ static int	start_export(t_main *main, t_commands *command)
 			continue ;
 		str = str_get_key(command->cmd[i]);
 		if (!str)
-			return (1);
+			error_n_exit(NULL, NULL, 1);
 		cmd = ft_strdup(command->cmd[i]);
 		if (!cmd)
-			return (1);
+			error_n_exit(str, NULL, 1);
 		add_to_list(main->sort_env, cmd, str);
 		if (flag == -1)
-			if (unsort_list_proc(command->cmd[i], main->unsort_env))
-				return (1);
+			unsort_list_proc(command->cmd[i], main->unsort_env);
 		free(str);
 	}
 	return (flag);
