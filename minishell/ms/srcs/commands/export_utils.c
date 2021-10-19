@@ -41,35 +41,6 @@ void	print_export(t_dlink_list *env)
 	}
 }
 
-int	replace_value(char **src, char *var)
-{
-	int		i;
-	char	*ret;
-	char	*tmp1;
-	char	*tmp2;
-
-	i = -1;
-	tmp1 = str_get_key(var);
-	while (src[++i])
-	{
-		tmp2 = str_get_key(src[i]);
-		if (ft_strcmp(tmp2, tmp1) == 0)
-		{
-			free(src[i]);
-			ret = ft_calloc(ft_strlen(var) + 1, sizeof(char));
-			if (!ret)
-				return (1);
-			ret = ft_strcpy(ret, var);
-			src[i] = ret;
-			free(tmp2);
-			break ;
-		}
-		free(tmp2);
-	}
-	free(tmp1);
-	return (0);
-}
-
 int	add_to_unsort_list(t_dlink_list *env, char *cmd, char *key)
 {
 	t_node	*tmp;
@@ -102,10 +73,10 @@ int	unsort_list_proc(char *comnd, t_dlink_list *env)
 
 	str = str_get_key(comnd);
 	if (!str)
-		return (1);
+		error_n_exit(NULL, NULL, 1);
 	cmd = ft_strdup(comnd);
 	if (!cmd)
-		return (1);
+		error_n_exit(str, NULL, 1);
 	add_to_unsort_list(env, cmd, str);
 	return (0);
 }
