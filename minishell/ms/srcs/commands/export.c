@@ -75,7 +75,7 @@ static int	start_export(t_main *main, t_commands *command)
 	while (command->cmd[++i])
 	{
 		flag += check_key(command->cmd[i], "export");
-		if (flag)
+		if (flag > 0)
 			continue ;
 		str = str_get_key(command->cmd[i]);
 		if (!str)
@@ -84,6 +84,8 @@ static int	start_export(t_main *main, t_commands *command)
 		if (!cmd)
 			return (1);
 		add_to_list(main, cmd, str);
+		if (flag == -1)
+			ft_dlist_push_back(main->unsort_env, cmd);
 		free(str);
 	}
 	return (flag);

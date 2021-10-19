@@ -2,28 +2,25 @@
 
 int	check_key(char *val, char *prog)
 {
-	int		i;
-	int		count;
+	int i;
+	int count;
 
 	i = 0;
 	count = 0;
-	while (val[i] && val[i] != '=')
+	while (val[i])
 	{
+		if (val[i] == '=' && count > 0)
+			return (-1);
 		if (!ft_isalnum(val[i]) && val[i] != '_')
-		{
-			printf("minishell: %s: '%c': not a valid identifier\n", prog,
-				   val[i]);
-			return (1);
-		}
+			return (printf("minishell: %s: '%c': not a valid identifier\n",
+						   prog, val[i]));
 		if (ft_isalpha(val[i]))
 			count++;
 		i++;
 	}
 	if (count == 0)
-	{
-		printf("minishell: %s: '%s': not a valid identifier\n", prog, val);
-		return (1);
-	}
+		return (printf("minishell: %s: '%s': not a valid identifier\n", prog,
+					   val));
 	return (0);
 }
 
