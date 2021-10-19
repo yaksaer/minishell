@@ -62,7 +62,7 @@ static char	*split_path(t_commands *command, char **envp)
 	return (ret);
 }
 
-static int	check_command_path(t_main *main, t_commands *command)
+static void	check_command_path(t_main *main, t_commands *command)
 {
 	char	*path;
 
@@ -90,7 +90,7 @@ static int	check_command_path(t_main *main, t_commands *command)
 		}
 		free(path);
 	}
-	return (0);
+	exit (0);
 }
 
 void	check_command(t_main *main, t_commands *command)

@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 15:11:35 by marvin            #+#    #+#             */
-/*   Updated: 2021/10/18 13:26:23 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/19 14:58:53 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int	ft_mass_size(char **str)
 	return (i);
 }
 
-//обработать незакрытые скобки и спецсимволы
 t_main	*init_main(char **envp)
 {
 	struct sigaction	sigac;
@@ -58,11 +57,9 @@ void	minishell(t_main *main)
 	stop = 1;
 	while (stop)
 	{
-		if (redirect_signals(&main->sigac, "mc"))
-			exit (1);
+		main->pid = -1;
+		redirect_signals(&main->sigac, "mc");
 		stop = parser(main);
-//		if (redirect_signals(&main->sigac, "m0"))
-//			exit (1);
 		get_command(main);
 		commands_clear(&main->commands);
 	}

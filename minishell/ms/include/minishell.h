@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 15:55:03 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/18 14:24:17 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/19 14:57:19 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ char			*put_heredoc(t_main *main, char *dest, char *src, int qt);
 key = keyword
 qt = parameters of tabs and quotes
 Return file descriptor of heredoc*/
-int				heredoc_process(t_main *main, char *key, char *string, int qt);
+void			heredoc_process(t_main *main, char *key, char *string, int qt);
 /*Main heredoc function*/
 void	ft_heredoc(t_main *main, t_commands *com, char *string);
 
@@ -174,6 +174,8 @@ char			**add_string_to_massive(char ***dest, char **src, int number);
 void			handle_signals(int sig, siginfo_t *info, void *ucontext);
 /* Signals from heredoc*/
 void			her_signals(int sig, siginfo_t *info, void *ucontext);
+/* Signals for cmd*/
+void			cmd_signals(int sig);
 /* Create and switch signals
 *s = string of parameters:
 'c' = create sigac;
@@ -181,11 +183,10 @@ void			her_signals(int sig, siginfo_t *info, void *ucontext);
 'h' = heredoc sigac;
 '0' = turn off sigac;
 '1' = turn on sigac;*/
-int 			redirect_signals(struct sigaction *sigac, char *s);
+void 			redirect_signals(struct sigaction *sigac, char *s);
 
 /* UTILS */
 /* add char to string with realloc*/
 char		*ft_add_char(char *string, char c);
-int				rl_replace_line(char *line, int undo);
 void	re_parser(t_main *main, char c);
 #endif
