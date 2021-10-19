@@ -7,16 +7,14 @@ void	change_env(t_main *main, char *old_dir)
 	tmp = ft_strjoin("OLDPWD=", old_dir);
 	if (!tmp)
 		;
-	add_to_list(main, tmp, "OLDPWD");
+	add_to_list(main->sort_env, tmp, "OLDPWD");
 	replace_value(main->env, tmp);
-//	free(tmp);
 	tmp = getcwd(NULL, 0);
 	tmp = ft_strjoinm("PWD=", tmp, 2);
 	if (!tmp)
 		;
 	add_to_list(main, tmp, "PWD");
 	replace_value(main->env, tmp);
-//	free(tmp);
 }
 
 int	step_back(t_main *main)
@@ -65,10 +63,7 @@ int	go_home(t_main *main)
 		free(tmp);
 	}
 	if (!main->env[i])
-	{
-		printf("minishell: cd: HOME not set\n");
-		return (1);
-	}
+		return (printf("minishell: cd: HOME not set\n"));
 	str = ft_strdup(main->env[i] + 5);
 	if (!chdir(str))
 		change_env(main, curr_path);

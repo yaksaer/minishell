@@ -15,6 +15,16 @@
 
 t_main	*g_main = NULL;
 
+int	ft_mass_size(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
+
 //обработать незакрытые скобки и спецсимволы
 t_main	*init_main(char **envp)
 {
@@ -36,7 +46,8 @@ t_main	*init_main(char **envp)
 	g_main->commands = NULL;
 	g_main->sigac = sigac;
 	g_main->exit_code = 0;
-	add_to_list(g_main, "SHLVL=2", "SHLVL");
+	add_to_list(g_main->sort_env, "SHLVL=2", "SHLVL");
+	add_to_list(g_main->unsort_env, "SHLVL=2", "SHLVL");
 	return (g_main);
 }
 

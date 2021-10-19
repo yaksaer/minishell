@@ -2,8 +2,8 @@
 
 int	check_key(char *val, char *prog)
 {
-	int i;
-	int count;
+	int	i;
+	int	count;
 
 	i = 0;
 	count = 0;
@@ -13,14 +13,14 @@ int	check_key(char *val, char *prog)
 			return (-1);
 		if (!ft_isalnum(val[i]) && val[i] != '_')
 			return (printf("minishell: %s: '%c': not a valid identifier\n",
-						   prog, val[i]));
+					prog, val[i]));
 		if (ft_isalpha(val[i]))
 			count++;
 		i++;
 	}
 	if (count == 0)
 		return (printf("minishell: %s: '%s': not a valid identifier\n", prog,
-					   val));
+				val));
 	return (0);
 }
 
@@ -59,15 +59,15 @@ char	*str_get_key(char *var)
 	if (!ret)
 		return (NULL);
 	i = -1;
-	while (var[++i] != '=' &&  var[i])
+	while (var[++i] != '=' && var[i])
 		ret[i] = var[i];
 	ret[i] = '\0';
 	return (ret);
 }
 
-char 	**copy_env_to_mass(t_dlink_list *env)
+char	**copy_env_to_mass(t_dlink_list *env)
 {
-	char 	**ret;
+	char	**ret;
 	t_node	*tmp;
 	int		i;
 
@@ -87,39 +87,9 @@ char 	**copy_env_to_mass(t_dlink_list *env)
 	return (ret);
 }
 
-int		ft_mass_size(char **str)
-{
-	int 	i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
-
-//char 	**copy_env_to_mass(char **env)
-//{
-//	char 	**ret;
-//	int		i;
-//
-//	ret = (char **) ft_calloc(ft_mass_size(env) + 1, sizeof(char *));
-//	if (!ret)
-//		return (NULL);
-//	i = 0;
-//	while (env[i])
-//	{
-//		ret[i] = ft_strdup(tmp->data);
-//		if (!ret[i])
-//			return (NULL);
-//		i++;
-//		tmp = tmp->next;
-//	}
-//	return (ret);
-//}
-
 t_dlink_list	*copy_env_to_list(char **env)
 {
-	t_dlink_list 	*res_list;
+	t_dlink_list	*res_list;
 	char			*buf;
 	int				i;
 
@@ -133,7 +103,6 @@ t_dlink_list	*copy_env_to_list(char **env)
 		if (!buf)
 			return (NULL);
 		ft_dlist_push_back(res_list, buf);
-		res_list->tail->position = i;
 		if (ft_strcmp(env[i], res_list->tail->data))
 			return (NULL);
 	}

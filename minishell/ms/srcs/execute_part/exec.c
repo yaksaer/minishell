@@ -93,19 +93,6 @@ static int	check_command_path(t_main *main, t_commands *command)
 	return (0);
 }
 
-void	free_dmass(char **str)
-{
-	int		i;
-
-	i = -1;
-	if (!str)
-		return ;
-	while (str[++i])
-		free(str[i]);
-	free(str);
-	str = NULL;
-}
-
 void	check_command(t_main *main, t_commands *command)
 {
 	if (!main->commands->cmd)
