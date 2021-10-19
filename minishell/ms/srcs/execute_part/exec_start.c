@@ -64,7 +64,6 @@ static void	reset_fd(t_descrip *descrip)
 	close(descrip->def_in);
 }
 
-
 int	get_command(t_main *main)
 {
 	t_descrip			descrip;

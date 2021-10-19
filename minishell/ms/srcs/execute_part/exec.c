@@ -81,11 +81,9 @@ static void	check_command_path(t_main *main, t_commands *command)
 	if (ft_strchr(command->cmd[0], '/') != NULL)
 	{
 		if (execve(command->cmd[0], command->cmd, main->env) < 0)
-		{
 			printf("minishell: %s: No such file or directory\n",
 				   command->cmd[0]);
-			exit(127);
-		}
+		exit(127);
 	}
 	else
 	{
@@ -110,7 +108,7 @@ void	check_command(t_main *main, t_commands *command)
 	if (!main->commands->cmd)
 		return ;
 	free_dmass(main->env);
-	main->env = copy_env_to_mass(main->sort_env);
+	main->env = copy_env_to_mass(main->unsort_env);
 	if (is_my_command(command))
 		exec_my_command(main, command);
 	else

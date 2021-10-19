@@ -16,8 +16,8 @@ int	ft_pwd(void)
 {
 	char	path[1024];
 
-	ft_bzero(path, 1024);
-	if (getcwd(path, 1024) == NULL)
+	ft_bzero(path, FILENAME_MAX);
+	if (getcwd(path, FILENAME_MAX) == NULL)
 		return (1);
 	printf("%s\n", path);
 	return (0);

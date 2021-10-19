@@ -14,6 +14,21 @@
 
 t_main	*g_main = NULL;
 
+void	error_n_exit(void *buf, void**buf2, int flag)
+{
+	if (flag == 1)
+		printf("Minishell: malloc error\n");
+	ft_allocfree(buf2);
+	if (buf)
+		free(buf);
+	ft_dlist_del(&g_main->sort_env);
+	ft_dlist_del(&g_main->unsort_env);
+	ft_allocfree((void **)g_main->env);
+	commands_clear(&g_main->commands);
+	ft_allocfree(((void *)&g_main));
+	exit(1);
+}
+
 int	ft_mass_size(char **str)
 {
 	int	i;
@@ -41,8 +56,7 @@ t_main	*init_main(char **envp)
 	sort_dlist(g_main->sort_env);
 	g_main->commands = NULL;
 	g_main->exit_code = 0;
-	add_to_list(g_main->sort_env, "SHLVL=2", "SHLVL");
-	add_to_list(g_main->unsort_env, "SHLVL=2", "SHLVL");
+	proc_shlvl(g_main);
 	return (g_main);
 }
 

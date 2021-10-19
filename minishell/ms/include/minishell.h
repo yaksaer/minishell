@@ -72,6 +72,7 @@ int				rl_replace_line(char *line, int undo);
 /*UTILS*/
 void			ft_dlist_insert_head(t_dlink_list *list, size_t index, \
 									char *data);
+int				proc_shlvl(t_main *main);
 t_dlink_list	*copy_env_to_list(char **env);
 char			**copy_env_to_mass(t_dlink_list *env);
 char			*get_env_key(t_node *node);
@@ -85,7 +86,7 @@ int				sort_dlist(t_dlink_list *dlist);
 t_main			*init_main(char **envp);
 void			minishell(t_main *main);
 void			free_dmass(char **str);
-
+void			error_n_exit(void *buf, void**buf2, int flag);
 /*EXECUTE*/
 int				get_command(t_main *main);
 void			check_command(t_main *main, t_commands *command);
