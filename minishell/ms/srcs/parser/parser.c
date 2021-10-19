@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 19:45:10 by marvin            #+#    #+#             */
-/*   Updated: 2021/10/18 13:00:35 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/19 17:01:03 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	parse_command(t_main *main, t_commands *command, char **string, char *res)
 		{
 			if (res)
 				command->cmd = add_string_to_massive(&command->cmd, &res, i++);
-			parse_redirect(main, command, &str);
+			parse_redirect(command, &str);
 		}
 		else
 			res = parse_word(main, &str);
@@ -78,12 +78,12 @@ void	start_pars(t_main *main, char *string)
 		commands_back(&main->commands, command);
 	}
 }
+
 int	parser(t_main *main)
 {
 	char		*str;
-	t_commands	*temp;
 
-	str = readline(BEGIN(49, 32)"Minishell: "CLOSE);
+	str = readline(BEGIN"Minishell: "CLOSE);
 	if (!str)
 	{
 		write(1, "\rexit\n", 6);
@@ -94,7 +94,7 @@ int	parser(t_main *main)
 	start_pars(main, str);
 	if (main->commands->redir)
 		handle_redir(main);
-//	print_commands(main);
+	print_commands(main);
 	ft_allocfree((void *)&str);
 	return (1);
 }

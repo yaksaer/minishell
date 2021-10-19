@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_start.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/19 16:48:54 by cbilbo            #+#    #+#             */
+/*   Updated: 2021/10/19 16:52:07 by cbilbo           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 static void	init_fd(t_descrip *descrip, t_commands *command)
@@ -74,6 +86,7 @@ int	get_command(t_main *main)
 	tmp = main->commands;
 	while (tmp)
 	{
+		switsch_signals(main, tmp);
 		set_in(&descrip, tmp);
 		set_out(&descrip, tmp);
 		check_command(main, tmp);

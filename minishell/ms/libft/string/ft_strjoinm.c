@@ -6,8 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 15:48:42 by marvin            #+#    #+#             */
-/*   Updated: 2021/10/04 01:13:50 by cbilbo           ###   ########.fr       */
-/*   Updated: 2021/10/03 12:07:25 by marvin           ###   ########.fr       */
+/*   Updated: 2021/10/19 16:54:46 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +18,7 @@ char	*ft_strjoinm(char *string1, char *string2, int f)
 	int		i;
 	int		j;
 	int		len;
-	
+
 	i = 0;
 	j = 0;
 	len = ft_strlen(string1) + ft_strlen(string2);

@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/14 19:51:49 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/19 15:46:56 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/19 16:58:17 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,6 @@ void	re_parser(t_main *main, char c)
 	else if (ft_strchr("\\;", c))
 		printf("minishell: '%c' : Unknown character\n", c);
 	else if (c == 'n')
-	commands_clear(&main->commands);
+		commands_clear(&main->commands);
 	minishell(main);
 }

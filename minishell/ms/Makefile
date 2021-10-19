@@ -17,7 +17,7 @@ EXEX_DIR = objs/execute_part
 COM_DIR = objs/commands
 
 CC = gcc
-CFLAGS = -g #-Wall -Werror -Wextra
+CFLAGS = -g -Wall -Werror -Wextra
 RM = rm -rf
 
 all: libft dir $(NAME)

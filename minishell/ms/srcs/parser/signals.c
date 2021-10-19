@@ -55,6 +55,7 @@ void	handle_signals(int sig, siginfo_t *info, void *ucontext)
 
 void	her_signals(int sig, siginfo_t *info, void *ucontext)
 {
+	(void)info;
 	(void)ucontext;
 	if (sig == SIGINT)
 	{
@@ -71,8 +72,30 @@ void	her_signals(int sig, siginfo_t *info, void *ucontext)
 	}
 }
 
+void	switsch_signals(t_main *main, t_commands *command)
+{
+	t_commands	*cmd;
+	int			i;
+	int			a;
+
+	cmd = command;
+	a = 0;
+	i = -1;
+	while (command && cmd->cmd[++i])
+	{
+		if (!ft_strcmp(cmd->cmd[i], "./minishell"))
+		{
+			a = 1;
+			break ;
+		}
+	}
+	if (a == 1)
+		redirect_signals(&main->sigac, "m0");
+}
+
 void	redirect_signals(struct sigaction *sigac, char *s)
 {
+	sigac->sa_mask = 0;
 	if (ft_strchr(s, 'c'))
 	{
 		if (ft_strchr(s, 'm'))
