@@ -55,22 +55,19 @@ static void	reset_fd(t_descrip *descrip)
 void	wait_child(t_main *main)
 {
 	int		stat;
-	int		ret;
 
-	ret = 0;
 	if (main->pid != 0)
 	{
 		waitpid(main->pid, &stat, 0);
-		if (WIFEXITED(stat))
-			ret = WEXITSTATUS(stat);
-		main->exit_code = ret;
+		if (WIFEXITED(stat) && WEXITSTATUS(stat))
+			main->exit_code = WEXITSTATUS(stat);
 	}
 }
 
 int	get_command(t_main *main)
 {
-	t_descrip	descrip;
-	t_commands	*tmp;
+	t_descrip			descrip;
+	t_commands			*tmp;
 
 	init_fd(&descrip, main->commands);
 	main->pid = 0;

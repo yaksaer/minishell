@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/14 19:54:58 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/14 21:23:26 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/19 15:49:25 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	parse_redirect(t_main *main, t_commands *cmd, char **string)
 
 int	open_redir(char *path, char r, int n)
 {
-	int fd;
+	int	fd;
 
 	if (r == '>')
 	{
@@ -52,8 +52,9 @@ int	open_redir(char *path, char r, int n)
 	}
 	if (fd == -1)
 	{
-		printf("wrong path of redirect\n");
-		exit (1);
+		printf("minishell: %s: No such file or directory\n", path);
+		ft_allocfree((void *)&path);
+		re_parser(g_main, 'n');
 	}
 	return (fd);
 }
@@ -80,7 +81,7 @@ void	redir_path(t_main *main, t_commands *com, char *path, char r)
 		com->input = fd;
 }
 
-void handle_redir(t_main *main) //прикрутить проверку на количество стрелок
+void	handle_redir(t_main *main)
 {
 	t_commands	*com;
 	char		r;
