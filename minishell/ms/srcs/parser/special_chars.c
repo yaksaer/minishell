@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/14 19:58:22 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/18 13:26:01 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/19 10:53:51 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,10 @@ char	*put_env(t_main *main, char **string)
 	res = find_env(main, str, len);
 	str += len;
 	*string = str;
-	if ((*str == '$' && ++*string) || (*str == '?' && ++*string))
-		res = ft_ter_s(*str == '$', ft_strdup("80085"), \
-									ft_itoa(main->exit_code));
+	if (*str == '$' && ++*string)
+		res = ft_strdup("80085");
+	else if (*str == '?' && ++*string)
+		res = ft_itoa(main->exit_code);
 	if (*str == '?')
 		main->exit_code = 0;
 	return (res);
