@@ -57,6 +57,7 @@ typedef struct	s_main {
 	int					exit_code;
 	char				**env;
 	t_dlink_list		*sort_env;
+	t_dlink_list		*unsort_env;
 	t_commands			*commands;
 	struct sigaction	sigac;
 	t_descrip			*descrip;
@@ -80,19 +81,23 @@ int				check_key(char *val, char *prog);
 int				sort_dlist(t_dlink_list *dlist);
 t_main			*init_main(char **envp);
 void			minishell(t_main *main);
+void			free_dmass(char **str);
 
 /*EXECUTE*/
 int				get_command(t_main *main);
 void			check_command(t_main *main, t_commands *command);
 int				is_my_command(t_commands *command);
+void			wait_child(t_main *main);
 /*COMMANDS*/
 int				ft_echo(int argc, char **argv);
 int				ft_env(t_main *main);
 int				ft_pwd(void);
 int				ft_export(t_main *main, t_commands *command);
+int				unsort_list_proc(char *comnd, t_dlink_list *env);
+int				add_to_unsort_list(t_dlink_list *env, char *cmd, char *key);
 void			print_export(t_dlink_list *env);
 int				replace_value(char **src, char *var);
-int				add_to_list(t_main *main, char *var, char *key);
+int				add_to_list(t_dlink_list *env, char *var, char *key);
 int				ft_unset(t_main *main, t_commands *command);
 int				ft_cd(t_main *main, t_commands *command);
 int				ft_exit(t_commands *commands);
