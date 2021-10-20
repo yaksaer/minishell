@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_start.c                                       :+:      :+:    :+:   */
+/*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 16:48:54 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/19 16:52:07 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/20 15:31:01 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	wait_child(t_main *main)
 	if (main->pid != 0)
 	{
 		waitpid(main->pid, &stat, 0);
-		if (WIFEXITED(stat) && WEXITSTATUS(stat))
+		if (WIFEXITED(stat) && WEXITSTATUS(stat) && ++main->flag_exit)
 			main->exit_code = WEXITSTATUS(stat);
 	}
 }

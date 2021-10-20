@@ -33,9 +33,9 @@ void	handle_signals(int sig, siginfo_t *info, void *ucontext)
 
 	usl = info;
 	usls = ucontext;
-	if (g_main->pid != -1)
+	if (g_main->pid != -1 && ++g_main->flag_exit)
 		cmd_signals(sig);
-	else if (sig == SIGINT)
+	else if (sig == SIGINT && ++g_main->flag_exit)
 	{
 		rl_on_new_line();
 		rl_redisplay();

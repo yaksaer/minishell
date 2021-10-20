@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/14 19:54:58 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/19 16:45:02 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/20 17:15:37 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	open_redir(char *path, char r, int n)
 	else
 	{
 		if (n == 1)
-			fd = open(path, O_RDONLY, 0664);
+			fd = open(path, O_RDWR, 0664);
 	}
 	if (fd == -1)
 	{
@@ -100,7 +100,13 @@ void	handle_redir(t_main *main)
 				ft_strlen_while(com->redir[i], "<") == 1)
 				redir_path(main, com, com->redir[i], r);
 			else if (ft_strlen_while(com->redir[i], "<") == 2)
-				ft_heredoc(main, com, com->redir[i]);
+			{
+				ft_heredoc(main, &com->input, com->redir[i]);
+				// int fd;
+				printf("1here is %d\n", com->input);
+				// fd = open(".heredoc", O_RDONLY);
+				// com->input = fd;
+			}
 		}
 		com = com->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/14 19:51:49 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/19 16:58:17 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/20 15:31:56 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	print_commands(t_main *main)
 void	re_parser(t_main *main, char c)
 {
 	main->exit_code = 1;
+	main->flag_exit = 1;
 	if (ft_strchr("\'\"", c))
 		printf("minishell: %c : Unclosed quotes\n", c);
 	else if (ft_strchr("\\;", c))
