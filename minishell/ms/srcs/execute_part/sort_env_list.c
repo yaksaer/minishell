@@ -33,7 +33,7 @@ char	*get_env_key(t_node *node)
 	i = 0;
 	if (!node)
 		return (NULL);
-	while (node->data[i] != '=')
+	while (node->data[i] && node->data[i] != '=')
 		i++;
 	ret = ft_calloc(i + 1, sizeof(char));
 	if (!ret)

@@ -27,14 +27,15 @@ int	ft_echo(int argc, char **argv)
 		n_option = true;
 		i++;
 	}
+	while (argv[i] && ft_strcmp(argv[i], "-n") == 0)
+		i++;
 	while (i < argc)
 	{
-		printf("%s", argv[i]);
-		i++;
+		ft_putstr_fd(argv[i++], 1);
 		if (i == argc && !n_option)
-			printf("\n");
+			ft_putchar_fd('\n', 1);
 		else if (i < argc)
-			printf(" ");
+			ft_putchar_fd(' ', 1);
 	}
 	return (0);
 }

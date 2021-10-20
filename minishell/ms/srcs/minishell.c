@@ -56,6 +56,7 @@ t_main	*init_main(char **envp)
 	sort_dlist(g_main->sort_env);
 	g_main->commands = NULL;
 	g_main->exit_code = 0;
+	g_main->flag = 0;
 	proc_shlvl(g_main);
 	return (g_main);
 }
@@ -65,6 +66,9 @@ void	minishell(t_main *main)
 	int	stop;
 
 	stop = 1;
+	list_unset(main->sort_env, "OLDPWD");
+	list_unset(main->unsort_env, "OLDPWD");
+	rl_outstream = stderr;
 	while (stop)
 	{
 		main->pid = -1;
