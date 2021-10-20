@@ -50,6 +50,15 @@ static char	*find_path(char **buf, char *cmd)
 	return (NULL);
 }
 
+char		*path_error(int flag, char *cmd)
+{
+	if (flag == 1)
+		printf("minishell: %s: No such file or directory\n", cmd);
+	else if (flag == 2)
+		printf("minishell: %s: command not found\n", cmd);
+	return (NULL);
+}
+
 static char	*split_path(t_commands *command, char **envp)
 {
 	int		i;
@@ -62,7 +71,7 @@ static char	*split_path(t_commands *command, char **envp)
 			&& envp[i][3] == 'H' && envp[i][4] == '=')
 			break ;
 	if (!envp[i])
-		return (NULL);
+		return (path_error(1, command->cmd[0]));
 	buf = ft_split(envp[i] + 5, ':');
 	ret = find_path(buf, command->cmd[0]);
 	i = -1;
@@ -70,7 +79,7 @@ static char	*split_path(t_commands *command, char **envp)
 		free(buf[i]);
 	free(buf);
 	if (!ret)
-		return (NULL);
+		return (path_error(2, command->cmd[0]));
 	return (ret);
 }
 
@@ -90,7 +99,7 @@ static void	check_command_path(t_main *main, t_commands *command)
 		path = split_path(command, main->env);
 		if (!path)
 		{
-			printf("minishell: %s: command not found\n", command->cmd[0]);
+			//printf("minishell: %s: command not found\n", command->cmd[0]);
 			exit(127);
 		}
 		if (execve(path, command->cmd, main->env) < 0)

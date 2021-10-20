@@ -40,7 +40,7 @@ void	handle_signals(int sig, siginfo_t *info, void *ucontext)
 		rl_on_new_line();
 		rl_redisplay();
 		write(1, "  \b\b\n", 5);
-		rl_replace_line("", 0);
+		//rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
 		g_main->exit_code = 1;
@@ -81,7 +81,7 @@ void	switsch_signals(t_main *main, t_commands *command)
 	cmd = command;
 	a = 0;
 	i = -1;
-	while (command && cmd->cmd[++i])
+	while (command && command->cmd && cmd->cmd[++i])
 	{
 		if (!ft_strcmp(cmd->cmd[i], "./minishell"))
 		{
