@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 16:48:54 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/20 17:11:41 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/20 20:14:50 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,7 @@ static void	set_out(t_descrip *desc, t_commands *command)
 static void	set_in(t_descrip *desc, t_commands *command)
 {
 	if (command->input)
-	{
 		dup2(command->input, 0);
-		printf("2here is %d\n", command->input);
-	}
 	else
 		dup2(desc->fd_in, 0);
 	close(desc->fd_in);

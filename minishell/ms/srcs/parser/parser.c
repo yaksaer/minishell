@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 19:45:10 by marvin            #+#    #+#             */
-/*   Updated: 2021/10/20 15:38:52 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/20 20:48:01 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ int	parse_command(t_main *main, t_commands *command, char **string, char *res)
 		}
 	}
 	*string = str;
+	check_pipe(main, command);
 	return (ft_ter_i(*str == '|', 1, 0));
 }
 

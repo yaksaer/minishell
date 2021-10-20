@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 15:55:03 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/20 16:51:31 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/20 19:52:16 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,9 +147,9 @@ char			*put_heredoc(t_main *main, char *dest, char *src, int qt);
 key = keyword
 qt = parameters of tabs and quotes
 Return file descriptor of heredoc*/
-void	heredoc_process(t_main *main, char *key, int qt, int input);
+void			heredoc_process(t_main *main, char *key, int qt);
 /*Main heredoc function*/
-void	ft_heredoc(t_main *main, int *input, char *string);
+void			ft_heredoc(t_main *main, int *input, char *string);
 
 /*SPECIAL CHARACTERS*/
 
@@ -194,4 +194,5 @@ void			switsch_signals(t_main *main, t_commands *cmd);
 /* add char to string with realloc*/
 char			*ft_add_char(char *string, char c);
 void			re_parser(t_main *main, char c);
+void			check_pipe(t_main *main, t_commands *com);
 #endif

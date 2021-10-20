@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/12 17:14:49 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/20 17:16:31 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/20 17:44:56 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,17 @@ char	*put_heredoc(t_main *main, char *dest, char *src, int qt)
 	return (res);
 }
 
-void	heredoc_process(t_main *main, char *key, int qt, int input)
+void	heredoc_process(t_main *main, char *key, int qt)
 {
 	char				*str;
 	char				*res;
 	struct sigaction	her;
+	int					input;
 
 	str = NULL;
 	redirect_signals(&her, "hc");
 	res = NULL;
+	input = open_redir(".heredoc", '>', 1);
 	while (1)
 	{
 		str = readline("heredoc: ");
@@ -68,6 +70,7 @@ void	heredoc_process(t_main *main, char *key, int qt, int input)
 		res = put_heredoc(main, res, str, qt);
 	}
 	write(input, res, ft_strlen(res));
+	close(input);
 	ft_allocfree((void *)&res);
 	exit (0);
 }
@@ -83,10 +86,9 @@ void	ft_heredoc(t_main *main, int *input, char *string)
 	quo_tab_flags = 0;
 	key = parse_heredoc(string, &quo_tab_flags);
 	redirect_signals(&main->sigac, "m0");
-	inp = open_redir(".heredoc", '>', 1);
 	pid = fork();
 	if (pid == 0)
-		heredoc_process(main, key, quo_tab_flags, inp);
+		heredoc_process(main, key, quo_tab_flags);
 	waitpid(pid, &status, 0);
 	if (WEXITSTATUS(status) == 1 && ++main->flag_exit)
 		main->exit_code = 1;
@@ -94,6 +96,7 @@ void	ft_heredoc(t_main *main, int *input, char *string)
 	ft_allocfree((void *)&key);
 	if (*input != 0)
 		close(*input);
+	inp = open_redir(".heredoc", '<', 1);
 	*input = inp;
 	return ;
 }
