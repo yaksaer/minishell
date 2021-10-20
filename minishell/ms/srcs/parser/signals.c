@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.c                                       :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -111,7 +111,7 @@ void	redirect_signals(struct sigaction *sigac, char *s)
 	if (ft_strchr(s, 'h'))
 		sigac->sa_flags = SA_SIGINFO;
 	if (sigaction(SIGINT, sigac, 0) == -1)
-		 exit (1);
+		exit (1);
 	if (sigaction(SIGQUIT, sigac, 0) == -1)
 		exit (1);
 }

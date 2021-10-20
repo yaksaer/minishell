@@ -18,7 +18,10 @@ int	ft_pwd(void)
 
 	ft_bzero(path, FILENAME_MAX);
 	if (getcwd(path, FILENAME_MAX) == NULL)
+	{
+		printf("%s\n", strerror(errno)); // TODO: Сообщение об ошибке
 		return (1);
+	}
 	printf("%s\n", path);
 	return (0);
 }

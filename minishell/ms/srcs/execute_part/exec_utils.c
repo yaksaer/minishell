@@ -12,6 +12,20 @@
 
 #include "../../include/minishell.h"
 
+char	*path_error(int flag, char *cmd)
+{
+	char	*tmp;
+
+	tmp = ft_strjoin("minishell: ", cmd);
+	if (flag == 1)
+		tmp = ft_strjoinm(tmp, ": No such file or directory\\n", 1);
+	else if (flag == 2)
+		tmp = ft_strjoinm(tmp, ": command not found\n", 1);
+	ft_putstr_fd(tmp, 2);
+	free(tmp);
+	return (NULL);
+}
+
 void	free_dmass(char **str)
 {
 	int		i;

@@ -52,15 +52,6 @@ static char	*find_path(char **buf, char *cmd)
 	return (NULL);
 }
 
-char		*path_error(int flag, char *cmd)
-{
-	if (flag == 1)
-		printf("minishell: %s: No such file or directory\n", cmd);
-	else if (flag == 2)
-		printf("minishell: %s: command not found\n", cmd);
-	return (NULL);
-}
-
 static char	*split_path(t_commands *command, char **envp)
 {
 	int		i;
@@ -92,18 +83,14 @@ static void	check_command_path(t_main *main, t_commands *command)
 	if (ft_strchr(command->cmd[0], '/') != NULL)
 	{
 		if (execve(command->cmd[0], command->cmd, main->env) < 0)
-			printf("minishell: %s: No such file or directory\n",
-				   command->cmd[0]);
+			path_error(1, command->cmd[0]);
 		exit(127);
 	}
 	else
 	{
 		path = split_path(command, main->env);
 		if (!path)
-		{
-			//printf("minishell: %s: command not found\n", command->cmd[0]);
 			exit(127);
-		}
 		if (execve(path, command->cmd, main->env) < 0)
 		{
 			free(path);
