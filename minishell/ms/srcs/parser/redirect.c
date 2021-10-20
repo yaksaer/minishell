@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/14 19:54:58 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/19 16:45:02 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/20 20:38:47 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,13 @@ int	open_redir(char *path, char r, int n)
 	else
 	{
 		if (n == 1)
-			fd = open(path, O_RDONLY, 0664);
+			fd = open(path, O_RDWR, 0664);
 	}
 	if (fd == -1)
 	{
-		printf("minishell: %s: No such file or directory\n", path);
+		printf("minishell: %s: %s\n", path, strerror(errno));
+		errno = 0;
 		ft_allocfree((void *)&path);
-		re_parser(g_main, 'n');
 	}
 	return (fd);
 }
@@ -75,7 +75,12 @@ void	redir_path(t_main *main, t_commands *com, char *path, char r)
 	res = parse_word(main, &path);
 	fd = open_redir(res, r, num);
 	if ((r == '>' && com->output != 0) || (r == '<' && com->input != 0))
-		ft_ter_i(r == '>', close(com->output), close(com->input));
+	{
+		if (r == '>')
+			close(com->output);
+		else
+			close(com->input);
+	}
 	if (r == '>')
 		com->output = fd;
 	else if (r == '<')
@@ -92,7 +97,7 @@ void	handle_redir(t_main *main)
 	while (com)
 	{
 		i = -1;
-		while (com->redir[++i])
+		while (com->redir && com->redir[++i])
 		{
 			r = com->redir[i][0];
 			if (ft_strlen_while(com->redir[i], ">") == 1 || \
@@ -100,7 +105,7 @@ void	handle_redir(t_main *main)
 				ft_strlen_while(com->redir[i], "<") == 1)
 				redir_path(main, com, com->redir[i], r);
 			else if (ft_strlen_while(com->redir[i], "<") == 2)
-				ft_heredoc(main, com, com->redir[i]);
+				ft_heredoc(main, &com->input, com->redir[i]);
 		}
 		com = com->next;
 	}

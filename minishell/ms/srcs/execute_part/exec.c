@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 16:48:56 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/19 16:48:57 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/20 15:30:10 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,9 @@ static void	exec_my_command(t_main *main, t_commands *command)
 	else if (!ft_strcmp(command->cmd[0], "cd"))
 		main->exit_code = ft_cd(main, command);
 	else if (!ft_strcmp(command->cmd[0], "exit"))
-		main->exit_code = ft_exit(main, command);
+		main->exit_code = ft_exit(command);
+	if (main->exit_code != 0)
+		main->flag_exit = 1;
 }
 
 static char	*find_path(char **buf, char *cmd)

@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/12 17:14:49 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/19 16:42:21 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/20 17:44:56 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,15 @@ void	heredoc_process(t_main *main, char *key, int qt)
 	char				*str;
 	char				*res;
 	struct sigaction	her;
+	int					input;
 
 	str = NULL;
 	redirect_signals(&her, "hc");
 	res = NULL;
+	input = open_redir(".heredoc", '>', 1);
 	while (1)
 	{
 		str = readline("heredoc: ");
-		while (!str)
-			str = readline("");
 		if (!ft_strcmp(key, str))
 		{
 			ft_allocfree((void *)&str);
@@ -69,22 +69,20 @@ void	heredoc_process(t_main *main, char *key, int qt)
 		}
 		res = put_heredoc(main, res, str, qt);
 	}
-	qt = open_redir(".heredoc", '>', 1);
-	write(qt, res, ft_strlen(res));
-	close(qt);
+	write(input, res, ft_strlen(res));
+	close(input);
 	ft_allocfree((void *)&res);
-	exit (qt);
+	exit (0);
 }
 
-void	ft_heredoc(t_main *main, t_commands *com, char *string)
+void	ft_heredoc(t_main *main, int *input, char *string)
 {
 	char	*key;
 	int		quo_tab_flags;
 	int		pid;
-	int		input;
+	int		inp;
 	int		status;
 
-	input = 0;
 	quo_tab_flags = 0;
 	key = parse_heredoc(string, &quo_tab_flags);
 	redirect_signals(&main->sigac, "m0");
@@ -92,14 +90,13 @@ void	ft_heredoc(t_main *main, t_commands *com, char *string)
 	if (pid == 0)
 		heredoc_process(main, key, quo_tab_flags);
 	waitpid(pid, &status, 0);
-	if (WEXITSTATUS(status) == 1)
+	if (WEXITSTATUS(status) == 1 && ++main->flag_exit)
 		main->exit_code = 1;
-	else
-		input = WEXITSTATUS(status);
 	redirect_signals(&main->sigac, "mc");
 	ft_allocfree((void *)&key);
-	if (com->input != 0)
-		close(com->input);
-	com->input = input;
+	if (*input != 0)
+		close(*input);
+	inp = open_redir(".heredoc", '<', 1);
+	*input = inp;
 	return ;
 }

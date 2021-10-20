@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 15:11:35 by marvin            #+#    #+#             */
-/*   Updated: 2021/10/19 16:55:51 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/20 15:39:50 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ t_main	*init_main(char **envp)
 		return (NULL);
 	sort_dlist(g_main->sort_env);
 	g_main->commands = NULL;
+	g_main->flag_exit = 0;
 	g_main->exit_code = 0;
 	g_main->flag = 0;
 	proc_shlvl(g_main);
@@ -72,10 +73,13 @@ void	minishell(t_main *main)
 	while (stop)
 	{
 		main->pid = -1;
+		main->flag_exit = 0;
 		redirect_signals(&main->sigac, "mc");
 		stop = parser(main);
 		get_command(main);
 		commands_clear(&main->commands);
+		if (main->flag_exit == 0)
+			main->exit_code = 0;
 	}
 	ft_dlist_del(&main->sort_env);
 	ft_allocfree((void *)&main);
