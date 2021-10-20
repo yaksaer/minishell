@@ -57,6 +57,7 @@ typedef struct s_commands
 typedef struct s_main
 {
 	int					exit_code;
+	int					flag;
 	char				**env;
 	t_dlink_list		*sort_env;
 	t_dlink_list		*unsort_env;
@@ -73,6 +74,7 @@ int				rl_replace_line(char *line, int undo);
 void			ft_dlist_insert_head(t_dlink_list *list, size_t index, \
 									char *data);
 int				proc_shlvl(t_main *main);
+char			*path_error(int flag, char *cmd);
 t_dlink_list	*copy_env_to_list(char **env);
 char			**copy_env_to_mass(t_dlink_list *env);
 char			*get_env_key(t_node *node);
@@ -103,8 +105,11 @@ void			print_export(t_dlink_list *env);
 int				replace_value(char **src, char *var);
 int				add_to_list(t_dlink_list *env, char *var, char *key);
 int				ft_unset(t_main *main, t_commands *command);
+void			list_unset(t_dlink_list *env, char *val);
 int				ft_cd(t_main *main, t_commands *command);
-int				ft_exit(t_commands *commands);
+void			add_pwd_env(t_main *main);
+int				find_key_node(t_dlink_list *env, char *key);
+int				ft_exit(t_main *main, t_commands *commands);
 /* PARSER */
 int				parser(t_main *main);
 void			start_pars(t_main *main, char *string);

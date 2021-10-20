@@ -12,28 +12,32 @@
 
 #include "../../include/minishell.h"
 
-void	change_env(t_main *main, char *old_dir)
+void	change_env(t_main *main, char *old_dir, char *tmp)
 {
-	char	*tmp;
-
-	tmp = ft_strjoin("OLDPWD=", old_dir);
-	if (!tmp)
-		error_n_exit(NULL, NULL, 1);
-	add_to_list(main->sort_env, tmp, "OLDPWD");
-	tmp = ft_strjoin("OLDPWD=", old_dir);
-	if (!tmp)
-		error_n_exit(NULL, NULL, 1);
-	add_to_unsort_list(main->unsort_env, tmp, "OLDPWD");
-	tmp = getcwd(NULL, 0);
-	tmp = ft_strjoinm("PWD=", tmp, 2);
-	if (!tmp)
-		error_n_exit(NULL, NULL, 1);
-	add_to_list(main->sort_env, tmp, "PWD");
-	tmp = getcwd(NULL, 0);
-	tmp = ft_strjoinm("PWD=", tmp, 2);
-	if (!tmp)
-		error_n_exit(NULL, NULL, 1);
-	add_to_unsort_list(main->unsort_env, tmp, "PWD");
+	add_pwd_env(main);
+	if (!find_key_node(main->sort_env, "OLDPWD") && main->flag == 0)
+	{
+		main->flag += 1;
+		tmp = ft_strjoin("OLDPWD=", old_dir);
+		if (!tmp)
+			error_n_exit(NULL, NULL, 1);
+		add_to_list(main->sort_env, tmp, "OLDPWD");
+		tmp = ft_strjoin("OLDPWD=", old_dir);
+		if (!tmp)
+			error_n_exit(NULL, NULL, 1);
+		add_to_unsort_list(main->unsort_env, tmp, "OLDPWD");
+	}
+	else
+	{
+		tmp = ft_strjoin("OLDPWD=", old_dir);
+		if (!tmp)
+			error_n_exit(NULL, NULL, 1);
+		add_to_list(main->sort_env, tmp, "OLDPWD");
+		tmp = ft_strjoin("OLDPWD=", old_dir);
+		if (!tmp)
+			error_n_exit(NULL, NULL, 1);
+		add_to_unsort_list(main->unsort_env, tmp, "OLDPWD");
+	}
 }
 
 int	step_back(t_main *main)
@@ -43,7 +47,9 @@ int	step_back(t_main *main)
 	int		len;
 	char	*tmp;
 
-	curr_path = getcwd(NULL, 0);
+	if (!(curr_path = getcwd(NULL, 0))) //TODO: Нормальное сообщение об
+		// ошибке и выход
+		return (1);
 	len = ft_strlen(curr_path) - ft_strlen(ft_strrchr(curr_path, '/'));
 	tmp = ft_calloc(len + 2, sizeof(char));
 	if (!tmp)
@@ -55,9 +61,11 @@ int	step_back(t_main *main)
 		while (++i < len)
 			tmp[i] = curr_path[i];
 	if (!chdir(tmp))
-		change_env(main, curr_path);
+	{
+		free(tmp);
+		change_env(main, curr_path, tmp);
+	}
 	free(curr_path);
-	free(tmp);
 	return (0);
 }
 
@@ -76,11 +84,14 @@ int	go_home(t_main *main, t_node *node)
 	tmp = ft_strdup(node->data + 5);
 	ft_bzero(curr_path, 1024);
 	getcwd(curr_path, 1024);
+	free(tmp);
 	if (!chdir(tmp))
-		change_env(main, curr_path);
+	{
+		free(tmp);
+		change_env(main, curr_path, tmp);
+	}
 	else
 		ret += 1;
-	free(tmp);
 	return (ret);
 }
 
@@ -105,35 +116,35 @@ int	go_home_start(t_main *main)
 	ret = go_home(main, node);
 	if (ret == 1)
 		printf("Minishell: cd: %s: No such file or directory\n",
-			   node->data + 5);
+			node->data + 5);
 	return (ret);
 }
 
 int	ft_cd(t_main *main, t_commands *command)
 {
-	char	*old_dir;
+	char	old_dir[1024];
+	char	*tmp;
 
+	ft_bzero(old_dir, FILENAME_MAX);
+	getcwd(old_dir, FILENAME_MAX);
 	if (ft_mass_size(command->cmd) == 1)
 		return (go_home_start(main));
 	else if (command->cmd[1][0] == '.' && command->cmd[1][1] == '.'
 		&& (!command->cmd[1][2] || ft_isspace(command->cmd[1][2])))
 		step_back(main);
-	else if (command->cmd[1][0] == '.' && !command->cmd[1][1])
-		return (0);
+	else if (command->cmd[1][0] == '.' && (!command->cmd[1][1] || ft_isspace
+		(command->cmd[1][2])))
+		change_env(main, old_dir, tmp);
 	else
 	{
-		old_dir = getcwd(NULL, 0);
 		if (chdir(command->cmd[1]) < 0)
 		{
 			printf("Minishell: cd: %s: No such file or directory\n",
-				   command->cmd[1]);
+				command->cmd[1]);
 			return (1);
 		}
 		else
-		{
-			change_env(main, old_dir);
-			free(old_dir);
-		}
+			change_env(main, old_dir, tmp);
 	}
 	return (0);
 }

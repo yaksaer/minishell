@@ -66,7 +66,13 @@ int	ft_unset(t_main *main, t_commands *command)
 		i = 0;
 		while (command->cmd[++i])
 		{
-			if (check_key(command->cmd[i], "unset")
+			if (ft_strchr(command->cmd[i], '='))
+			{
+				printf("minishell: unset: '%s': not a valid identifier\n",
+					command->cmd[i]);
+				continue ;
+			}
+			if (check_key(command->cmd[i], "unset") > 0
 				|| find_key(main, command->cmd[i]))
 				continue ;
 			list_unset(main->sort_env, command->cmd[i]);

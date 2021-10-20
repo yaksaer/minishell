@@ -19,6 +19,9 @@ int	check_key(char *val, char *prog)
 
 	i = 0;
 	count = 0;
+	if (ft_isdigit(val[0]))
+		return (printf("minishell: %s: '%s': not a valid identifier\n", prog,
+				val));
 	while (val[i])
 	{
 		if (val[i] == '=' && count > 0)
