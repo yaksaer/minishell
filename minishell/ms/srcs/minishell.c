@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 15:11:35 by marvin            #+#    #+#             */
-/*   Updated: 2021/10/20 15:39:50 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/21 16:19:59 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,9 @@ t_main	*init_main(char **envp)
 	g_main = (t_main *)malloc(sizeof(t_main));
 	if (!g_main)
 		return (NULL);
+	tcgetattr(STDIN_FILENO, &g_main->term);
+	g_main->oldterm = g_main->term;
+	g_main->term.c_lflag &= ~ECHOCTL;
 	g_main->sort_env = copy_env_to_list(envp);
 	if (!g_main->sort_env)
 		return (NULL);
@@ -72,14 +75,14 @@ void	minishell(t_main *main)
 	rl_outstream = stderr;
 	while (stop)
 	{
+		tcsetattr(STDIN_FILENO, TCSAFLUSH, &g_main->term);
 		main->pid = -1;
 		main->flag_exit = 0;
 		redirect_signals(&main->sigac, "mc");
 		stop = parser(main);
+		tcsetattr(STDIN_FILENO, TCSANOW, &g_main->oldterm);
 		get_command(main);
 		commands_clear(&main->commands);
-		if (main->flag_exit == 0)
-			main->exit_code = 0;
 	}
 	ft_dlist_del(&main->sort_env);
 	ft_allocfree((void *)&main);

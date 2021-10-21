@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/14 19:58:22 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/20 19:30:14 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/21 19:28:35 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,30 @@ char	*find_env(t_main *main, char *str, int len)
 	return (res);
 }
 
+static int	parse_env(char **string, char **result)
+{
+	char	*str;
+	char	*res;
+
+	res = NULL;
+	str = *string;
+	if (ft_isdigit(str[1]))
+	{
+		str += 2;
+		*string = str;
+		return (1);
+	}
+	if (!ft_isalpha(str[1]) && str[1] != '_')
+	{
+		res = ft_add_char(res, *str++);
+		res = ft_strjoinm(res, parse_word(g_main, &str), 3);
+		*result = res;
+		*string = str;
+		return (1);
+	}
+	return (0);
+}
+
 char	*put_env(t_main *main, char **string)
 {
 	char	*res;
@@ -36,6 +60,11 @@ char	*put_env(t_main *main, char **string)
 
 	res = NULL;
 	str = *string;
+	if (!ft_strchr("$?\'\"<> |/", *str) && parse_env(&str, &res))
+	{
+		*string = str;
+		return (res);
+	}
 	str++;
 	len = ft_strlen_until(str, "\"\'?$<> |/");
 	if (!len && !ft_strchr("\'\"?$<> |/", *str))
@@ -48,11 +77,6 @@ char	*put_env(t_main *main, char **string)
 		res = ft_strdup("80085");
 	else if (*str == '?' && ++*string)
 		res = ft_itoa(main->exit_code);
-	if (*str == '?')
-	{
-		main->exit_code = 0;
-		main->flag_exit = 0;
-	}
 	return (res);
 }
 
