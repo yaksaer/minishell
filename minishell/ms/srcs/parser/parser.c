@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 19:45:10 by marvin            #+#    #+#             */
-/*   Updated: 2021/10/20 20:48:01 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/21 18:55:11 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,11 @@ void	start_pars(t_main *main, char *string)
 		if (i)
 			string++;
 		commands_back(&main->commands, command);
+		if (main->flag_exit == 1)
+		{
+			main->flag_exit = 0;
+			main->exit_code = 0;
+		}
 	}
 }
 
@@ -90,14 +95,16 @@ int	parser(t_main *main)
 		write(1, BEGIN"\033[AMinishell: "CLOSE, 31);
 		write(1, "exit\n", 6);
 		rl_redisplay();
+		tcsetattr(STDIN_FILENO, TCSANOW, &g_main->oldterm);
 		exit(0);
 	}
 	if (str)
 		add_history(str);
 	start_pars(main, str);
-	if (main->commands->redir)
-		handle_redir(main);
-//	print_commands(main);
+	handle_redir(main);
+	//print_commands(main);
 	ft_allocfree((void *)&str);
+	if (!main->commands)
+		re_parser(main,0);
 	return (1);
 }

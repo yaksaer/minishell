@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/12 17:14:49 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/20 17:44:56 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/21 19:45:35 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 char	*parse_heredoc(char *str, int *qt)
 {
 	char	*res;
+	char	err;
 
 	res = NULL;
 	*qt = ft_ter_i(str[2] == '-', 2, *qt);
@@ -22,10 +23,13 @@ char	*parse_heredoc(char *str, int *qt)
 	str += ft_strlen_while(str, " \t");
 	while (*str != '\0')
 	{
+		err = *str;
 		if (ft_strchr("\'\"", *str) && *str++ && ++*qt)
 			continue ;
 		res = ft_add_char(res, *str++);
 	}
+	if (!res)
+		re_parser(g_main, 's');
 	return (res);
 }
 
@@ -48,17 +52,15 @@ char	*put_heredoc(t_main *main, char *dest, char *src, int qt)
 	return (res);
 }
 
-void	heredoc_process(t_main *main, char *key, int qt)
+void	heredoc_process(t_main *main, char *key, int qt, int input)
 {
 	char				*str;
 	char				*res;
 	struct sigaction	her;
-	int					input;
 
 	str = NULL;
 	redirect_signals(&her, "hc");
 	res = NULL;
-	input = open_redir(".heredoc", '>', 1);
 	while (1)
 	{
 		str = readline("heredoc: ");
@@ -86,17 +88,19 @@ void	ft_heredoc(t_main *main, int *input, char *string)
 	quo_tab_flags = 0;
 	key = parse_heredoc(string, &quo_tab_flags);
 	redirect_signals(&main->sigac, "m0");
+	inp = open_redir(NULL, key, '>', 1);
 	pid = fork();
 	if (pid == 0)
-		heredoc_process(main, key, quo_tab_flags);
+		heredoc_process(main, key, quo_tab_flags, inp);
 	waitpid(pid, &status, 0);
 	if (WEXITSTATUS(status) == 1 && ++main->flag_exit)
 		main->exit_code = 1;
 	redirect_signals(&main->sigac, "mc");
-	ft_allocfree((void *)&key);
 	if (*input != 0)
 		close(*input);
-	inp = open_redir(".heredoc", '<', 1);
+	inp = open_redir(NULL, key, '<', 1);
+	unlink(key);
 	*input = inp;
+	ft_allocfree((void *)&key);
 	return ;
 }
