@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 19:45:10 by marvin            #+#    #+#             */
-/*   Updated: 2021/10/21 18:55:11 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/21 20:50:45 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,9 +102,8 @@ int	parser(t_main *main)
 		add_history(str);
 	start_pars(main, str);
 	handle_redir(main);
-	//print_commands(main);
 	ft_allocfree((void *)&str);
 	if (!main->commands)
-		re_parser(main,0);
+		re_parser(main, 0);
 	return (1);
 }

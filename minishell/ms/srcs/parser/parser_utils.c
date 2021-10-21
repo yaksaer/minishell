@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/14 19:51:49 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/21 18:56:15 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/21 20:24:45 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,15 @@ t_commands	*change_command(t_main *main, t_commands *cmd)
 	while (temp && i == 0)
 	{
 		if (temp == cmd && ++i)
+		{
+			tmp->next = temp->next;
 			commands_delone(cmd);
+			break ;
+		}
 		tmp = temp;
 		temp = temp->next;
 	}
-	return (temp);
+	return (tmp->next);
 }
 
 char	*ft_add_char(char *string, char c)
