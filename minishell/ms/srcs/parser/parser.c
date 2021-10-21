@@ -101,6 +101,9 @@ int	parser(t_main *main)
 	if (str)
 		add_history(str);
 	start_pars(main, str);
+	if (main->commands->redir)
+		handle_redir(main);
+	print_commands(main);
 	handle_redir(main);
 	ft_allocfree((void *)&str);
 	if (!main->commands)

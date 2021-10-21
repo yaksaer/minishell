@@ -38,7 +38,7 @@ void	handle_signals(int sig, siginfo_t *info, void *ucontext)
 	else if (sig == SIGINT && ++g_main->flag_exit)
 	{
 		write(1, "\n", 1);
-		//rl_replace_line("", 0);
+		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
 		g_main->exit_code = 1;
