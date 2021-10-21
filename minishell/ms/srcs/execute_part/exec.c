@@ -19,7 +19,7 @@ static void	exec_my_command(t_main *main, t_commands *command)
 	else if (!ft_strcmp(command->cmd[0], "env"))
 		main->exit_code = ft_env(main);
 	else if (!ft_strcmp(command->cmd[0], "pwd"))
-		main->exit_code = ft_pwd();
+		main->exit_code = ft_pwd(main);
 	else if (!ft_strcmp(command->cmd[0], "export"))
 		main->exit_code = ft_export(main, command);
 	else if (!ft_strcmp(command->cmd[0], "unset"))
@@ -45,7 +45,7 @@ static char	*find_path(char **buf, char *cmd)
 		tmp = ft_strjoin(tmp, cmd);
 		if (!tmp)
 			return (NULL);
-		if (!access(tmp, 0))
+		if (!access(tmp, X_OK))
 			return (tmp);
 		free(tmp);
 	}

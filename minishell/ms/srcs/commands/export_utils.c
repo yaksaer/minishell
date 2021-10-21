@@ -78,5 +78,6 @@ int	unsort_list_proc(char *comnd, t_dlink_list *env)
 	if (!cmd)
 		error_n_exit(str, NULL, 1);
 	add_to_unsort_list(env, cmd, str);
+	free(str);
 	return (0);
 }

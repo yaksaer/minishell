@@ -130,6 +130,7 @@ char			*ft_strnstr(const char *haystack, const char *needle, \
 							size_t len);
 char			*ft_strrchr(const char *string, int symbol);
 char			*ft_strtrim(char const *string, char const *excess);
+int				ft_strstr_count(char *dest, char *needle);
 void			ft_swap(int *a, int *b);
 void			ft_swap_d(double *a, double *b);
 char			*ft_substr(char const *string, unsigned int start, size_t len);

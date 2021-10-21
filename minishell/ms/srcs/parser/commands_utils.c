@@ -104,6 +104,10 @@ void	commands_clear(t_commands **command)
 	while (com)
 	{
 		temp = com->next;
+		if (com->input)
+			close(com->input);
+		if (com->output)
+			close(com->output);
 		commands_delone(com);
 		ft_allocfree((void *)&com);
 		com = temp;
