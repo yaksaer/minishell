@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/14 19:54:58 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/20 20:38:47 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/21 20:34:46 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	parse_redirect(t_commands *cmd, char **string)
 	*string = str;
 }
 
-int	open_redir(char *path, char r, int n)
+int	open_redir(t_commands *cmd, char *path, char r, int n)
 {
 	int	fd;
 
@@ -53,14 +53,16 @@ int	open_redir(char *path, char r, int n)
 	}
 	if (fd == -1)
 	{
+		if (errno == 14)
+			re_parser(g_main, 's');
 		printf("minishell: %s: %s\n", path, strerror(errno));
-		errno = 0;
 		ft_allocfree((void *)&path);
+		errno = 0;
 	}
 	return (fd);
 }
 
-void	redir_path(t_main *main, t_commands *com, char *path, char r)
+int	redir_path(t_main *main, t_commands *com, char *path, char r)
 {
 	int		fd;
 	char	*res;
@@ -68,12 +70,13 @@ void	redir_path(t_main *main, t_commands *com, char *path, char r)
 
 	res = NULL;
 	num = ft_strlen_while(path, ">");
-	if (!num)
-		num = 1;
+	num = ft_ter_i(!num, 1, num);
 	path += num;
 	path += ft_strlen_while(path, " \t");
 	res = parse_word(main, &path);
-	fd = open_redir(res, r, num);
+	fd = open_redir(com, res, r, num);
+	if (fd == -1)
+		return (1);
 	if ((r == '>' && com->output != 0) || (r == '<' && com->input != 0))
 	{
 		if (r == '>')
@@ -85,6 +88,7 @@ void	redir_path(t_main *main, t_commands *com, char *path, char r)
 		com->output = fd;
 	else if (r == '<')
 		com->input = fd;
+	return (0);
 }
 
 void	handle_redir(t_main *main)
@@ -92,21 +96,26 @@ void	handle_redir(t_main *main)
 	t_commands	*com;
 	char		r;
 	int			i;
+	int			err;
 
+	err = 0;
 	com = main->commands;
 	while (com)
 	{
 		i = -1;
-		while (com->redir && com->redir[++i])
+		while (!err && com->redir && com->redir[++i])
 		{
 			r = com->redir[i][0];
 			if (ft_strlen_while(com->redir[i], ">") == 1 || \
 				ft_strlen_while(com->redir[i], ">") == 2 || \
 				ft_strlen_while(com->redir[i], "<") == 1)
-				redir_path(main, com, com->redir[i], r);
+				err = redir_path(main, com, com->redir[i], r);
 			else if (ft_strlen_while(com->redir[i], "<") == 2)
 				ft_heredoc(main, &com->input, com->redir[i]);
 		}
-		com = com->next;
+		if (err && err--)
+			com = change_command(main, com);
+		else
+			com = com->next;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 15:55:03 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/20 19:52:16 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/21 18:28:10 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ typedef struct s_main
 	t_commands			*commands;
 	struct sigaction	sigac;
 	int					pid;
+	struct termios		term;
+	struct termios		oldterm;
 }				t_main;
 
 extern t_main	*g_main;
@@ -134,10 +136,10 @@ void			parse_redirect(t_commands *cmd, char **string);
 r is type of angle brackers
 n is number of angle brackers
 Return value is file descriptor*/
-int				open_redir(char *path, char r, int n);
+int				open_redir(t_commands *cmd, char *path, char r, int n);
 /* Parse path and change input/output
 r = type of angle brackers*/
-void			redir_path(t_main *main, t_commands *com, char *path, char r);
+int				redir_path(t_main *main, t_commands *com, char *path, char r);
 /*Choose type of redirection*/
 void			handle_redir(t_main *main);
 
@@ -155,7 +157,7 @@ char			*put_heredoc(t_main *main, char *dest, char *src, int qt);
 key = keyword
 qt = parameters of tabs and quotes
 Return file descriptor of heredoc*/
-void			heredoc_process(t_main *main, char *key, int qt);
+void			heredoc_process(t_main *main, char *key, int qt, int input);
 /*Main heredoc function*/
 void			ft_heredoc(t_main *main, int *input, char *string);
 
@@ -203,4 +205,5 @@ void			switsch_signals(t_main *main, t_commands *cmd);
 char			*ft_add_char(char *string, char c);
 void			re_parser(t_main *main, char c);
 void			check_pipe(t_main *main, t_commands *com);
+t_commands		*change_command(t_main *main, t_commands *cmd);
 #endif
