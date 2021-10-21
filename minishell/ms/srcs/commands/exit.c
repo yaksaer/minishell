@@ -40,7 +40,7 @@ static long long	ft_exit_atoi(const char *nptr)
 			&& zn == 1)
 			return (0);
 		else if ((num > max || (num == max && (nptr[i] - '0') > 8))
-				 && zn == -1)
+			&& zn == -1)
 			return (0);
 		num = (10 * num) + (nptr[i] - '0');
 		i++;

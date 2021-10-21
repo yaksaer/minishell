@@ -97,7 +97,7 @@ int	parser(t_main *main)
 	start_pars(main, str);
 	if (main->commands->redir)
 		handle_redir(main);
-//	print_commands(main);
+	print_commands(main);
 	ft_allocfree((void *)&str);
 	return (1);
 }
