@@ -12,7 +12,7 @@
 
 #include "../../include/minishell.h"
 
-int	find_key_node(t_dlink_list *env, char *key)
+t_node	*find_key_node(t_dlink_list *env, char *key)
 {
 	t_node	*tmp;
 	char	*str;
@@ -24,29 +24,38 @@ int	find_key_node(t_dlink_list *env, char *key)
 		if (ft_strcmp(str, key) == 0)
 		{
 			free(str);
-			return (1);
+			return (tmp);
 		}
 		free(str);
 		tmp = tmp->next;
 	}
-	return (0);
+	return (NULL);
 }
 
-void	add_pwd_env(t_main *main)
+void	add_pwd_env(t_main *main, char *str)
 {
 	char	*buf;
 
-	if (find_key_node(main->sort_env, "PWD"))
+	buf = getcwd(NULL, 0);
+	if (!buf)
+		str = ft_strjoin(find_key_node(main->sort_env, "PWD")->data + 4, str);
+	else
+		str = buf;
+	if (str)
 	{
-		buf = getcwd(NULL, 0);
-		buf = ft_strjoinm("PWD=", buf, 2);
+		buf = ft_strjoin("PWD=", str);
 		if (!buf)
 			error_n_exit(NULL, NULL, 1);
 		add_to_list(main->sort_env, buf, "PWD");
-		buf = getcwd(NULL, 0);
-		buf = ft_strjoinm("PWD=", buf, 2);
+		buf = ft_strdup(buf);
 		if (!buf)
 			error_n_exit(NULL, NULL, 1);
 		add_to_unsort_list(main->unsort_env, buf, "PWD");
+		if (main->vault_pwd)
+			free(main->vault_pwd);
+		main->vault_pwd = ft_strdup(buf);
 	}
+	else
+		main->vault_pwd = ft_strjoinm("PWD=", ft_strdup(buf), 2);
+	free(str);
 }

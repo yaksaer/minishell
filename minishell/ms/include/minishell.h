@@ -56,6 +56,7 @@ typedef struct s_commands
 
 typedef struct s_main
 {
+	char				*vault_pwd;
 	int					flag_exit;
 	int					exit_code;
 	int					flag;
@@ -64,7 +65,6 @@ typedef struct s_main
 	t_dlink_list		*unsort_env;
 	t_commands			*commands;
 	struct sigaction	sigac;
-	t_descrip			*descrip;
 	int					pid;
 }				t_main;
 
@@ -98,7 +98,7 @@ void			wait_child(t_main *main);
 /*COMMANDS*/
 int				ft_echo(int argc, char **argv);
 int				ft_env(t_main *main);
-int				ft_pwd(void);
+int				ft_pwd(t_main *main);
 int				ft_export(t_main *main, t_commands *command);
 int				unsort_list_proc(char *comnd, t_dlink_list *env);
 int				add_to_unsort_list(t_dlink_list *env, char *cmd, char *key);
@@ -108,8 +108,8 @@ int				add_to_list(t_dlink_list *env, char *var, char *key);
 int				ft_unset(t_main *main, t_commands *command);
 void			list_unset(t_dlink_list *env, char *val);
 int				ft_cd(t_main *main, t_commands *command);
-void			add_pwd_env(t_main *main);
-int				find_key_node(t_dlink_list *env, char *key);
+void			add_pwd_env(t_main *main, char *str);
+t_node			*find_key_node(t_dlink_list *env, char *key);
 int				ft_exit(t_main *main, t_commands *commands);
 /* PARSER */
 int				parser(t_main *main);

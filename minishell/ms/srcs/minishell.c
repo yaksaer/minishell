@@ -41,6 +41,8 @@ int	ft_mass_size(char **str)
 
 t_main	*init_main(char **envp)
 {
+	char	*tmp;
+
 	g_main = (t_main *)malloc(sizeof(t_main));
 	if (!g_main)
 		return (NULL);
@@ -54,7 +56,11 @@ t_main	*init_main(char **envp)
 	if (!g_main->env)
 		return (NULL);
 	sort_dlist(g_main->sort_env);
+	tmp = ft_strdup("OLDPWD");
+	add_to_list(g_main->sort_env, tmp, "OLDPWD");
+	list_unset(g_main->unsort_env, "OLDPWD");
 	g_main->commands = NULL;
+	g_main->vault_pwd = NULL;
 	g_main->flag_exit = 0;
 	g_main->exit_code = 0;
 	g_main->flag = 0;
@@ -67,9 +73,6 @@ void	minishell(t_main *main)
 	int	stop;
 
 	stop = 1;
-	list_unset(main->sort_env, "OLDPWD");
-	list_unset(main->unsort_env, "OLDPWD");
-	rl_outstream = stderr;
 	while (stop)
 	{
 		main->pid = -1;
