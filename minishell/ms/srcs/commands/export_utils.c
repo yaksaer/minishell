@@ -12,6 +12,35 @@
 
 #include "../../include/minishell.h"
 
+int	check_key(char *val, char *prog)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	if (ft_isdigit(val[0]))
+		return (printf("minishell: %s: '%s': not a valid identifier\n",
+				prog, val));
+	while (val[i])
+	{
+		if (val[i] == '=' && count > 0)
+			return (-1);
+		else if (val[i] == '=' && count == 0)
+			break ;
+		else if (!ft_isalnum(val[i]) && val[i] != '_')
+			return (printf("minishell: %s: '%c': not a valid identifier\n",
+					prog, val[i]));
+		if (ft_isalpha(val[i]))
+			count++;
+		i++;
+	}
+	if (count == 0)
+		return (printf("minishell: %s: '%s': not a valid identifier\n", prog,
+				val));
+	return (0);
+}
+
 void	print_export(t_dlink_list *env)
 {
 	t_node	*tmp;
@@ -80,4 +109,24 @@ int	unsort_list_proc(char *comnd, t_dlink_list *env)
 	add_to_unsort_list(env, cmd, str);
 	free(str);
 	return (0);
+}
+
+t_node	*find_key_node(t_dlink_list *env, char *key)
+{
+	t_node	*tmp;
+	char	*str;
+
+	tmp = env->head;
+	while (tmp)
+	{
+		str = get_env_key(tmp);
+		if (ft_strcmp(str, key) == 0)
+		{
+			free(str);
+			return (tmp);
+		}
+		free(str);
+		tmp = tmp->next;
+	}
+	return (NULL);
 }

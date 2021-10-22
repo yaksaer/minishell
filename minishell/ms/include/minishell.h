@@ -57,6 +57,7 @@ typedef struct s_commands
 typedef struct s_main
 {
 	char				*vault_pwd;
+	char				*vault_home;
 	int					flag_exit;
 	int					exit_code;
 	int					flag;
@@ -111,6 +112,9 @@ int				add_to_list(t_dlink_list *env, char *var, char *key);
 int				ft_unset(t_main *main, t_commands *command);
 void			list_unset(t_dlink_list *env, char *val);
 int				ft_cd(t_main *main, t_commands *command);
+int				hyphen_proc(t_main *main, char *old_dir);
+int				specified_dir(char *dir);
+int				go_home(t_main *main, t_node *node);
 int				cwd_error(t_main *main, char *new_dir);
 void			change_env(t_main *main, char *old_dir, char *tmp);
 void			find_exist_path(t_main *main, char *tmp, char **buf);

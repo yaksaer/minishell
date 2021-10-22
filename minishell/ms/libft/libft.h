@@ -119,6 +119,7 @@ char			*ft_strjoin(char const *string1, char const *string2);
 size_t			ft_strlcat(char *destination, const char *source, size_t len);
 size_t			ft_strlcpy(char *destination, const char *source, size_t len);
 size_t			ft_strlen(const char *string);
+int				ft_mass_size(char **str);
 size_t			ft_strlen_until(const char *string, const char *smls);
 size_t			ft_strlen_while(const char *string, const char *smls);
 char			*ft_strmapi(char const *string, \

@@ -75,7 +75,7 @@ static int	start_export(t_main *main, t_commands *command)
 	while (command->cmd[++i])
 	{
 		flag = check_key(command->cmd[i], "export");
-		if (flag > 0)
+		if (flag >= 0)
 			continue ;
 		str = str_get_key(command->cmd[i]);
 		if (!str)

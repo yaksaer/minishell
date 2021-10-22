@@ -12,36 +12,30 @@
 
 #include "../../include/minishell.h"
 
-t_node	*find_key_node(t_dlink_list *env, char *key)
+int	go_home(t_main *main, t_node *node)
 {
-	t_node	*tmp;
-	char	*str;
+	char	*tmp;
+	char	curr_path[1024];
+	int		ret;
 
-	tmp = env->head;
-	while (tmp)
-	{
-		str = get_env_key(tmp);
-		if (ft_strcmp(str, key) == 0)
-		{
-			free(str);
-			return (tmp);
-		}
-		free(str);
-		tmp = tmp->next;
-	}
-	return (NULL);
+	ret = 0;
+	tmp = ft_strdup(node->data + 5);
+	ft_bzero(curr_path, 1024);
+	getcwd(curr_path, 1024);
+	if (!chdir(tmp))
+		change_env(main, curr_path, tmp);
+	else
+		ret += 1;
+	return (ret);
 }
 
 void	add_pwd_env(t_main *main, char *str)
 {
 	char	*buf;
 
-	buf = getcwd(NULL, 0);
-	if (!buf)
-		str = ft_strjoin(find_key_node(main->sort_env, "PWD")->data + 4, str);
-	else
-		str = buf;
-	if (str)
+	if (main->vault_pwd)
+		free(main->vault_pwd);
+	if (str && find_key_node(main->sort_env, "PWD"))
 	{
 		buf = ft_strjoin("PWD=", str);
 		if (!buf)
@@ -51,8 +45,6 @@ void	add_pwd_env(t_main *main, char *str)
 		if (!buf)
 			error_n_exit(NULL, NULL, 1);
 		add_to_unsort_list(main->unsort_env, buf, "PWD");
-		if (main->vault_pwd)
-			free(main->vault_pwd);
 		main->vault_pwd = ft_strdup(buf);
 	}
 	else
@@ -62,20 +54,19 @@ void	add_pwd_env(t_main *main, char *str)
 
 void	change_env(t_main *main, char *old_dir, char *tmp)
 {
-	add_pwd_env(main, tmp);
-	if (!find_key_node(main->unsort_env, "OLDPWD") && main->flag == 0)
-	{
-		main->flag += 1;
-		tmp = ft_strjoin("OLDPWD=", old_dir);
-		if (!tmp)
-			error_n_exit(NULL, NULL, 1);
-		add_to_list(main->sort_env, tmp, "OLDPWD");
-		tmp = ft_strjoin("OLDPWD=", old_dir);
-		if (!tmp)
-			error_n_exit(NULL, NULL, 1);
-		add_to_unsort_list(main->unsort_env, tmp, "OLDPWD");
-	}
+	char	*buf;
+	t_node	*nod;
+
+	buf = getcwd(NULL, 0);
+	nod = find_key_node(main->sort_env, "PWD");
+	if (!buf && !nod)
+		tmp = ft_strjoin(main->vault_pwd + 4, tmp);
+	else if (!buf)
+		tmp = ft_strjoin(find_key_node(main->sort_env, "PWD")->data + 4, tmp);
 	else
+		tmp = buf;
+	add_pwd_env(main, tmp);
+	if (find_key_node(main->unsort_env, "OLDPWD"))
 	{
 		tmp = ft_strjoin("OLDPWD=", old_dir);
 		if (!tmp)

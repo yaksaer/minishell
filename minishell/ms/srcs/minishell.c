@@ -26,28 +26,19 @@ void	free_all(void *buf, void **buf2)
 	ft_allocfree(((void *)&g_main));
 }
 
-void	error_n_exit(void *buf, void **buf2, int flag)
+void	continue_init(void)
 {
-	if (flag == 1)
-		printf("Minishell: malloc error\n");
-	free_all(buf, buf2);
-	exit(1);
-}
-
-int	ft_mass_size(char **str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
+	sort_dlist(g_main->sort_env);
+	g_main->commands = NULL;
+	g_main->vault_pwd = NULL;
+	g_main->flag_exit = 0;
+	g_main->exit_code = 0;
+	g_main->flag = 0;
+	proc_shlvl(g_main);
 }
 
 t_main	*init_main(char **envp)
 {
-	char	*tmp;
-
 	g_main = (t_main *)malloc(sizeof(t_main));
 	if (!g_main)
 		return (NULL);
@@ -63,16 +54,7 @@ t_main	*init_main(char **envp)
 	g_main->env = copy_env_to_mass(g_main->sort_env);
 	if (!g_main->env)
 		return (NULL);
-	sort_dlist(g_main->sort_env);
-	tmp = ft_strdup("OLDPWD");
-	add_to_list(g_main->sort_env, tmp, "OLDPWD");
-	list_unset(g_main->unsort_env, "OLDPWD");
-	g_main->commands = NULL;
-	g_main->vault_pwd = NULL;
-	g_main->flag_exit = 0;
-	g_main->exit_code = 0;
-	g_main->flag = 0;
-	proc_shlvl(g_main);
+	continue_init();
 	return (g_main);
 }
 
