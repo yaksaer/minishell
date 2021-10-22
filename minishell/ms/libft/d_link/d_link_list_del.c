@@ -22,6 +22,7 @@ void	ft_dlist_del(t_dlink_list **list)
 	while (tmp)
 	{
 		next = tmp->next;
+		free(tmp->data);
 		free(tmp);
 		tmp = next;
 	}

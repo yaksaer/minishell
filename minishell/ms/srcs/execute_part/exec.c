@@ -41,8 +41,8 @@ static char	*find_path(char **buf, char *cmd)
 	while (buf[++i])
 	{
 		tmp = ft_strdup(buf[i]);
-		tmp = ft_strjoin(tmp, "/");
-		tmp = ft_strjoin(tmp, cmd);
+		tmp = ft_strjoinm(tmp, "/", 1);
+		tmp = ft_strjoinm(tmp, cmd, 1);
 		if (!tmp)
 			return (NULL);
 		if (!access(tmp, X_OK))
