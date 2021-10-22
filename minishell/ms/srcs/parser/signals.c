@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 19:45:50 by marvin            #+#    #+#             */
-/*   Updated: 2021/10/21 16:19:43 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/22 17:08:22 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	handle_signals(int sig, siginfo_t *info, void *ucontext)
 	else if (sig == SIGINT && ++g_main->flag_exit)
 	{
 		write(1, "\n", 1);
-		//rl_replace_line("", 0);
+		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
 		g_main->exit_code = 1;
