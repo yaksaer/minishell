@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 15:11:35 by marvin            #+#    #+#             */
-/*   Updated: 2021/10/22 18:39:44 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/22 19:54:19 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	continue_init(void)
 	g_main->flag_exit = 0;
 	g_main->exit_code = 0;
 	g_main->flag = 0;
-  g_main->var = NULL;
+	g_main->var = NULL;
 	proc_shlvl(g_main);
 }
 

@@ -4,32 +4,28 @@ USER_N = ${USER}
 
 SRCS = $(wildcard srcs/*c) $(wildcard srcs/parser/*.c) $(wildcard srcs/execute_part/*.c) $(wildcard srcs/commands/*.c)
 
-OBJS = $(patsubst srcs/%.c,objs/%.o,$(SRCS))
+OBJS = $(patsubst %.c,%.o,$(SRCS))
 
 HEADER = include/minishell.h
 LIB = libft/libft.a
 
 INC_DIR = include
 LIB_DIR = libft
-OBJS_DIR = objs
-PARS_DIR = objs/parser
-EXEX_DIR = objs/execute_part
-COM_DIR = objs/commands
 
 CC = gcc
-CFLAGS = -g #-Wall -Werror -Wextra
+CFLAGS = -g -Wall -Werror -Wextra
 RM = rm -rf
 
-all: libft dir $(NAME)
+all: libft $(NAME)
 
 $(NAME): message $(OBJS) $(HEADER)
 	@$(CC) $(CFLAGS) $(OBJS) $(LIB) -lreadline -L /Users/$(USER_N)/.brew/opt/readline/lib -I /Users/$(USER_N)/.brew/opt/readline/include -o $(NAME)
 	@echo '√'
 	@echo Minishell was created!
 
-$(OBJS): $(SRCS) $(HEADER)
-	@echo -n '#' 
-	@$(CC) $(CFLAGS) -o $@ -c $(@:objs/%.o=srcs/%.c)
+%.o: %.c $(HEADER)
+	@echo -n '#'
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 libft:
 	@$(MAKE) -s -C $(LIB_DIR)
@@ -37,7 +33,7 @@ libft:
 clean:
 	@$(MAKE) clean -s -C $(LIB_DIR)
 	@echo Objectives deleted
-	@$(RM) $(OBJS_DIR)
+	@$(RM) $(OBJS)
 
 fclean: clean
 	@$(RM) $(LIB) $(NAME)
@@ -48,7 +44,4 @@ re: fclean all
 message:
 	@echo -n 'Create minishell '
 
-dir:
-	@mkdir -p $(OBJS_DIR) $(PARS_DIR) $(EXEX_DIR) $(COM_DIR)
-
-.PHONY: all clean fclean re libft message dir
+.PHONY: all clean fclean re libft message
