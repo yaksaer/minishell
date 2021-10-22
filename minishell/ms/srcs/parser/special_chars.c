@@ -6,24 +6,27 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/14 19:58:22 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/21 19:28:35 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/22 18:58:24 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-char	*find_env(t_main *main, char *str, int len)
+char	*parse_var(t_main *main)
 {
-	t_node	*env;
+	int		len;
 	char	*res;
 
-	env = main->sort_env->head;
-	while (env != NULL && ((int)ft_strlen_until(env->data, "=") != len \
-		|| ft_strncmp(str, env->data, len)))
-		env = env->next;
-	if (!env)
-		return (NULL);
-	res = ft_substr(env->data, len + 1, ft_strlen(env->data));
+	len = ft_strlen_until(main->var, " \t");
+	if (len == 0)
+	{
+		res = ft_strdup(main->var);
+		ft_allocfree((void *)&main->var);
+		return (res);
+	}
+	res = ft_substr(main->var, 0, len);
+	main->var = ft_strrepl(main->var, ft_strdup(main->var \
+		+ len + ft_strlen_while(main->var + len, " \t")));
 	return (res);
 }
 
@@ -34,10 +37,15 @@ static int	parse_env(char **string, char **result)
 
 	res = NULL;
 	str = *string;
-	if (ft_isdigit(str[1]))
+	if (ft_isdigit(str[1]) || ft_strchr("$?", str[1]))
 	{
+		if (str[1] == '?')
+			res = ft_itoa(g_main->exit_code);
+		else if (str[1] == '$')
+			res = ft_strdup("80085");
 		str += 2;
 		*string = str;
+		*result = res;
 		return (1);
 	}
 	if (!ft_isalpha(str[1]) && str[1] != '_')
@@ -55,28 +63,25 @@ char	*put_env(t_main *main, char **string)
 {
 	char	*res;
 	char	*str;
+	char	*key;
 	int		len;
+	t_node	*tmp;
 
 	res = NULL;
-	str = *string;
-	if (!ft_strchr("$?\'\"<> |/", *str) && parse_env(&str, &res))
-	{
-		*string = str;
+	if (!ft_strchr("\'\"<> |/", **string) && parse_env(&*string, &res))
 		return (res);
-	}
+	str = *string;
 	str++;
-	len = ft_strlen_until(str, "\"\'?$<> |/");
-	if (!len && !ft_strchr("\'\"?$<> |/", *str))
+	len = ft_strlen_until(str, "$\"\'<> |/");
+	if (!len && !ft_strchr("$\'\"<> |/", *str))
 		len = ft_strlen(str);
-	res = ft_strdup(ft_strchr(find_key_node(main->sort_env, "PWD")->data, '=') +
-			1);
-	res = find_env(main, str, len); //TODO: remove leak, not correct search return LDPWD instead of OLDPWD
+	key = ft_substr(str, 0, len);
+	tmp = find_key_node(main->sort_env, key);
+	if (tmp)
+		res = ft_strdup(ft_strchr(tmp->data, '=') + 1);
 	str += len;
 	*string = str;
-	if (*str == '$' && ++*string)
-		res = ft_strdup("80085");
-	else if (*str == '?' && ++*string)
-		res = ft_itoa(main->exit_code);
+	ft_allocfree((void *)&key);
 	return (res);
 }
 
