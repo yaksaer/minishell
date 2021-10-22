@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
+#    By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/10 21:22:34 by cbilbo            #+#    #+#              #
-#    Updated: 2021/09/29 15:16:14 by marvin           ###   ########.fr        #
+#    Updated: 2021/10/22 19:50:43 by cbilbo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ SRCS = $(wildcard char/*.c) $(wildcard d_link/*.c) $(wildcard ft_printf/*.c) \
 	$(wildcard lists/*.c) $(wildcard memory/*.c) $(wildcard numbers/*.c) \
 	$(wildcard print/*.c) $(wildcard string/*.c) $(wildcard utils/*.c)
 
-OBJS = $(patsubst %.c,objs/%.o,$(SRCS))
+OBJS = $(patsubst %.c,%.o,$(SRCS))
 
 HEADER = libft.h
 
@@ -36,21 +36,21 @@ $(NAME): $(OBJS) $(HEADER)
 	@echo '√'
 	@echo Libft created!
 
-$(OBJS): $(SRCS) $(HEADER)
+%.o: %.c $(HEADER)
 	@echo -n '#'
-	@$(CC) $(CFLAGS) -c $(@:objs/%.o=%.c) -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
+# $(OBJS): $(SRCS) $(HEADER)
+# 	@echo -n '#'
+# 	@$(CC) $(CFLAGS) -c $(@:objs/%.o=%.c) -o $@
 
 clean:
 	@echo Objectives deleted
-	@$(RM) objs/
+	@$(RM) $(OBJS)
 
 fclean: clean
 	@$(RM) $(NAME)
 	@echo Libft deleted
 
 re: fclean all
-
-dir:
-	@mkdir -p objs/ objs/char/ objs/d_link/ objs/ft_printf/ objs/lists/ objs/memory/ objs/numbers/ objs/print/ objs/string/ objs/utils/
 
 .PHONY: all clean fclean re dir

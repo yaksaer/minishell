@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 19:45:10 by marvin            #+#    #+#             */
-/*   Updated: 2021/10/22 19:05:15 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/22 20:06:30 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ char	*parse_word(t_main *main, char **string)
 {
 	char		*res;
 	char		*str;
-	int			len;
 
 	str = *string;
 	res = NULL;
@@ -89,6 +88,9 @@ void	start_pars(t_main *main, char *string)
 	}
 }
 
+/*print_commands(main);
+Add after handle redir for debug parser*/
+
 int	parser(t_main *main)
 {
 	char		*str;
@@ -106,7 +108,6 @@ int	parser(t_main *main)
 	if (str)
 		add_history(str);
 	start_pars(main, str);
-	//print_commands(main);
 	handle_redir(main);
 	ft_allocfree((void *)&str);
 	if (!main->commands)

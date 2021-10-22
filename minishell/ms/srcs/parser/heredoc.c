@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/12 17:14:49 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/22 17:37:57 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/22 19:51:57 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	ft_heredoc(t_main *main, int *input, char *string)
 	quo_tab_flags = 0;
 	key = parse_heredoc(string, &quo_tab_flags);
 	redirect_signals(&main->sigac, "m0");
-	inp = open_redir(NULL, ft_strdup(key), '>', 1);
+	inp = open_redir(ft_strdup(key), '>', 1);
 	pid = fork();
 	if (pid == 0)
 		heredoc_process(main, key, quo_tab_flags, inp);
@@ -98,7 +98,7 @@ void	ft_heredoc(t_main *main, int *input, char *string)
 	redirect_signals(&main->sigac, "mc");
 	if (*input != 0)
 		close(*input);
-	inp = open_redir(NULL, key, '<', 1);
+	inp = open_redir(key, '<', 1);
 	unlink(key);
 	*input = inp;
 	return ;

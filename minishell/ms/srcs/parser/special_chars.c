@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/14 19:58:22 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/22 18:58:24 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/22 19:36:56 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,8 @@ char	*put_env(t_main *main, char **string)
 		return (res);
 	str = *string;
 	str++;
-	len = ft_strlen_until(str, "$\"\'<> |/");
-	if (!len && !ft_strchr("$\'\"<> |/", *str))
+	len = ft_strlen_until(str, "$\"\'<>= |/");
+	if (!len && !ft_strchr("$\'\"<> |/=", *str))
 		len = ft_strlen(str);
 	key = ft_substr(str, 0, len);
 	tmp = find_key_node(main->sort_env, key);

@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 15:55:03 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/22 18:54:42 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/22 19:51:37 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ void			parse_redirect(t_commands *cmd, char **string);
 r is type of angle brackers
 n is number of angle brackers
 Return value is file descriptor*/
-int				open_redir(t_commands *cmd, char *path, char r, int n);
+int				open_redir(char *path, char r, int n);
 /* Parse path and change input/output
 r = type of angle brackers*/
 int				redir_path(t_main *main, t_commands *com, char *path, char r);
