@@ -97,7 +97,7 @@ int	ft_export(t_main *main, t_commands *command)
 
 	ret = 0;
 	if (ft_mass_size(command->cmd) > 1)
-		start_export(main, command);
+		ret = start_export(main, command);
 	else
 		print_export(main->sort_env);
 	if (ret > 0)

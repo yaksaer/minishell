@@ -18,6 +18,9 @@ void	list_unset(t_dlink_list *env, char *val)
 	char	*str;
 	int		i;
 
+	tmp = find_key_node(env, val);
+	if (!tmp)
+		return ;
 	tmp = env->head;
 	i = 0;
 	while (tmp)
@@ -37,30 +40,12 @@ void	list_unset(t_dlink_list *env, char *val)
 	}
 }
 
-int	find_key(t_main *main, char *val)
-{
-	t_node	*tmp;
-	char	*str;
-
-	tmp = main->sort_env->head;
-	while (tmp)
-	{
-		str = get_env_key(tmp);
-		if (ft_strcmp(str, val) == 0)
-		{
-			free(str);
-			return (0);
-		}
-		free(str);
-		tmp = tmp->next;
-	}
-	return (1);
-}
-
 int	ft_unset(t_main *main, t_commands *command)
 {
 	int	i;
+	int	ret;
 
+	ret = 0;
 	if (ft_mass_size(command->cmd) > 1)
 	{
 		i = 0;
@@ -70,14 +55,14 @@ int	ft_unset(t_main *main, t_commands *command)
 			{
 				printf("minishell: unset: '%s': not a valid identifier\n",
 					command->cmd[i]);
+				ret = 1;
 				continue ;
 			}
-			if (check_key(command->cmd[i], "unset") > 0
-				|| find_key(main, command->cmd[i]))
-				continue ;
+			if (check_key(command->cmd[i], "unset") > 0)
+				ret = 1;
 			list_unset(main->sort_env, command->cmd[i]);
 			list_unset(main->unsort_env, command->cmd[i]);
 		}
 	}
-	return (0);
+	return (ret);
 }

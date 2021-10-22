@@ -56,7 +56,6 @@ char	*put_env(t_main *main, char **string)
 	char	*res;
 	char	*str;
 	int		len;
-	int		i;
 
 	res = NULL;
 	str = *string;
@@ -69,8 +68,9 @@ char	*put_env(t_main *main, char **string)
 	len = ft_strlen_until(str, "\"\'?$<> |/");
 	if (!len && !ft_strchr("\'\"?$<> |/", *str))
 		len = ft_strlen(str);
-	i = 0;
-	res = find_env(main, str, len);
+	res = ft_strdup(ft_strchr(find_key_node(main->sort_env, "PWD")->data, '=') +
+			1);
+	res = find_env(main, str, len); //TODO: remove leak, not correct search return LDPWD instead of OLDPWD
 	str += len;
 	*string = str;
 	if (*str == '$' && ++*string)

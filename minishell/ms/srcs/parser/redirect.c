@@ -68,15 +68,18 @@ int	redir_path(t_main *main, t_commands *com, char *path, char r)
 	char	*res;
 	int		num;
 
-	res = NULL;
+//	res = NULL;
 	num = ft_strlen_while(path, ">");
 	num = ft_ter_i(!num, 1, num);
 	path += num;
 	path += ft_strlen_while(path, " \t");
-	res = parse_word(main, &path);
+	res = parse_word(main, &path); //TODO: FREE RES
 	fd = open_redir(com, res, r, num);
 	if (fd == -1)
+	{
+		free(res);
 		return (1);
+	}
 	if ((r == '>' && com->output != 0) || (r == '<' && com->input != 0))
 	{
 		if (r == '>')
@@ -88,6 +91,7 @@ int	redir_path(t_main *main, t_commands *com, char *path, char r)
 		com->output = fd;
 	else if (r == '<')
 		com->input = fd;
+	free(res);
 	return (0);
 }
 

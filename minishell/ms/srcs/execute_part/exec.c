@@ -27,7 +27,7 @@ static void	exec_my_command(t_main *main, t_commands *command)
 	else if (!ft_strcmp(command->cmd[0], "cd"))
 		main->exit_code = ft_cd(main, command);
 	else if (!ft_strcmp(command->cmd[0], "exit"))
-		main->exit_code = ft_exit(main, command);
+		ft_exit(main, command);
 	if (main->exit_code != 0)
 		main->flag_exit = 1;
 }

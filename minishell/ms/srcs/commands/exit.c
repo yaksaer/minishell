@@ -57,6 +57,7 @@ void	numeric_exit(t_commands *command, int flag)
 	{
 		printf("exit\nminishell: exit: %s: numeric argument required\n",
 			command->cmd[1]);
+		free_all(NULL, NULL);
 		exit(255);
 	}
 	i = 0;
@@ -66,6 +67,7 @@ void	numeric_exit(t_commands *command, int flag)
 		{
 			printf("exit\nminishell: exit: %s: numeric argument required\n",
 				command->cmd[1]);
+			free_all(NULL, NULL);
 			exit(255);
 		}
 	}
@@ -96,19 +98,18 @@ int	ft_exit(t_main *main, t_commands *command)
 	if (ft_mass_size(command->cmd) == 1)
 	{
 		printf("exit\n");
+		free_all(NULL, NULL);
 		exit(0);
 	}
 	numeric_exit(command, 0);
 	if (ft_mass_size(command->cmd) > 2)
-	{
 		printf("minishell: exit: too many arguments\n");
-		return (1);
-	}
 	num = ft_exit_atoi(command->cmd[1]);
 	if (num == 0 && ft_strlen(command->cmd[1]) > 1 && command->cmd[1][0] != '0')
 		numeric_exit(command, 1);
 	c = num;
 	printf("exit\n");
+	free_all(NULL, NULL);
 	exit(c);
 	return (0);
 }
