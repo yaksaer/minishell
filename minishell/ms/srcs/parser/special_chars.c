@@ -77,7 +77,8 @@ char	*put_env(t_main *main, char **string)
 		len = ft_strlen(str);
 	key = ft_substr(str, 0, len);
 	tmp = find_key_node(main->sort_env, key);
-	if (tmp)
+	if (tmp && ft_strchr(tmp->data, '=') \
+		&& ((ft_strchr(tmp->data, '=') + 1)[0] != '\0'))
 		res = ft_strdup(ft_strchr(tmp->data, '=') + 1);
 	str += len;
 	*string = str;

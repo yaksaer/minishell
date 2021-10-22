@@ -24,7 +24,7 @@ char	*parse_word(t_main *main, char **string)
 		if (main->var)
 		{
 			res = ft_strjoinm(res, parse_var(main), 3);
-			continue ;
+			break ;
 		}
 		if (ft_strchr("\'\"", *str))
 			res = ft_strjoinm(res, parse_quotation(main, &str, *str), 3);
@@ -53,7 +53,7 @@ int	parse_command(t_main *main, t_commands *command, char **string, char *res)
 			parse_redirect(command, &str);
 		}
 		else
-			res = parse_word(main, &str);
+			res = ft_strjoinm(res, parse_word(main, &str), 3);
 		if (ft_strchr(" \t", *str) || *str == '\0')
 		{
 			if (res)

@@ -34,7 +34,6 @@
 # include "../libft/libft.h"
 
 # define CLOSE "\001\033[0m\002"
-# define BLOD  "\001\033[1m\002"
 # define BEGIN "\001\033[49;32m\002"
 
 typedef struct s_descrip
@@ -57,10 +56,8 @@ typedef struct s_commands
 typedef struct s_main
 {
 	char				*vault_pwd;
-	char				*vault_home;
 	int					flag_exit;
 	int					exit_code;
-	int					flag;
 	char				**env;
 	char				*var;
 	t_dlink_list		*sort_env;
@@ -85,8 +82,6 @@ char			**copy_env_to_mass(t_dlink_list *env);
 char			*get_env_key(t_node *node);
 char			*str_get_key(char *var);
 int				ft_mass_size(char **str);
-int				add_quotes(t_dlink_list *env_list);
-char			*add_quotes_util(char *str);
 int				ft_mass_size(char **str);
 int				check_key(char *val, char *prog);
 int				sort_dlist(t_dlink_list *dlist);
@@ -108,7 +103,6 @@ int				ft_export(t_main *main, t_commands *command);
 int				unsort_list_proc(char *comnd, t_dlink_list *env);
 int				add_to_unsort_list(t_dlink_list *env, char *cmd, char *key);
 void			print_export(t_dlink_list *env);
-int				replace_value(char **src, char *var);
 int				add_to_list(t_dlink_list *env, char *var, char *key, int flag);
 int				ft_unset(t_main *main, t_commands *command);
 void			list_unset(t_dlink_list *env, char *val);
@@ -132,7 +126,6 @@ int				parse_command(t_main *main, t_commands *command, char **string, \
 /* Parse one command word */
 char			*parse_word(t_main *main, char **string);
 /* Checker of parser's results */
-void			print_commands(t_main *main);
 
 /*REDIRECT*/
 
