@@ -40,7 +40,7 @@ void	add_pwd_env(t_main *main, char *str)
 		buf = ft_strjoin("PWD=", str);
 		if (!buf)
 			error_n_exit(NULL, NULL, 1);
-		add_to_list(main->sort_env, buf, "PWD", 1);
+		add_to_list(main->sort_env, buf, "PWD");
 		buf = ft_strdup(buf);
 		if (!buf)
 			error_n_exit(NULL, NULL, 1);
@@ -71,7 +71,7 @@ void	change_env(t_main *main, char *old_dir, char *tmp)
 		tmp = ft_strjoin("OLDPWD=", old_dir);
 		if (!tmp)
 			error_n_exit(NULL, NULL, 1);
-		add_to_list(main->sort_env, tmp, "OLDPWD", 1);
+		add_to_list(main->sort_env, tmp, "OLDPWD");
 		tmp = ft_strjoin("OLDPWD=", old_dir);
 		if (!tmp)
 			error_n_exit(NULL, NULL, 1);

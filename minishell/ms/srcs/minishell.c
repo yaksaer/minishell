@@ -33,7 +33,7 @@ void	continue_init(void)
 	g_main->vault_pwd = NULL;
 	g_main->flag_exit = 0;
 	g_main->exit_code = 0;
-	g_main->flag = 0;
+	g_main->flag = 1;
 	g_main->var = NULL;
 	proc_shlvl(g_main);
 }

@@ -62,7 +62,7 @@ void	add_new_shlvl(t_main *main, int n)
 	buf = ft_strjoinm("SHLVL=", ft_itoa(n), 2);
 	if (!buf)
 		error_n_exit(NULL, NULL, 1);
-	add_to_list(main->sort_env, buf, "SHLVL", 1);
+	add_to_list(main->sort_env, buf, "SHLVL");
 	buf = ft_strdup(buf);
 	if (!buf)
 		error_n_exit(NULL, NULL, 1);
