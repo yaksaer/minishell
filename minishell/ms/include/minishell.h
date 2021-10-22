@@ -92,6 +92,7 @@ t_main			*init_main(char **envp);
 void			minishell(t_main *main);
 void			free_dmass(char **str);
 void			error_n_exit(void *buf, void**buf2, int flag);
+void			free_all(void *buf, void **buf2);
 /*EXECUTE*/
 int				get_command(t_main *main);
 void			check_command(t_main *main, t_commands *command);

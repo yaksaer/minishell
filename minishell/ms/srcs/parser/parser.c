@@ -96,6 +96,7 @@ int	parser(t_main *main)
 		write(1, "exit\n", 6);
 		rl_redisplay();
 		tcsetattr(STDIN_FILENO, TCSANOW, &g_main->oldterm);
+		free_all(NULL, NULL);
 		exit(0);
 	}
 	if (str)
@@ -103,7 +104,7 @@ int	parser(t_main *main)
 	start_pars(main, str);
 	if (main->commands->redir)
 		handle_redir(main);
-	print_commands(main);
+	//print_commands(main);
 	handle_redir(main);
 	ft_allocfree((void *)&str);
 	if (!main->commands)

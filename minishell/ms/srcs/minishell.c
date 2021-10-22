@@ -14,18 +14,23 @@
 
 t_main	*g_main = NULL;
 
-void	error_n_exit(void *buf, void**buf2, int flag)
+void	free_all(void *buf, void **buf2)
 {
-	if (flag == 1)
-		printf("Minishell: malloc error\n");
-	ft_allocfree(buf2);
+	free_dmass((char **)buf2);
 	if (buf)
 		free(buf);
 	ft_dlist_del(&g_main->sort_env);
 	ft_dlist_del(&g_main->unsort_env);
-	ft_allocfree((void **)g_main->env);
+	free_dmass(g_main->env);
 	commands_clear(&g_main->commands);
 	ft_allocfree(((void *)&g_main));
+}
+
+void	error_n_exit(void *buf, void **buf2, int flag)
+{
+	if (flag == 1)
+		printf("Minishell: malloc error\n");
+	free_all(buf, buf2);
 	exit(1);
 }
 

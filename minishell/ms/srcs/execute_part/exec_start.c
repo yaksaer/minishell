@@ -74,6 +74,11 @@ int	get_command(t_main *main)
 	tmp = main->commands;
 	while (tmp)
 	{
+		if (main->pid)
+		{
+			waitpid(main->pid, 0, 0);
+			kill(main->pid, SIGKILL);
+		}
 		switsch_signals(main, tmp);
 		set_in(&descrip, tmp);
 		set_out(&descrip, tmp);

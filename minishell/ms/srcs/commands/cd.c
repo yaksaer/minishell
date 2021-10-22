@@ -86,6 +86,21 @@ void	one_dot_proc(t_main *main, char *old_dir, char *command)
 	free(curr_path);
 }
 
+int 	specified_dir(char *dir)
+{
+	if (chdir(dir) < 0)
+	{
+		if (opendir(dir) || errno == ENOTDIR)
+			printf("Minishell: cd: %s: Not a directory\n", dir);
+		else
+			printf("Minishell: cd: %s: No such file or directory\n",
+				   dir);
+		return (1);
+	}
+	else
+		return (0);
+}
+
 int	ft_cd(t_main *main, t_commands *command)
 {
 	char	old_dir[1024];
@@ -102,14 +117,10 @@ int	ft_cd(t_main *main, t_commands *command)
 		one_dot_proc(main, old_dir, command->cmd[1]);
 	else
 	{
-		if (chdir(command->cmd[1]) < 0)
-		{
-			printf("Minishell: cd: %s: No such file or directory\n",
-				command->cmd[1]);
-			return (1);
-		}
-		else
+		if (specified_dir(command->cmd[1]) == 0)
 			change_env(main, old_dir, command->cmd[1]);
+		else
+			return (1);
 	}
 	return (0);
 }
