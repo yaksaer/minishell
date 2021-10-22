@@ -22,7 +22,6 @@ RM = rm -rf
 
 all: libft dir $(NAME)
 
-#Здесь надо указать вместо cbilbo свой ник
 $(NAME): message $(OBJS) $(HEADER)
 	@$(CC) $(CFLAGS) $(OBJS) $(LIB) -lreadline -L /Users/$(USER_N)/.brew/opt/readline/lib -I /Users/$(USER_N)/.brew/opt/readline/include -o $(NAME)
 	@echo '√'

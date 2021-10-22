@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 15:55:03 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/21 18:28:10 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/22 18:54:42 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct s_main
 	int					exit_code;
 	int					flag;
 	char				**env;
+	char				*var;
 	t_dlink_list		*sort_env;
 	t_dlink_list		*unsort_env;
 	t_commands			*commands;
@@ -203,6 +204,7 @@ void			switsch_signals(t_main *main, t_commands *cmd);
 
 /* UTILS */
 /* add char to string with realloc*/
+char			*parse_var(t_main *main);
 char			*ft_add_char(char *string, char c);
 void			re_parser(t_main *main, char c);
 void			check_pipe(t_main *main, t_commands *com);

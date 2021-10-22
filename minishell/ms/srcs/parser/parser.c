@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 19:45:10 by marvin            #+#    #+#             */
-/*   Updated: 2021/10/21 20:50:45 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/22 19:05:15 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,23 @@
 
 char	*parse_word(t_main *main, char **string)
 {
-	char	*res;
-	char	*str;
+	char		*res;
+	char		*str;
+	int			len;
 
 	str = *string;
 	res = NULL;
-	while (!ft_strchr(" \t<>|", *str) && *str != '\0')
+	while (main->var || (!ft_strchr(" \t<>|", *str) && *str != '\0'))
 	{
-		if (ft_strchr(";\\", *str))
-			re_parser(main, *str);
-		else if (ft_strchr("\'\"", *str))
+		if (main->var)
+		{
+			res = ft_strjoinm(res, parse_var(main), 3);
+			continue ;
+		}
+		if (ft_strchr("\'\"", *str))
 			res = ft_strjoinm(res, parse_quotation(main, &str, *str), 3);
 		else if (*str == '$' && str[1] && !ft_strchr(" \t|", str[1]))
-			res = ft_strjoinm(res, put_env(main, &str), 3);
+			main->var = put_env(main, &str);
 		else
 			res = ft_add_char(res, *str++);
 	}
@@ -41,9 +45,9 @@ int	parse_command(t_main *main, t_commands *command, char **string, char *res)
 
 	i = 0;
 	str = *string;
-	while (*str != '\0' && *str != '|')
+	while ((*str != '\0' && *str != '|') || main->var)
 	{
-		if (ft_strchr("<>", *str))
+		if (!main->var && ft_strchr("<>", *str))
 		{
 			if (res)
 				command->cmd = add_string_to_massive(&command->cmd, &res, i++);
@@ -102,8 +106,6 @@ int	parser(t_main *main)
 	if (str)
 		add_history(str);
 	start_pars(main, str);
-	if (main->commands->redir)
-		handle_redir(main);
 	//print_commands(main);
 	handle_redir(main);
 	ft_allocfree((void *)&str);

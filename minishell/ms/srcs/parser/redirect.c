@@ -6,7 +6,7 @@
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/14 19:54:58 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/21 20:34:46 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/22 17:46:41 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,15 @@ void	parse_redirect(t_commands *cmd, char **string)
 	static int	i;
 	char		*str;
 	char		*res;
+	int			len;
 
 	if (!cmd->redir)
 		i = 0;
 	str = *string;
 	res = NULL;
+	len = ft_strlen_while(*string, "<>");
+	if (len > 2)
+		re_parser(g_main, 's');
 	while (ft_strchr("<>", *str) && *str != '|' && *str != '\0')
 		res = ft_add_char(res, *str++);
 	if (!ft_strcmp(res, "<<") && *str == '-')
@@ -56,9 +60,10 @@ int	open_redir(t_commands *cmd, char *path, char r, int n)
 		if (errno == 14)
 			re_parser(g_main, 's');
 		printf("minishell: %s: %s\n", path, strerror(errno));
-		ft_allocfree((void *)&path);
+		printf("1\n");
 		errno = 0;
 	}
+	ft_allocfree((void *)&path);
 	return (fd);
 }
 
@@ -68,18 +73,15 @@ int	redir_path(t_main *main, t_commands *com, char *path, char r)
 	char	*res;
 	int		num;
 
-//	res = NULL;
+	res = NULL;
 	num = ft_strlen_while(path, ">");
 	num = ft_ter_i(!num, 1, num);
 	path += num;
 	path += ft_strlen_while(path, " \t");
-	res = parse_word(main, &path); //TODO: FREE RES
+	res = parse_word(main, &path);
 	fd = open_redir(com, res, r, num);
 	if (fd == -1)
-	{
-		free(res);
 		return (1);
-	}
 	if ((r == '>' && com->output != 0) || (r == '<' && com->input != 0))
 	{
 		if (r == '>')
@@ -91,7 +93,6 @@ int	redir_path(t_main *main, t_commands *com, char *path, char r)
 		com->output = fd;
 	else if (r == '<')
 		com->input = fd;
-	free(res);
 	return (0);
 }
 

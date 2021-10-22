@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
+/*   cd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 16:48:19 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/19 17:21:49 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/10/22 16:59:56 by cbilbo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_node	*find_key_node(t_dlink_list *env, char *key)
 	char	*str;
 
 	tmp = env->head;
-	while (tmp)
+	while (tmp && key)
 	{
 		str = get_env_key(tmp);
 		if (ft_strcmp(str, key) == 0)
