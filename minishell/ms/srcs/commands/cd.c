@@ -39,23 +39,6 @@ int	step_back(t_main *main)
 	return (0);
 }
 
-int	go_home(t_main *main, t_node *node)
-{
-	char	*tmp;
-	char	curr_path[1024];
-	int		ret;
-
-	ret = 0;
-	tmp = ft_strdup(node->data + 5);
-	ft_bzero(curr_path, 1024);
-	getcwd(curr_path, 1024);
-	if (!chdir(tmp))
-		change_env(main, curr_path, tmp);
-	else
-		ret += 1;
-	return (ret);
-}
-
 int	go_home_start(t_main *main)
 {
 	t_node	*node;
@@ -86,7 +69,7 @@ void	one_dot_proc(t_main *main, char *old_dir, char *command)
 	free(curr_path);
 }
 
-int 	specified_dir(char *dir)
+int	specified_dir(char *dir)
 {
 	if (chdir(dir) < 0)
 	{
@@ -94,7 +77,7 @@ int 	specified_dir(char *dir)
 			printf("Minishell: cd: %s: Not a directory\n", dir);
 		else
 			printf("Minishell: cd: %s: No such file or directory\n",
-				   dir);
+				dir);
 		return (1);
 	}
 	else
@@ -115,6 +98,9 @@ int	ft_cd(t_main *main, t_commands *command)
 	else if (command->cmd[1][0] == '.' && (!command->cmd[1][1] || ft_isspace
 		(command->cmd[1][2])))
 		one_dot_proc(main, old_dir, command->cmd[1]);
+	else if (command->cmd[1][0] == '-' && (!command->cmd[1][1] || ft_isspace
+			(command->cmd[1][2])))
+		return (hyphen_proc(main, old_dir));
 	else
 	{
 		if (specified_dir(command->cmd[1]) == 0)
