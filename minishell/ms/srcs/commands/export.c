@@ -12,12 +12,11 @@
 
 #include "../../include/minishell.h"
 
-static int	replace_in_list(t_dlink_list *env, int n, char *cmd, char **str,
-							  int flag)
+static int	replace_in_list(t_dlink_list *env, int n, char *cmd, char **str)
 {
 	char	*buf;
 
-	if (flag == 0)
+	if (g_main->flag == 0)
 	{
 		free(cmd);
 		free(*str);
@@ -44,7 +43,7 @@ static void	push_to_list(t_dlink_list *env, int n, char *cmd, t_node *tmp)
 		ft_dlist_insert(env, n - 2, cmd);
 }
 
-int	add_to_list(t_dlink_list *env, char *cmd, char *key, int flag)
+int	add_to_list(t_dlink_list *env, char *cmd, char *key)
 {
 	t_node	*tmp;
 	char	*str;
@@ -62,7 +61,7 @@ int	add_to_list(t_dlink_list *env, char *cmd, char *key, int flag)
 			return (1);
 		}
 		else if (ft_strcmp(str, key) == 0)
-			return (replace_in_list(env, i, cmd, &str, flag));
+			return (replace_in_list(env, i, cmd, &str));
 		free(str);
 		tmp = tmp->next;
 	}
@@ -73,16 +72,15 @@ int	add_to_list(t_dlink_list *env, char *cmd, char *key, int flag)
 static int	start_export(t_main *main, t_commands *command)
 {
 	int		i;
-	int		flag;
 	char	*str;
 	char	*cmd;
 
 	i = 0;
-	flag = 0;
+	main->flag = 0;
 	while (command->cmd[++i])
 	{
-		flag = check_key(command->cmd[i], "export");
-		if (flag > 0)
+		main->flag = check_key(command->cmd[i], "export");
+		if (main->flag > 0)
 			continue ;
 		str = str_get_key(command->cmd[i]);
 		if (!str)
@@ -90,12 +88,12 @@ static int	start_export(t_main *main, t_commands *command)
 		cmd = ft_strdup(command->cmd[i]);
 		if (!cmd)
 			error_n_exit(str, NULL, 1);
-		add_to_list(main->sort_env, cmd, str, flag);
-		if (flag == -1)
+		add_to_list(main->sort_env, cmd, str);
+		if (main->flag == -1)
 			unsort_list_proc(command->cmd[i], main->unsort_env);
 		free(str);
 	}
-	return (flag);
+	return (main->flag);
 }
 
 int	ft_export(t_main *main, t_commands *command)

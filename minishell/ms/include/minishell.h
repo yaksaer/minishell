@@ -58,6 +58,7 @@ typedef struct s_main
 	char				*vault_pwd;
 	int					flag_exit;
 	int					exit_code;
+	int					flag;
 	char				**env;
 	char				*var;
 	t_dlink_list		*sort_env;
@@ -103,7 +104,7 @@ int				ft_export(t_main *main, t_commands *command);
 int				unsort_list_proc(char *comnd, t_dlink_list *env);
 int				add_to_unsort_list(t_dlink_list *env, char *cmd, char *key);
 void			print_export(t_dlink_list *env);
-int				add_to_list(t_dlink_list *env, char *var, char *key, int flag);
+int				add_to_list(t_dlink_list *env, char *var, char *key);
 int				ft_unset(t_main *main, t_commands *command);
 void			list_unset(t_dlink_list *env, char *val);
 int				ft_cd(t_main *main, t_commands *command);
