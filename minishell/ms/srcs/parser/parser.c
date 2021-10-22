@@ -16,7 +16,6 @@ char	*parse_word(t_main *main, char **string)
 {
 	char		*res;
 	char		*str;
-	int			len;
 
 	str = *string;
 	res = NULL;

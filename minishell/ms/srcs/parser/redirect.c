@@ -38,7 +38,7 @@ void	parse_redirect(t_commands *cmd, char **string)
 	*string = str;
 }
 
-int	open_redir(t_commands *cmd, char *path, char r, int n)
+int	open_redir(char *path, char r, int n)
 {
 	int	fd;
 
@@ -79,7 +79,7 @@ int	redir_path(t_main *main, t_commands *com, char *path, char r)
 	path += num;
 	path += ft_strlen_while(path, " \t");
 	res = parse_word(main, &path);
-	fd = open_redir(com, res, r, num);
+	fd = open_redir(res, r, num);
 	if (fd == -1)
 		return (1);
 	if ((r == '>' && com->output != 0) || (r == '<' && com->input != 0))

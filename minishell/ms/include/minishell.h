@@ -109,7 +109,7 @@ int				unsort_list_proc(char *comnd, t_dlink_list *env);
 int				add_to_unsort_list(t_dlink_list *env, char *cmd, char *key);
 void			print_export(t_dlink_list *env);
 int				replace_value(char **src, char *var);
-int				add_to_list(t_dlink_list *env, char *var, char *key);
+int				add_to_list(t_dlink_list *env, char *var, char *key, int flag);
 int				ft_unset(t_main *main, t_commands *command);
 void			list_unset(t_dlink_list *env, char *val);
 int				ft_cd(t_main *main, t_commands *command);
@@ -142,7 +142,7 @@ void			parse_redirect(t_commands *cmd, char **string);
 r is type of angle brackers
 n is number of angle brackers
 Return value is file descriptor*/
-int				open_redir(t_commands *cmd, char *path, char r, int n);
+int				open_redir(char *path, char r, int n);
 /* Parse path and change input/output
 r = type of angle brackers*/
 int				redir_path(t_main *main, t_commands *com, char *path, char r);
