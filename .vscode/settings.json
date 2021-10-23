@@ -1,6 +1,0 @@
-{
-	"files.associations": {
-		"*.write": "asm-intel-x86-generic",
-		"libft.h": "c"
-	}
-}
