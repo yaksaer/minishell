@@ -3,52 +3,54 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kseed <kseed@student.42.fr>                +#+  +:+       +#+         #
+#    By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2020/10/30 23:31:41 by kseed             #+#    #+#              #
-#    Updated: 2021/04/09 15:54:52 by kseed            ###   ########.fr        #
+#    Created: 2020/11/10 21:22:34 by cbilbo            #+#    #+#              #
+#    Updated: 2021/10/22 19:50:43 by cbilbo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS = ft_isspace.c get_next_line.c ft_strcat.c ft_strcpy.c ft_memset.c ft_bzero.c ft_memcpy.c \
-		ft_memccpy.c ft_memmove.c ft_memchr.c ft_memcmp.c ft_strlen.c ft_isalpha.c ft_isdigit.c \
-		ft_isalnum.c ft_substr.c ft_isascii.c ft_isprint.c ft_toupper.c ft_tolower.c ft_strchr.c \
-		ft_strrchr.c ft_strncmp.c ft_strlcpy.c ft_strlcat.c ft_strnstr.c ft_atoi.c ft_calloc.c \
-		ft_strdup.c ft_strjoin.c ft_strtrim.c ft_strmapi.c ft_putchar_fd.c ft_putstr_fd.c \
-		ft_putendl_fd.c ft_putnbr_fd.c ft_itoa.c ft_split.c ft_lstnew.c ft_lstadd_front.c \
-		ft_lstlast.c ft_lstadd_back.c ft_lstsize.c ft_lstdelone.c ft_lstclear.c ft_lstiter.c \
-		ft_lstmap.c get_next_line_utils.c d_link_list_del.c d_link_list_del_n.c \
-		d_link_list_get_n.c d_link_list_insert.c d_link_list_pop_back.c ft_putstr.c \
-		d_link_list_pop_front.c d_link_list_push_back.c d_link_list_push_front.c
-
 NAME = libft.a
 
-OBJ = ${SRCS:.c=.o}
+VPATH = char/:d_link/:ft_printf/:lists/:memory/:numbers/:print/:string/:utils/
 
-EXEC = gcc -Wall -Wextra -Werror
+SRCS = $(wildcard char/*.c) $(wildcard d_link/*.c) $(wildcard ft_printf/*.c) \
+	$(wildcard lists/*.c) $(wildcard memory/*.c) $(wildcard numbers/*.c) \
+	$(wildcard print/*.c) $(wildcard string/*.c) $(wildcard utils/*.c)
 
-INCS = ft.h
+OBJS = $(patsubst %.c,%.o,$(SRCS))
 
-RM = rm -f
+HEADER = libft.h
 
-.c-.o:
-		$(EXEC) -c $< -o ${<:.c=.o} -I$(INCS)
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror
+RM = rm -rf
+MLB = ar -rcs
 
-$(NAME): $(OBJ)
-		ar -rcs $(NAME) $(OBJ)
-		ranlib $(NAME)
+all: dir
+	@echo Create libft
+	@$(MAKE) -s -j4 $(NAME)
 
-all: $(NAME)
-$(NAME) : $(OBJ) $(HEADER)
+$(NAME): $(OBJS) $(HEADER)
+	@$(MLB) $(NAME) $(OBJS)
+	@echo '√'
+	@echo Libft created!
 
-bonus: $(OBJ)
-	ar rc $(NAME) $(OBJ)
-	ranlib $(NAME)
+%.o: %.c $(HEADER)
+	@echo -n '#'
+	@$(CC) $(CFLAGS) -c $< -o $@
+# $(OBJS): $(SRCS) $(HEADER)
+# 	@echo -n '#'
+# 	@$(CC) $(CFLAGS) -c $(@:objs/%.o=%.c) -o $@
 
 clean:
-	$(RM) $(OBJ)
+	@echo Objectives deleted
+	@$(RM) $(OBJS)
 
 fclean: clean
-	$(RM) $(NAME)
+	@$(RM) $(NAME)
+	@echo Libft deleted
 
 re: fclean all
+
+.PHONY: all clean fclean re dir

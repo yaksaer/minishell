@@ -60,7 +60,6 @@ int	open_redir(char *path, char r, int n)
 		if (errno == 14)
 			re_parser(g_main, 's');
 		printf("minishell: %s: %s\n", path, strerror(errno));
-		printf("1\n");
 		errno = 0;
 	}
 	ft_allocfree((void *)&path);

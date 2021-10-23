@@ -72,7 +72,7 @@ typedef struct s_main
 
 extern t_main	*g_main;
 
-int				rl_replace_line(char *line, int undo);
+//int				rl_replace_line(char *line, int undo);
 /*UTILS*/
 void			ft_dlist_insert_head(t_dlink_list *list, size_t index, \
 									char *data);
