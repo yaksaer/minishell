@@ -8,6 +8,6 @@ Compatible MacOS with readline library
 1. Clone this repo
 `git clone git@github.com:yaksaer/minishell.git`
 
-2. `cd` into the directory and run `make`
-  `cd`
+2. `cd` into the directory and run `make` \
+  `cd` \
   `make`
