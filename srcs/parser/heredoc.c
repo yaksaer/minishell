@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbilbo <cbilbo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kseed <kseed@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/12 17:14:49 by cbilbo            #+#    #+#             */
-/*   Updated: 2021/10/22 19:51:57 by cbilbo           ###   ########.fr       */
+/*   Updated: 2021/11/09 18:15:59 by kseed            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 char	*parse_heredoc(char *str, int *qt)
 {
 	char	*res;
-	char	err;
 
 	res = NULL;
 	*qt = ft_ter_i(str[2] == '-', 2, *qt);
@@ -23,7 +22,6 @@ char	*parse_heredoc(char *str, int *qt)
 	str += ft_strlen_while(str, " \t");
 	while (*str != '\0')
 	{
-		err = *str;
 		if (ft_strchr("\'\"", *str) && *str++ && ++*qt)
 			continue ;
 		res = ft_add_char(res, *str++);
