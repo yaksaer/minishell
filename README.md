@@ -9,5 +9,5 @@ Compatible MacOS with readline library
 `git clone git@github.com:yaksaer/minishell.git`
 
 2. `cd` into the directory and run `make` \
-  `cd minishell` \
+  `cd minishell \
   make`
