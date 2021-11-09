@@ -6,8 +6,8 @@ Minishell is a minimum viable version of a real shell. The main goal is to have 
 ## Installation
 Compatible MacOS with readline library
 1. Clone this repo
-'git clone git@github.com:yaksaer/minishell.git'
+`git clone git@github.com:yaksaer/minishell.git`
 
-2. 'cd' into the directory and run 'make'
-'cd'
-'make'
+2. `cd` into the directory and run `make`
+`cd`
+`make`
