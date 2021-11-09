@@ -1,4 +1,4 @@
-<h1 align="center">Minishell - 42 school project</h1>
+<h1 align="center">Minishell - 21 school project</h1>
 
 # Final grade 101/125
 
